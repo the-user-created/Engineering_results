@@ -16,6 +16,8 @@ Oh, and also, just replace the current results.py program in your directory with
 
 ### OR
 
+Only applies to the previous version, if only downloading the program after 7th Jun, ignore this :)
+
 Do the following:
 
 #### On line 156:
