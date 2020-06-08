@@ -455,8 +455,30 @@ def main():
         print('\n' + Colors.bold + 'RE-RUN THE PROGRAM TO SEE RESULTS')
 
 
+def fix_csc_08Jun20():
+    file = open('results.txt', 'r+')
+    lines = file.readlines()
+    file.close()
+    os.remove('results.txt')
+    correct_file = open('results.txt', 'w+')
+    for i in range(len(lines)):
+        line = lines[i]
+        if line[:line.find(':')] == 'csc_quiz_8' or line[:line.find(':')] == 'csc_quiz_9':
+            del lines[i]
+            break
+
+    for i in range(len(lines)):
+        line = lines[i]
+        if line[:line.find(':')] == 'csc_quiz_8' or line[:line.find(':')] == 'csc_quiz_9':
+            del lines[i]
+            break
+    correct_file.writelines(lines)
+    correct_file.close()
+        
+
 if __name__ == '__main__':
-    main()
+    #main()
+    fix_csc_08Jun20()
 
 """
 Here's a cat :P
