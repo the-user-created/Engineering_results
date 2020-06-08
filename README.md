@@ -6,7 +6,15 @@ Or just click download zip :)
 
 ## CSC1015F UPDATE (Jun-08-2020)
 
-Either re-download the program and it'll fix everything
+### If this is your first time downloading:
+
+Delete the function fix_csc_08Jun20()
+
+And delete the function call at the end of the program and un-comment main()
+
+### Otherwise:
+
+Either download the program and it'll fix everything
 
 Then delete the function fix_csc_08Jun20()
 
