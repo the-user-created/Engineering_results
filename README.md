@@ -16,6 +16,16 @@ And delete the function call at the end of the program and un-comment main()
 
 Do the following:
 
+### On line 156:
+
+Change:
+
+... 'q7': csc_list[19], 'q8': csc_list[20], 'q9': csc_list[21]}
+
+To:
+
+... 'q7': csc_list[19]}
+
 ### On line 184:
 
 Change:
