@@ -4,6 +4,8 @@ https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cl
 
 Or just click download zip :)
 
+Please let me know if you encounter an error in the program :)
+
 ## CSC1015F UPDATE (Jun-08-2020)
 
 ### If this is your first time downloading:
