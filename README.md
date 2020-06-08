@@ -14,6 +14,8 @@ And delete the function call at the end of the program and un-comment main()
 
 Oh, and also, just replace the current results.py program in your directory with the new one :)
 
+^^^this only applies to the previous version of the program, ignore if downloading for the first time.
+
 ### OR
 
 Only applies to the previous version, if only downloading the program after 7th Jun, ignore this :)
