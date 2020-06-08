@@ -153,7 +153,7 @@ def csc1015f(csc_list):
                    'ass_7': csc_list[6], 'pt1': csc_list[7], 'pt2': csc_list[8], 'pt3': csc_list[9],
                    'tt1': csc_list[10], 'tt2': csc_list[11], 'tt3': csc_list[12], 'q1': csc_list[13],
                    'q2': csc_list[14], 'q3': csc_list[15], 'q4': csc_list[16], 'q5': csc_list[17], 'q6': csc_list[18],
-                   'q7': csc_list[19], 'q8': csc_list[20], 'q9': csc_list[21]}
+                   'q7': csc_list[19]}
 
     # This loop gathers the marks of each assessment into their respective category
     # and then later calculates the course mark
