@@ -12,7 +12,7 @@ Then delete the function fix_csc_08Jun20()
 
 And delete the function call at the end of the program and un-comment main()
 
-## OR
+### OR
 
 Do the following:
 
