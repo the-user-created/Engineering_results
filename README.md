@@ -35,10 +35,12 @@ assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
 ### On line 396 and 397:
 
 Change:
+
 ... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc_quiz_8', 'TBA'],
                              ['csc_quiz_9', 'TBA'], ['csc1015f', 'CM'], ...
 
 To:
+
 ... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'], ...
 
 ### In results.txt:
