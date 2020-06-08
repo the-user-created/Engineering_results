@@ -12,7 +12,7 @@ Please let me know if you encounter an error in the program :)
 
 Delete the function fix_csc_08Jun20()
 
-And delete the function call at the end of the program and un-comment main()
+And delete the function call for fix_csc_08Jun20() at the end of the program and un-comment main()
 
 ### Otherwise:
 
@@ -20,7 +20,7 @@ Either download the program and it'll fix everything
 
 Then delete the function fix_csc_08Jun20()
 
-And delete the function call at the end of the program and un-comment main()
+And delete the function call for fix_csc_08Jun20() at the end of the program and un-comment main()
 
 Oh, and also, just replace the current results.py program in your directory with the new one :)
 
