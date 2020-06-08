@@ -12,6 +12,8 @@ Then delete the function fix_csc_08Jun20()
 
 And delete the function call at the end of the program and un-comment main()
 
+Oh, and also, just replace the current results.py program in your directory with the new one :)
+
 ### OR
 
 Do the following:
