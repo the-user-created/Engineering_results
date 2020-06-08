@@ -181,8 +181,8 @@ def csc1015f(csc_list):
             quiz_avg[1] += 1 - eval(result)
 
     # Assignment Average = 0.9 * Weekly Assignment Average + 0.1 * Quiz Average
-    assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 9)
-    assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 9)
+    assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 7)
+    assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
 
     # Practical Test average  = pt_avg/3
     # Prac_Average = (3/5 * Assignment average + 2/5 * Practical test average)
@@ -393,8 +393,7 @@ def main():
                              ['csc_theory_test_1', 'DONE'], ['csc_theory_test_2', 'TBA'],
                              ['csc_theory_test_3', 'TBA'], ['csc_quiz_1', 'DONE'], ['csc_quiz_2', 'DONE'],
                              ['csc_quiz_3', 'DONE'], ['csc_quiz_4', 'DONE'], ['csc_quiz_5', 'DONE'],
-                             ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc_quiz_8', 'TBA'],
-                             ['csc_quiz_9', 'TBA'], ['csc1015f', 'CM'],
+                             ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'],
 
                              ['mec_schematic', 'DONE'], ['mec_pcb', 'DONE'], ['mec_gerber', 'TBA'],
                              ['mec_application', 'TBA'], ['mec1003f', 'CM']]
