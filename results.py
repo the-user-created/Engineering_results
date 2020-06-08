@@ -2,6 +2,8 @@
 #  All rights reserved
 #
 
+# v0.01
+
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
 Try not to edit the results.txt file once it has been created... this may cause an untested error.
