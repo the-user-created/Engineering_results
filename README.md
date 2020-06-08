@@ -18,7 +18,7 @@ Oh, and also, just replace the current results.py program in your directory with
 
 Do the following:
 
-### On line 156:
+#### On line 156:
 
 Change:
 
@@ -28,7 +28,7 @@ To:
 
 ... 'q7': csc_list[19]}
 
-### On line 184:
+#### On line 184:
 
 Change:
 
@@ -38,7 +38,7 @@ To:
 
 assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 7)
 
-### On line 185:
+#### On line 185:
 
 Change:
 
@@ -48,7 +48,7 @@ To:
 
 assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
 
-### On line 396 and 397:
+#### On line 396 and 397:
 
 Change:
 
@@ -59,7 +59,7 @@ To:
 
 ... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'], ...
 
-### In results.txt:
+#### In results.txt:
 
 Remove the following lines
 
