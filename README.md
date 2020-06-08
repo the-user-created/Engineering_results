@@ -4,7 +4,7 @@ https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cl
 
 Or just click download zip :)
 
-# CSC1015F UPDATE (Jun-08-2020)
+## CSC1015F UPDATE (Jun-08-2020)
 
 Either re-download the program and it'll fix everything automatically
 
@@ -12,7 +12,7 @@ OR
 
 Do the following:
 
-# On line 184:
+### On line 184:
 
 Change:
 
@@ -22,7 +22,7 @@ To:
 
 assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 7)
 
-# On line 185:
+### On line 185:
 
 Change:
 
@@ -32,7 +32,7 @@ To:
 
 assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
 
-# On line 396 and 397:
+### On line 396 and 397:
 
 Change:
 ... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc_quiz_8', 'TBA'],
@@ -41,7 +41,7 @@ Change:
 To:
 ... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'], ...
 
-# In results.txt:
+### In results.txt:
 
 Remove the following lines
 
