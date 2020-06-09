@@ -13,7 +13,7 @@ BEWARE: There is very little input error checking in this version of the program
         SOOOO make sure to enter values in the correct format plsssssss :) (as stated in the input prompts)
 
 To use this program:
-Before looking through the code run the program and it will ask for all of your results.
+Before looking through the code, run the program and it will ask for all of your results.
 Make sure that if you don't have the results for an assessment, you enter '000'... if you don't the program will break.
 Once you have entered all your results re-run the program and select the options best suited to your needs.
 The program will do what it does and you'll get back:
