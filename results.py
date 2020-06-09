@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.01
+# v0.02
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -152,10 +152,10 @@ def phy1012f(phy_list):
 def csc1015f(csc_list):
     result_dict = {'ass_1': csc_list[0], 'ass_2': csc_list[1], 'ass_3': csc_list[2], 'ass_4': csc_list[3],
                    'ass_5': csc_list[4], 'ass_6': csc_list[5],
-                   'ass_7': csc_list[6], 'pt1': csc_list[7], 'pt2': csc_list[8], 'pt3': csc_list[9],
-                   'tt1': csc_list[10], 'tt2': csc_list[11], 'tt3': csc_list[12], 'q1': csc_list[13],
-                   'q2': csc_list[14], 'q3': csc_list[15], 'q4': csc_list[16], 'q5': csc_list[17], 'q6': csc_list[18],
-                   'q7': csc_list[19]}
+                   'ass_7': csc_list[6], 'pt1': csc_list[7], 'pt2': csc_list[8],
+                   'tt1': csc_list[9], 'tt2': csc_list[10], 'tt3': csc_list[11], 'q1': csc_list[12],
+                   'q2': csc_list[13], 'q3': csc_list[14], 'q4': csc_list[15], 'q5': csc_list[16], 'q6': csc_list[17],
+                   'q7': csc_list[18]}
 
     # This loop gathers the marks of each assessment into their respective category
     # and then later calculates the course mark
@@ -186,10 +186,10 @@ def csc1015f(csc_list):
     assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 7)
     assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
 
-    # Practical Test average  = pt_avg/3
+    # Practical Test average  = pt_avg/2
     # Prac_Average = (3/5 * Assignment average + 2/5 * Practical test average)
-    prac_avg = 3 / 5 * assignment_avg + 2 / 15 * pt_avg[0]
-    prac_avg_lost = 3 / 5 * assignment_avg_lost + 2 / 15 * pt_avg[1]
+    prac_avg = 3 / 5 * assignment_avg + pt_avg[0] / 5
+    prac_avg_lost = 3 / 5 * assignment_avg_lost + pt_avg[1] / 5
 
     # TheoryTest_Average = theory_avg / 3
     # Course_mark = 0.625 * Prac_Average + 0.375 * TheoryTest_Average
@@ -365,6 +365,7 @@ def main():
         os.remove('results.txt')
 
         modified_file = open('results.txt', 'w+')
+
         # Writes the lines back to the results.txt file
         modified_file.writelines(lines)
         modified_file.close()
@@ -391,11 +392,10 @@ def main():
                              ['csc_assignment_1', 'DONE'], ['csc_assignment_2', 'DONE'], ['csc_assignment_3', 'DONE'],
                              ['csc_assignment_4', 'DONE'], ['csc_assignment_5', 'DONE'], ['csc_assignment_6', 'TBA'],
                              ['csc_assignment_7', 'TBA'], ['csc_practical_test_1', 'DONE'],
-                             ['csc_practical_test_2', 'DONE'], ['csc_practical_test_3', 'TBA'],
-                             ['csc_theory_test_1', 'DONE'], ['csc_theory_test_2', 'TBA'],
-                             ['csc_theory_test_3', 'TBA'], ['csc_quiz_1', 'DONE'], ['csc_quiz_2', 'DONE'],
-                             ['csc_quiz_3', 'DONE'], ['csc_quiz_4', 'DONE'], ['csc_quiz_5', 'DONE'],
-                             ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'],
+                             ['csc_practical_test_2', 'DONE'], ['csc_theory_test_1', 'DONE'],
+                             ['csc_theory_test_2', 'TBA'], ['csc_theory_test_3', 'TBA'], ['csc_quiz_1', 'DONE'],
+                             ['csc_quiz_2', 'DONE'], ['csc_quiz_3', 'DONE'], ['csc_quiz_4', 'DONE'],
+                             ['csc_quiz_5', 'DONE'], ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'],
 
                              ['mec_schematic', 'DONE'], ['mec_pcb', 'DONE'], ['mec_gerber', 'TBA'],
                              ['mec_application', 'TBA'], ['mec1003f', 'CM']]
@@ -457,30 +457,33 @@ def main():
         print('\n' + Colors.bold + 'RE-RUN THE PROGRAM TO SEE RESULTS')
 
 
-def fix_csc_08Jun20():
+# Fixes the results.txt file if it has an assessment which is not going to be written
+def fix_results(removal_list):
     file = open('results.txt', 'r+')
     lines = file.readlines()
     file.close()
-    os.remove('results.txt')
-    correct_file = open('results.txt', 'w+')
-    for i in range(len(lines)):
-        line = lines[i]
-        if line[:line.find(':')] == 'csc_quiz_8' or line[:line.find(':')] == 'csc_quiz_9':
-            del lines[i]
-            break
 
-    for i in range(len(lines)):
-        line = lines[i]
-        if line[:line.find(':')] == 'csc_quiz_8' or line[:line.find(':')] == 'csc_quiz_9':
-            del lines[i]
-            break
+    os.remove('results.txt')
+    correct_file = open('results.txt', 'w')
+    fixed = 0
+
+    while fixed < len(removal_list):
+        for i in range(len(lines)):
+            line = lines[i]
+            if line[:line.find(':')] in removal_list:
+                del lines[i]
+                fixed += 1
+                break
+
+        fixed += 1
+
     correct_file.writelines(lines)
     correct_file.close()
         
 
 if __name__ == '__main__':
-    #main()
-    fix_csc_08Jun20()
+    main()
+    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'])
 
 """
 Here's a cat :P

@@ -1,82 +1,31 @@
+# Couldn't think of a title so here's this :P
+
+Current version: v0.02
+
 To get this program follow this:
 
 https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-Or just click download zip :)
+Or just click download zip.
 
 Please let me know if you encounter an error in the program :)
 
-## CSC1015F UPDATE (Jun-08-2020)
+Ignore the section below if downloading for the first time.
 
-### If this is your first time downloading:
+## Keeping your program up-to-date: How-to
+You have two methods to choose from.
 
-Delete the function fix_csc_08Jun20()
+#### The slightly hands-on method:
+Download the latest version of the results.py and replace the current results.py in your directory with the latest 
+version. 
 
-And delete the function call for fix_csc_08Jun20() at the end of the program and un-comment main()
+(Make sure that results.txt is in the same directory as the new results.py otherwise it'll break)
 
-### Otherwise:
+Then comment the call for main() and uncomment fix(some_list) at the end of the program.
 
-Either download the program and it'll fix everything
+Run the program once.
 
-Then delete the function fix_csc_08Jun20()
+And comment fix(some_list) and uncomment main().
 
-And delete the function call for fix_csc_08Jun20() at the end of the program and un-comment main()
-
-Oh, and also, just replace the current results.py program in your directory with the new one :)
-
-^^^this last line only applies to the previous version of the program, ignore it if downloading for the first time.
-
-### OR
-
-Only applies to the previous version, if only downloading the program after 7th Jun, ignore this :)
-
-Do the following:
-
-#### On line 156:
-
-Change:
-
-... 'q7': csc_list[19], 'q8': csc_list[20], 'q9': csc_list[21]}
-
-To:
-
-... 'q7': csc_list[19]}
-
-#### On line 184:
-
-Change:
-
-assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 9)
-
-To:
-
-assignment_avg = 0.9 * (ass_avg[0] / 7) + 10 * (quiz_avg[0] / 7)
-
-#### On line 185:
-
-Change:
-
-assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 9)
-
-To:
-
-assignment_avg_lost = 0.9 * (ass_avg[1] / 7) + 10 * (quiz_avg[1] / 7)
-
-#### On line 396 and 397:
-
-Change:
-
-... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc_quiz_8', 'TBA'],
-                             ['csc_quiz_9', 'TBA'], ['csc1015f', 'CM'], ...
-
-To:
-
-... ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'], ...
-
-#### In results.txt:
-
-Remove the following lines
-
-csc_quiz_8:TBA:0
-
-csc_quiz_9:TBA:0
+#### The completely hands-on method:
+View the changelog corresponding to your current version of the program and adjust the program accordingly.
