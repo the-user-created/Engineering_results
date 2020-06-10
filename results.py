@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.02
+# v0.03
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -62,40 +62,70 @@ class Colors:
         lightcyan = '\033[96m'
 
 
-def mam1020f(phy_list):
-    result_dict = {'ct1': phy_list[0], 't1': phy_list[1], 't2': phy_list[2], 't3': phy_list[3], 't4': phy_list[4],
-                   'final': phy_list[5]}
+def mam1020f(mam_list):
+    result_dict = {'ct1': mam_list[0], 't1': mam_list[1], 't2': mam_list[2], 't3': mam_list[3], 't4': mam_list[4],
+                   'final': mam_list[5]}
+
     # Sorts the dictionary by largest value first
     result_dict = {k: v for k, v in sorted(result_dict.items(), key=lambda item: item[1], reverse=True)}
 
-    # This loop gathers the marks of each assessment into their respective category
-    # and then later calculates the course mark
-    # test_c is used to make sure that only the 3 best tests are used for the course mark
+    case_1, case_2, case_1_lost, case_2_lost = calculate_mam1020f(result_dict)
+
+    print("For MAM1020F:\nResults calculated from Case 1:\t\t\tResults calculated from Case 2:\nYou have: {}%"
+          "\t\t\t\t\t\tYou have: {}%\nYou have lost: {}%\t\t\t\t\tYou have lost: {}%\nRemaining: {}%\t\t\t\t\t\t"
+          "Remaining: {}%".format(round(case_1, 2), round(case_2, 2), round(case_1_lost, 2),
+                                  round(case_2_lost, 2), round(100 - case_1 - case_1_lost, 2),
+                                  round(100 - case_2 - case_2_lost, 2)))
+
+    if case_1 >= case_2:
+        return case_1, case_1_lost
+    else:
+        return case_2, case_2_lost
+
+
+def calculate_mam1020f(results):
+
+    # Case 1:
     test_c = 0
-    # Stored as: [marks you have, marks you have lost]
-    ct_avg = [0, 0]
-    t_avg = [0, 0]
-    final_avg = [0, 0]
-    for test, result in result_dict.items():
+    ct_avg_1 = [0, 0]
+    t_avg_1 = [0, 0]
+    final_avg_1 = [0, 0]
+    for test, result in results.items():
         if 'ct' in test and 'TBA' not in result:
-            ct_avg[0] += eval(result)
-            ct_avg[1] += 1 - eval(result)
+            ct_avg_1[0] += eval(result)
+            ct_avg_1[1] += 1 - eval(result)
         elif 't' in test and 'TBA' not in result and test_c < 3:
-            t_avg[0] += eval(result)
-            t_avg[1] += 1 - eval(result)
+            t_avg_1[0] += eval(result)
+            t_avg_1[1] += 1 - eval(result)
             test_c += 1
         elif test == 'final' and 'TBA' not in result:
-            final_avg[0] += eval(result)
-            final_avg[1] += 1 - eval(result)
+            final_avg_1[0] += eval(result)
+            final_avg_1[1] += 1 - eval(result)
 
-    course_mark = 25 * ct_avg[0] + 15 * t_avg[0] + 30 * final_avg[0]
-    course_mark_lost = 25 * ct_avg[1] + 15 * t_avg[1] + 30 * final_avg[1]
+    case_1 = 25 * ct_avg_1[0] + 15 * t_avg_1[0] + 30 * final_avg_1[0]
+    case_1_lost = 25 * ct_avg_1[1] + 15 * t_avg_1[1] + 30 * final_avg_1[1]
 
-    print("For MAM1020F:\nYou have: {}%\nYou have lost: {}%\nRemaining: {}%".format(round(course_mark, 2),
-                                                                                    round(course_mark_lost, 2), round(
-            100 - course_mark - course_mark_lost, 2)))
+    # Case 2:
+    test_c = 0
+    ct_avg_2 = [0, 0]
+    t_avg_2 = [0, 0]
+    final_avg_2 = [0, 0]
+    for test, result in results.items():
+        if 'ct' in test and 'TBA' not in result:
+            ct_avg_2[0] += eval(result)
+            ct_avg_2[1] += 1 - eval(result)
+        elif 't' in test and 'TBA' not in result and test_c < 2:
+            t_avg_2[0] += eval(result)
+            t_avg_2[1] += 1 - eval(result)
+            test_c += 1
+        elif test == 'final' and 'TBA' not in result:
+            final_avg_2[0] += eval(result)
+            final_avg_2[1] += 1 - eval(result)
 
-    return course_mark, course_mark_lost
+    case_2 = 25 * ct_avg_2[0] + 15 * t_avg_2[0] + 45 * final_avg_2[0]
+    case_2_lost = 25 * ct_avg_2[1] + 15 * t_avg_2[1] + 45 * final_avg_2[1]
+
+    return case_1, case_2, case_1_lost, case_2_lost
 
 
 def phy1012f(phy_list):
@@ -295,6 +325,7 @@ def main():
     if exists('results.txt'):
         course_input = input("Enter the course code for the course(s) you want to get your course results for: "
                              "(enter 'q' to quit or 'all' for every course)\n")
+        #courses = ['mam1020f']
 
         if course_input.lower() == 'all':
             courses = ['mam1020f', 'phy1012f', 'csc1015f', 'eee1006f', 'mec1003f']
@@ -315,6 +346,7 @@ def main():
             line = lines[i]
             if 'TBA' in line and not ran_choice:
                 choice = input("You have empty results (TBA values)... do you want to modify these results? (y/n):\n")
+                #choice = 'n'
                 if choice == 'y':
                     ran_choice = True
                     result = str(input("You may not have completed {} yet. "
