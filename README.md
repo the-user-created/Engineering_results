@@ -20,7 +20,7 @@ Look in the file for the name of the assessment which has changed.
 Once you have found the assessment, change the value after the last colon to match the new marks.
 
 WARNING: Make sure the line you've just modified has a colon after the assessment name and after 'DONE' 
-(sometimes 'TBA')
+(sometimes 'TBA') e.g. phy_test_3:DONE:0/25
 
 ## Keeping your program up-to-date: How-to
 You have two methods to choose from.
