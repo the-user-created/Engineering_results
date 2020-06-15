@@ -1,6 +1,6 @@
 # Couldn't think of a title so here's this :P
 
-Current version: v0.03
+Current version: v0.04
 
 To get this program follow this:
 
