@@ -31,11 +31,11 @@ version.
 
 (Make sure that results.txt is in the same directory as the new results.py otherwise it'll break)
 
-Then comment the call for main() and uncomment fix(some_list) at the end of the program.
+Then comment the call for main() and uncomment fix(some_list, another_list, something_else) at the end of the program.
 
 Run the program once.
 
-And comment fix(some_list) and uncomment main().
+Then comment fix() and uncomment main().
 
 #### The completely hands-on method:
 View the changelog corresponding to your current version of the program and adjust the program accordingly.

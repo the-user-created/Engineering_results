@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.04
+# v0.05
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -163,9 +163,9 @@ def phy1012f(phy_list):
                     wps_marks[0] += eval(wps)
                     wps_marks[1] += 1 - eval(wps)
 
-            # Makes the wps result out of 15 wps's
-            wps_marks[0] /= 15
-            wps_marks[1] /= 15
+            # Makes the wps result out of 16 wps's
+            wps_marks[0] /= 16
+            wps_marks[1] /= 16
 
     # 30 * class test 1 + 10 * sum of online tests + 10 * wps average
     # + 15 * labs (including one from Q1) * 1/3 + 15 * lab test
@@ -407,29 +407,30 @@ def main():
 
         # DO NOT CHANGE THIS --- Initializes the results.txt file
         important_results = [['mam_class_test_1', 'DONE'], ['mam_online_test_1', 'DONE'], ['mam_online_test_2', 'DONE'],
-                             ['mam_online_test_3', 'DONE'], ['mam_online_test_4', 'TBA'], ['mam_final_test', 'TBA'],
+                             ['mam_online_test_3', 'DONE'], ['mam_online_test_4', 'DONE'], ['mam_final_test', 'TBA'],
                              ['mam1020f', 'CM'],
 
                              ['phy_wps_1', 'DONE'], ['phy_wps_2', 'DONE'], ['phy_wps_3', 'DONE'], ['phy_wps_4', 'DONE'],
                              ['phy_wps_5', 'DONE'], ['phy_wps_8', 'DONE'], ['phy_wps_9', 'DONE'],
                              ['phy_wps_10', 'DONE'], ['phy_wps_11', 'DONE'], ['phy_wps_12', 'DONE'],
-                             ['phy_wps_13', 'TBA'], ['phy_wps_14', 'TBA'], ['phy_wps_15', 'TBA'],
-                             ['phy_test_1', 'DONE'], ['phy_test_2', 'DONE'], ['phy_test_3', 'TBA'],
-                             ['phy_test_4', 'TBA'], ['phy_uct_lab_1', 'DONE'], ['phy_online_lab_1', 'TBA'],
-                             ['phy_online_lab_2', 'TBA'], ['phy_online_lab_test', 'TBA'], ['phy1012f', 'CM'],
+                             ['phy_wps_13', 'DONE'], ['phy_wps_14', 'DONE'], ['phy_wps_15', 'DONE'],
+                             ['phy_wps_16', 'TBA'], ['phy_test_1', 'DONE'], ['phy_test_2', 'DONE'],
+                             ['phy_test_3', 'DONE'], ['phy_test_4', 'TBA'], ['phy_uct_lab_1', 'DONE'],
+                             ['phy_online_lab_1', 'DONE'], ['phy_online_lab_2', 'TBA'], ['phy_online_lab_test', 'TBA'],
+                             ['phy1012f', 'CM'],
 
                              ['eee_class_test_1', 'DONE'], ['eee_class_test_2', 'TBA'], ['eee_final_assignment', 'TBA'],
                              ['eee1006f', 'CM'],
 
                              ['csc_assignment_1', 'DONE'], ['csc_assignment_2', 'DONE'], ['csc_assignment_3', 'DONE'],
                              ['csc_assignment_4', 'DONE'], ['csc_assignment_5', 'DONE'], ['csc_assignment_6', 'TBA'],
-                             ['csc_assignment_7', 'TBA'], ['csc_practical_test_1', 'DONE'],
+                             ['csc_assignment_7', 'DONE'], ['csc_practical_test_1', 'DONE'],
                              ['csc_practical_test_2', 'DONE'], ['csc_theory_test_1', 'DONE'],
-                             ['csc_theory_test_2', 'TBA'], ['csc_theory_test_3', 'TBA'], ['csc_quiz_1', 'DONE'],
+                             ['csc_theory_test_2', 'DONE'], ['csc_theory_test_3', 'TBA'], ['csc_quiz_1', 'DONE'],
                              ['csc_quiz_2', 'DONE'], ['csc_quiz_3', 'DONE'], ['csc_quiz_4', 'DONE'],
-                             ['csc_quiz_5', 'DONE'], ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'TBA'], ['csc1015f', 'CM'],
+                             ['csc_quiz_5', 'DONE'], ['csc_quiz_6', 'DONE'], ['csc_quiz_7', 'DONE'], ['csc1015f', 'CM'],
 
-                             ['mec_schematic', 'DONE'], ['mec_pcb', 'DONE'], ['mec_gerber', 'TBA'],
+                             ['mec_schematic', 'DONE'], ['mec_pcb', 'DONE'], ['mec_gerber', 'DONE'],
                              ['mec_application', 'TBA'], ['mec1003f', 'CM']]
 
         print("Enter your results in decimal or x/y (e.g. 0.80 or 80/100)")
@@ -490,32 +491,55 @@ def main():
 
 
 # Fixes the results.txt file if it has an assessment which is not going to be written
-def fix_results(removal_list):
-    file = open('results.txt', 'r+')
-    lines = file.readlines()
-    file.close()
+def fix_results(removal_list, addition_list, remove_or_add):
+    if remove_or_add == 'r':
+        file = open('results.txt', 'r+')
+        lines = file.readlines()
+        file.close()
 
-    os.remove('results.txt')
-    correct_file = open('results.txt', 'w')
-    fixed = 0
+        os.remove('results.txt')
+        correct_file = open('results.txt', 'w')
+        fixed = 0
 
-    while fixed < len(removal_list):
-        for i in range(len(lines)):
-            line = lines[i]
-            if line[:line.find(':')] in removal_list:
-                del lines[i]
-                fixed += 1
-                break
+        while fixed < len(removal_list):
+            for i in range(len(lines)):
+                line = lines[i]
+                if line[:line.find(':')] in removal_list:
+                    del lines[i]
+                    fixed += 1
+                    break
 
-        fixed += 1
+            fixed += 1
 
-    correct_file.writelines(lines)
-    correct_file.close()
-        
+        correct_file.writelines(lines)
+        correct_file.close()
+
+    else:
+        file = open('results.txt', 'r+')
+        lines = file.readlines()
+        file.close()
+
+        os.remove('results.txt')
+        correct_file = open('results.txt', 'w')
+        fixed = 0
+
+        while fixed < len(addition_list):
+            for i in range(len(lines)):
+                line = lines[i]
+                if line[:line.find(':')] == 'phy_wps_15':
+                    lines.insert(i+1, 'phy_wps_16:TBA:0\n')
+                    fixed += 1
+                    break
+
+            fixed += 1
+
+        correct_file.writelines(lines)
+        correct_file.close()
+
 
 if __name__ == '__main__':
     main()
-    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'])
+    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'], ['phy_wps_16'], 'a')
 
 """
 Here's a cat :P
