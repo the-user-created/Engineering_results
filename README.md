@@ -6,7 +6,7 @@ To get this program follow this:
 
 https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-Or just click download zip.
+Or just click download zip (from the drop down menu called "Clone").
 
 Please let me know if you encounter an error in the program :)
 
