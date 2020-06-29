@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.05
+# v0.06
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -130,7 +130,8 @@ def calculate_mam1020f(results):
 
 def phy1012f(phy_list):
     result_dict = {'wps': phy_list[0], 'ct1': phy_list[1], 't2': phy_list[2], 't3': phy_list[3], 't4': phy_list[4],
-                   'lab1': phy_list[5], 'lab2': phy_list[6], 'lab3': phy_list[7], 'labt': phy_list[8]}
+                   'lab1': phy_list[5], 'lab2': phy_list[6], 'lab3': phy_list[7], 'lab4': phy_list[8],
+                   'labt': phy_list[9]}
 
     # This loop gathers the marks of each assessment into their respective category
     # and then later calculates the course mark
@@ -150,27 +151,27 @@ def phy1012f(phy_list):
             online_tests[1] += 1 - eval(result)
 
         elif 'lab' in test and 't' not in test and 'TBA' not in result:
-            labs[0] += eval(result)
-            labs[1] += 1 - eval(result)
+            # Converts the marks from a sum of each LAB mark
+            labs[0] += eval(result[:result.find('/')])
+            labs[1] += eval(result[:result.find('/')])
 
         elif test == 'labt' and 'TBA' not in result:
             lab_test[0] += eval(result)
             lab_test[1] += 1 - eval(result)
 
         elif test == 'wps':
-            for wps in result_dict[test]:
-                if 'TBA' not in wps:
-                    wps_marks[0] += eval(wps)
-                    wps_marks[1] += 1 - eval(wps)
+            # Converts the marks from a sum of each WPS mark to out of 80 marks (Total for WPS')
+            wps_marks[0] = result/80
+            wps_marks[1] = (80 - result)/80
 
-            # Makes the wps result out of 16 wps's
-            wps_marks[0] /= 16
-            wps_marks[1] /= 16
+    # Makes the lab mark out of 75 (The total marks for the labs)
+    labs[0] /= 75
+    labs[1] = (75 - labs[1])/75
 
     # 30 * class test 1 + 10 * sum of online tests + 10 * wps average
     # + 15 * labs (including one from Q1) * 1/3 + 15 * lab test
-    course_mark = 30 * class_test[0] + 10 * online_tests[0] + 10 * wps_marks[0] + 5 * labs[0] + 15 * lab_test[0]
-    course_mark_lost = 30 * class_test[1] + 10 * online_tests[1] + 10 * wps_marks[1] + 5 * labs[1] + 15 * lab_test[1]
+    course_mark = 30 * class_test[0] + 10 * online_tests[0] + 10 * wps_marks[0] + 15 * labs[0] + 15 * lab_test[0]
+    course_mark_lost = 30 * class_test[1] + 10 * online_tests[1] + 10 * wps_marks[1] + 15 * labs[1] + 15 * lab_test[1]
 
     print("For PHY1012F:\nYou have: {}%\nYou have lost: {}%\nRemaining: {}%".format(round(course_mark, 2),
                                                                                     round(course_mark_lost, 2), round(
@@ -299,23 +300,21 @@ def mec1003f(mec_list):
 
 def get_results(results, course):
     course_results = []
-    wps_list = []
+    wps_result = 0
     for test, result in results.items():
         if 'TBA' not in test:
             if 'wps' in test:
-                wps_list.append(result)
+                wps_result += eval(result[:result.find('/')]) if result != '1' and result != '0' else eval(result)
 
             elif course[:3] in test:
                 course_results.append(result)
         else:
-            if 'wps' in test:
-                wps_list.append(result + 'TBA')
-
-            elif course[:3] in test:
+            if course[:3] in test:
                 course_results.append(result + 'TBA')
 
     if 'phy' in course:
-        return [wps_list] + course_results
+        course_results.insert(0, wps_result)
+        return course_results
     else:
         return course_results
 
@@ -325,7 +324,6 @@ def main():
     if exists('results.txt'):
         course_input = input("Enter the course code for the course(s) you want to get your course results for: "
                              "(enter 'q' to quit or 'all' for every course)\n")
-        #courses = ['mam1020f']
 
         if course_input.lower() == 'all':
             courses = ['mam1020f', 'phy1012f', 'csc1015f', 'eee1006f', 'mec1003f']
@@ -416,8 +414,8 @@ def main():
                              ['phy_wps_13', 'DONE'], ['phy_wps_14', 'DONE'], ['phy_wps_15', 'DONE'],
                              ['phy_wps_16', 'TBA'], ['phy_test_1', 'DONE'], ['phy_test_2', 'DONE'],
                              ['phy_test_3', 'DONE'], ['phy_test_4', 'TBA'], ['phy_uct_lab_1', 'DONE'],
-                             ['phy_online_lab_1', 'DONE'], ['phy_online_lab_2', 'TBA'], ['phy_online_lab_test', 'TBA'],
-                             ['phy1012f', 'CM'],
+                             ['phy_uct_lab_2', 'DONE'], ['phy_online_lab_1', 'DONE'], ['phy_online_lab_2', 'TBA'],
+                             ['phy_online_lab_test', 'TBA'], ['phy1012f', 'CM'],
 
                              ['eee_class_test_1', 'DONE'], ['eee_class_test_2', 'TBA'], ['eee_final_assignment', 'TBA'],
                              ['eee1006f', 'CM'],
@@ -491,7 +489,7 @@ def main():
 
 
 # Fixes the results.txt file if it has an assessment which is not going to be written
-def fix_results(removal_list, addition_list, remove_or_add):
+def fix_results(removal_list, remove_or_add):
     if remove_or_add == 'r':
         file = open('results.txt', 'r+')
         lines = file.readlines()
@@ -521,17 +519,17 @@ def fix_results(removal_list, addition_list, remove_or_add):
 
         os.remove('results.txt')
         correct_file = open('results.txt', 'w')
-        fixed = 0
 
-        while fixed < len(addition_list):
-            for i in range(len(lines)):
-                line = lines[i]
-                if line[:line.find(':')] == 'phy_wps_15':
-                    lines.insert(i+1, 'phy_wps_16:TBA:0\n')
-                    fixed += 1
-                    break
+        for i in range(len(lines)):
+            line = lines[i]
+            if 'phy_lab_2:TBA:0\n' in lines and 'phy_wps_16:TBA:0\n' in lines:
+                break
 
-            fixed += 1
+            if line[:line.find(':')] == 'phy_wps_15' and 'phy_wps_16' not in lines:
+                lines.insert(i+1, 'phy_wps_16:TBA:0\n')
+
+            if line[:line.find(':')] == 'phy_lab_1' and 'phy_lab_2' not in lines:
+                lines.insert(i+1, 'phy_lab_2:TBA:0\n')
 
         correct_file.writelines(lines)
         correct_file.close()
@@ -539,7 +537,7 @@ def fix_results(removal_list, addition_list, remove_or_add):
 
 if __name__ == '__main__':
     main()
-    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'], ['phy_wps_16'], 'a')
+    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'], 'a')
 
 """
 Here's a cat :P

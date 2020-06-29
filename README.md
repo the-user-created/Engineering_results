@@ -1,6 +1,6 @@
-# Couldn't think of a title so here's this :P
+# Read this before running the program for the first time (or when updating the program)
 
-Current version: v0.04
+Current version: v0.06
 
 To get this program follow this:
 
