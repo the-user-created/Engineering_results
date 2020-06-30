@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.06
+# v0.07
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -152,8 +152,12 @@ def phy1012f(phy_list):
 
         elif 'lab' in test and 't' not in test and 'TBA' not in result:
             # Converts the marks from a sum of each LAB mark
-            labs[0] += eval(result[:result.find('/')])
-            labs[1] += eval(result[:result.find('/')])
+            try:
+                labs[0] += eval(result[:result.find('/')])
+                labs[1] += eval(result[:result.find('/')])
+            except SyntaxError:
+                labs[0] += eval(result)
+                labs[1] += eval(result)
 
         elif test == 'labt' and 'TBA' not in result:
             lab_test[0] += eval(result)
@@ -302,12 +306,17 @@ def get_results(results, course):
     course_results = []
     wps_result = 0
     for test, result in results.items():
-        if 'TBA' not in test:
-            if 'wps' in test:
+        if 'wps' in test:
+            if 'wps' in test and '/' in result:
                 wps_result += eval(result[:result.find('/')]) if result != '1' and result != '0' else eval(result)
 
-            elif course[:3] in test:
+            elif 'wps' in test:
+                wps_result += eval(result)
+
+        elif 'TBA' not in test:
+            if course[:3] in test:
                 course_results.append(result)
+
         else:
             if course[:3] in test:
                 course_results.append(result + 'TBA')
@@ -319,12 +328,11 @@ def get_results(results, course):
         return course_results
 
 
-def main():
+def main(file):
     # Checks if the results.txt file exists in your project directory
-    if exists('results.txt'):
+    if exists(file):
         course_input = input("Enter the course code for the course(s) you want to get your course results for: "
                              "(enter 'q' to quit or 'all' for every course)\n")
-
         if course_input.lower() == 'all':
             courses = ['mam1020f', 'phy1012f', 'csc1015f', 'eee1006f', 'mec1003f']
         else:
@@ -334,7 +342,7 @@ def main():
                 course_input = input()
 
         # All your results will be written in this text file
-        file = open('results.txt', 'r+')
+        file = open(file, 'r+')
         lines = file.readlines()
         file.close()
 
@@ -392,9 +400,9 @@ def main():
             print()
 
         # Erases the contents of the file
-        os.remove('results.txt')
+        os.remove(file.name)
 
-        modified_file = open('results.txt', 'w+')
+        modified_file = open(file.name, 'w+')
 
         # Writes the lines back to the results.txt file
         modified_file.writelines(lines)
@@ -489,14 +497,14 @@ def main():
 
 
 # Fixes the results.txt file if it has an assessment which is not going to be written
-def fix_results(removal_list, remove_or_add):
+def fix_results(removal_list, remove_or_add, file):
     if remove_or_add == 'r':
-        file = open('results.txt', 'r+')
+        file = open(file, 'r+')
         lines = file.readlines()
         file.close()
 
-        os.remove('results.txt')
-        correct_file = open('results.txt', 'w')
+        os.remove(file.name)
+        correct_file = open(file.name, 'w')
         fixed = 0
 
         while fixed < len(removal_list):
@@ -513,31 +521,31 @@ def fix_results(removal_list, remove_or_add):
         correct_file.close()
 
     else:
-        file = open('results.txt', 'r+')
+        file = open(file, 'r+')
         lines = file.readlines()
         file.close()
 
-        os.remove('results.txt')
-        correct_file = open('results.txt', 'w')
+        os.remove(file.name)
+        correct_file = open(file.name, 'w')
 
         for i in range(len(lines)):
             line = lines[i]
-            if 'phy_lab_2:TBA:0\n' in lines and 'phy_wps_16:TBA:0\n' in lines:
+            if 'phy_uct_lab_2:TBA:0\n' in lines and 'phy_wps_16:TBA:0\n' in lines:
                 break
 
             if line[:line.find(':')] == 'phy_wps_15' and 'phy_wps_16' not in lines:
                 lines.insert(i+1, 'phy_wps_16:TBA:0\n')
 
-            if line[:line.find(':')] == 'phy_lab_1' and 'phy_lab_2' not in lines:
-                lines.insert(i+1, 'phy_lab_2:TBA:0\n')
+            if line[:line.find(':')] == 'phy_uct_lab_1' and 'phy_uct_lab_2' not in lines:
+                lines.insert(i+1, 'phy_uct_lab_2:TBA:0\n')
 
         correct_file.writelines(lines)
         correct_file.close()
 
 
 if __name__ == '__main__':
-    main()
-    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'], 'a')
+    main('results.txt')
+    #fix_results(['csc_quiz_8', 'csc_quiz_9', 'csc_practical_test_3'], 'a', 'results.txt')
 
 """
 Here's a cat :P
