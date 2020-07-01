@@ -1,6 +1,6 @@
 # Read this before running the program for the first time (or when updating the program)
 
-Current version: v0.07
+Current version: v0.08
 
 To get this program follow this:
 

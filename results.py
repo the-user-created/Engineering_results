@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v0.07
+# v0.08
 
 '''
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -223,16 +223,16 @@ def csc1015f(csc_list):
 
     # Practical Test average  = pt_avg/2
     # Prac_Average = (3/5 * Assignment average + 2/5 * Practical test average)
-    prac_avg = 3 / 5 * assignment_avg + pt_avg[0] / 5
-    prac_avg_lost = 3 / 5 * assignment_avg_lost + pt_avg[1] / 5
+    prac_avg = (3 * assignment_avg + pt_avg[0]) / 5
+    prac_avg_lost = (3 * assignment_avg_lost + pt_avg[1]) / 5
 
     # TheoryTest_Average = theory_avg / 3
     # Course_mark = 0.625 * Prac_Average + 0.375 * TheoryTest_Average
-    course_mark = 0.625 * prac_avg + 0.125 * theory_avg[0]
-    course_mark_lost = 0.625 * prac_avg_lost + 0.125 * theory_avg[1]
+    course_mark = 0.625 * prac_avg + 12.5 * theory_avg[0]
+    course_mark_lost = 0.625 * prac_avg_lost + 12.5 * theory_avg[1]
 
-    print("For CSC1015F:\nYou have: {}%\nYou have lost: {}%\nRemaining: {}%".format(round(course_mark, 2),
-                                                                                    round(course_mark_lost, 2), round(
+    print("For CSC1015F (DISCLAIMER - This is an estimate; not 100% accurate):\nYou have: {}%\n"
+          "You have lost: {}%\nRemaining: {}%".format(round(course_mark, 2), round(course_mark_lost, 2), round(
             100 - course_mark - course_mark_lost, 2)))
 
     return course_mark, course_mark_lost
@@ -340,6 +340,8 @@ def main(file):
             while course_input.lower() != 'q':
                 courses.append(course_input.lower())
                 course_input = input()
+
+        #courses = ['csc1015f']
 
         # All your results will be written in this text file
         file = open(file, 'r+')
