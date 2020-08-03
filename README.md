@@ -6,7 +6,7 @@ To get this program follow this:
 
 https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-Or just click download zip (from the drop down menu called "Code").
+#### Or just click download zip (from the drop down menu called "Code").
 
 If you are downloading Engineering_results for the first time follow the steps below:
 1. Rename results_example.txt to results.txt (or duplicate results_example.txt and then rename)
@@ -15,7 +15,7 @@ If you are downloading Engineering_results for the first time follow the steps b
 4. Run the following code next: "python3 results.py"
 5. Enter your marks into the respective courses
 
-If you are coming from v0.0x follow the steps below:
+####If you are coming from v0.0x follow the steps below:
 
 1. Open Terminal (cmd on Windows)
 2. Navigate to the directory where you have downloaded the Engineering_results file
