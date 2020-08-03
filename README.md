@@ -15,7 +15,7 @@ If you are downloading Engineering_results for the first time follow the steps b
 4. Run the following code next: "python3 results.py"
 5. Enter your marks into the respective courses
 
-####If you are coming from v0.0x follow the steps below:
+#### If you are coming from v0.0x follow the steps below:
 
 1. Open Terminal (cmd on Windows)
 2. Navigate to the directory where you have downloaded the Engineering_results file
