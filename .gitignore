@@ -202,8 +202,5 @@ fabric.properties
 
 # Private project files
 results.txt
-results_copy2.txt
-results_cam.txt
-results_old_copy.txt
-results_old.txt
-results_old.py
+results_copy.txt
+results_legacy_copy.txt
