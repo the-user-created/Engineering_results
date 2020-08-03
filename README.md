@@ -13,7 +13,8 @@ Or just click download zip (from the drop down menu called "Code").
 2. Open Terminal (cmd on Windows)
 3. Navigate to the directory where you have downloaded the Engineering_results file
 4. Run the following code next: "python3 results.py"
-5. Enter your marks into the respective courses
+5. Enter your marks into the respective courses (in decimal or quotient format -- i.e. 0.96 or 24/25 -- 
+if you only have percentages, divide the value by 100)
 
 #### If you are coming from v0.0x follow the steps below:
 
