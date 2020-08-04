@@ -117,13 +117,13 @@ def calculate_marks(results, course, user_run=False):
                 elif 'test_' in k and course == 'mam1021s':
                     have += eval(v) * 20
                     lost += (1 - eval(v)) * 20
-                elif 'test_' in k and course == 'phy1013s':
+                elif 'test_' in k:
                     class_tests_have += eval(v)
                     class_tests_lost += 1 - eval(v)
                 elif 'final' in k:
                     have += eval(v) * 25
                     lost += (1 - eval(v)) * 20
-                elif 'assignment_' in k:
+                elif 'assignment' in k:
                     assignment_have += eval(v)
                     assignment_lost += 1 - eval(v)
                 elif 'wps' in k:
@@ -172,12 +172,12 @@ def calculate_marks(results, course, user_run=False):
             lost += wps_lost + lab_test_lost + 7.5 * (labs_lost / 4) + 75 * (class_tests_lost / 4)
 
         elif course == 'eee1007s':
-            # TODO add when Renee replies
-            have = 0
-            lost = 0
+            have = class_tests_have * 35 + assignment_have * 30
+            lost = class_tests_lost * 35 + assignment_lost * 30
 
         elif course == 'axl1200s':
-            # TODO when AXL1200S corrects the marking breakdown correct below
+            # TODO fix marking when AXL1200S corrects the marking breakdown correct below
+            # Assuming that the research project counts for 30% of the course mark
             have += 70 * (reflection_have / 7)
             lost += 70 * (reflection_lost / 7)
 
