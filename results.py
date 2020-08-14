@@ -49,10 +49,10 @@ def write_results(results):
 
         for line in lines[1:]:
             for k, v in results.items():
-                if k in line and v != '':
+                if line[:line.find(':')] == k and v != '':
                     lines[lines.index(line)] = f'{k}:DONE:{v}\n'
                     break
-                elif k in line and v == '':
+                elif line[:line.find(':')] == k and v == '':
                     lines[lines.index(line)] = f'{k}:TBA:0\n'
                     break
 
@@ -102,6 +102,31 @@ def calculate_marks(results, course, user_run=False):
                     have += 50 * eval(v)
                     lost += 50 * (1 - eval(v))
 
+    elif course == 'phy1012f':
+        first_test_have = 0
+        first_test_lost = 0
+        for k, v in results.items():
+            if v != '' and course in k:
+                if 'test_1' in k:
+                    first_test_have += eval(v)
+                    first_test_lost += 1 - eval(v)
+                elif 'lab_test' in k:
+                    lab_test_have += eval(v)
+                    lab_test_lost += 1 - eval(v)
+                elif 'test' in k:
+                    class_tests_have += eval(v)
+                    class_tests_lost += 1 - eval(v)
+                elif 'wps' in k:
+                    wps_have += eval(v)
+                    wps_lost += 1 - eval(v)
+                elif 'lab' in k:
+                    labs_have += eval(v)
+                    labs_lost += 1 - eval(v)
+        have = 30 * first_test_have + 10 * class_tests_have + \
+               10 * (wps_have / 14) + 15 * (labs_have / 4) + 15 * lab_test_have
+        lost = 30 * first_test_lost + 10 * class_tests_lost + \
+               10 * (wps_lost / 14) + 15 * (labs_lost / 4) + 15 * lab_test_lost
+        
     else:
         for k, v in results.items():
             if v != '' and course in k:
