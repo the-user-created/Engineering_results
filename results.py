@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v1.01
+# v1.03
 
 """
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -122,6 +122,7 @@ def calculate_marks(results, course, user_run=False):
                 elif 'lab' in k:
                     labs_have += eval(v)
                     labs_lost += 1 - eval(v)
+
         have = 30 * first_test_have + 10 * class_tests_have + \
                10 * (wps_have / 14) + 15 * (labs_have / 4) + 15 * lab_test_have
         lost = 30 * first_test_lost + 10 * class_tests_lost + \
@@ -201,10 +202,8 @@ def calculate_marks(results, course, user_run=False):
             lost = class_tests_lost * 35 + assignment_lost * 30
 
         elif course == 'axl1200s':
-            # TODO fix marking when AXL1200S corrects the marking breakdown correct below
-            # Assuming that the research project counts for 30% of the course mark
-            have += 70 * (reflection_have / 7)
-            lost += 70 * (reflection_lost / 7)
+            have += 70 * (reflection_have / 7) + 30 * research_have
+            lost += 70 * (reflection_lost / 7) + 30 * research_lost
 
         elif course == 'csc1015f':
             practical_avg_have = 0.6 * (0.1 * (quizzes_have / 7) + 0.9 * (assignment_have / 7)) + 0.4 * (
@@ -945,9 +944,6 @@ if __name__ == '__main__':
             = get_results('results.txt')
 
         app = Main()
-        #app.geometry('400x550')
-        # Prevents the window from being resizeable (NOT IN USE)
-        #app.resizable(width=0, height=0)
 
 
         def on_closing():

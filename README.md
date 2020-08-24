@@ -1,6 +1,6 @@
 # Read this before getting the program for the first time (or when updating the program)
 
-Current version: v1.02 (Gooey Marks)
+Current version: v1.03 (Gooey Marks)
 
 To get this program follow this:
 
