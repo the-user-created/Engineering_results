@@ -1,6 +1,7 @@
 # Read this before getting the program for the first time (or when updating the program)
 
 Current version: v1.03 (Gooey Marks)
+Required Python version: v3.6+
 
 To get this program follow this:
 
