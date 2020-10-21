@@ -181,8 +181,8 @@ def calculate_marks(results, course, user_run=False):
                     lost += (1 - eval(v)) * 10
 
         if course == 'csc1016s':
-            practical_average_have = 0.9 * (assignment_have / 6) + 0.1 * (quizzes_have / 12)
-            practical_average_lost = 0.9 * (assignment_lost / 6) + 0.1 * (quizzes_lost / 12)
+            practical_average_have = 0.9 * (assignment_have / 6) + 0.1 * (quizzes_have / 7)
+            practical_average_lost = 0.9 * (assignment_lost / 6) + 0.1 * (quizzes_lost / 7)
             have += practical_average_have * 36 + 24 * (practical_have / 2) + 40 * (theory_have / 3)
             lost += practical_average_lost * 36 + 24 * (practical_lost / 2) + 40 * (theory_lost / 3)
 
@@ -412,7 +412,8 @@ class CSC1016S(Frame):
         for i in range(2, self.num_of_rows):
             assessmentName = self.csc1016s_list[i - 2][0]
 
-            Label(self, text=assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, sticky=W, padx=20)
+            Label(self, text=assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, column=0, sticky=W, padx=20)
+                #.grid(row=i if i <= 13 else i - 12, column=0 if i <= 13 else 2, sticky=W, padx=20)
 
             entryText = StringVar()
             assessmentEntry = Entry(self, textvariable=entryText, justify='right')
@@ -945,12 +946,10 @@ if __name__ == '__main__':
 
         app = Main()
 
-
         def on_closing():
             if messagebox.askokcancel("Quit", "Do you want to quit?"):
                 app.destroy()
                 write_results(results)
-
 
         app.protocol("WM_DELETE_WINDOW", on_closing)
         app.mainloop()

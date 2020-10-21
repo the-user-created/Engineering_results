@@ -95,11 +95,6 @@ csc1016s_quiz_4:TBA:0
 csc1016s_quiz_5:TBA:0
 csc1016s_quiz_6:TBA:0
 csc1016s_quiz_7:TBA:0
-csc1016s_quiz_8:TBA:0
-csc1016s_quiz_9:TBA:0
-csc1016s_quiz_10:TBA:0
-csc1016s_quiz_11:TBA:0
-csc1016s_quiz_12:TBA:0
 csc1016s_practical_test_1:TBA:0
 csc1016s_practical_test_2:TBA:0
 csc1016s_theory_test_1:TBA:0
