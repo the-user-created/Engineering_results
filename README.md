@@ -29,10 +29,6 @@ if you only have percentages, divide the value by 100)
 
 You will have to re-run the results.py program if you want to see the marks in the "Current Marks for semester" screen.
 
-Please let me know if you encounter an error in the program :)
-
-Ignore the section below if downloading for the first time.
-
 #### If you are coming from v1.0x follow the steps below:git
 
 1. Open Terminal (cmd on Windows)
@@ -43,10 +39,6 @@ Ignore the section below if downloading for the first time.
 (in decimal or quotient format -- i.e. 0.96 or 24/25 -- if you only have percentages, divide the value by 100)
 
 You will have to re-run the results.py program if you want to see the marks in the "Current Marks for semester" screen.
-
-Please let me know if you encounter an error in the program :)
-
-Ignore the section below if downloading for the first time.
 
 ## Keeping your program up-to-date: How-to
 Download the latest version of the results.py and replace the current file in your directory with the latest 
