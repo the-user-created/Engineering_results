@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v1.03
+# v1.05
 
 """
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -44,8 +44,8 @@ def get_results(f):
 
 
 def write_results(results):
-    lines = open('results.txt', mode='r').readlines()
-    with open('results.txt', mode='w') as file:
+    lines = open(results_file, mode='r').readlines()
+    with open(results_file, mode='w') as file:
 
         for line in lines[1:]:
             for k, v in results.items():
@@ -148,7 +148,7 @@ def calculate_marks(results, course, user_run=False):
                     class_tests_lost += 1 - eval(v)
                 elif 'final' in k:
                     have += eval(v) * 25
-                    lost += (1 - eval(v)) * 20
+                    lost += (1 - eval(v)) * 25
                 elif 'assignment' in k:
                     assignment_have += eval(v)
                     assignment_lost += 1 - eval(v)
@@ -940,9 +940,11 @@ class CurrentMarks(Frame):
 
 
 if __name__ == '__main__':
-    if exists('results.txt'):
+    results_file = 'results.txt'
+
+    if exists(results_file):
         mam1020f, phy1012f, eee1006f, csc1015f, mec1003f, mam1021s, phy1013s, csc1016s, eee1007s, axl1200s \
-            = get_results('results.txt')
+            = get_results(results_file)
 
         app = Main()
 
