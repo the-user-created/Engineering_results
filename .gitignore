@@ -205,3 +205,6 @@ results.txt
 results_copy.txt
 results_legacy_copy.txt
 Legacy_Versions/
+
+# Mac Files
+.DS_Store
