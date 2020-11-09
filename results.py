@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v1.05
+# v1.06
 
 """
 THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
@@ -187,8 +187,8 @@ def calculate_marks(results, course, user_run=False):
             lost += practical_average_lost * 36 + 24 * (practical_lost / 2) + 40 * (theory_lost / 3)
 
         elif course == 'mam1021s':
-            have += (quizzes_have * 15) / 9
-            lost += (quizzes_lost * 15) / 9
+            have += (quizzes_have * 15) / 10
+            lost += (quizzes_lost * 15) / 10
 
         elif course == 'phy1013s':
             wps_have = 10 * (wps_have / 12)
