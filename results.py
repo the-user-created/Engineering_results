@@ -2,24 +2,17 @@
 #  All rights reserved
 #
 
-# v1.06
-
-"""
-THIS PROGRAM ONLY TAKES INTO ACCOUNT YOUR FINAL MARK... NOT WHETHER YOU GET DP
-Try not to edit the results.txt file once it has been created... this may cause an unexpected error.
-If you do encounter an error please let me know so that I can fix the problem.
-
-BEWARE: There is very little input error checking in this version of the program
-        So please try and input your marks either in decimal or quotient format (i.e. 0.96 or 24/25)
-        If you only have the percentage value, please divide that value by 100 (convert to decimal)
-
-I think that's all, lemme know if there's anything I need to explain about the program and I'll happily do so :)
-Good luck
-"""
+# v1.07
 
 from os.path import exists
 from tkinter import *
 from tkinter import messagebox
+try:
+    import pyautogui
+    width, height = pyautogui.size()
+except ImportError as e:
+    height = 1080
+    pass
 
 results = {}
 
@@ -127,7 +120,7 @@ def calculate_marks(results, course, user_run=False):
                10 * (wps_have / 14) + 15 * (labs_have / 4) + 15 * lab_test_have
         lost = 30 * first_test_lost + 10 * class_tests_lost + \
                10 * (wps_lost / 14) + 15 * (labs_lost / 4) + 15 * lab_test_lost
-        
+
     else:
         for k, v in results.items():
             if v != '' and course in k:
@@ -231,7 +224,8 @@ class Main(Tk):
         self.frames = {}
 
         courses = ["MAM1021S", "CSC1016S", "PHY1013S", "EEE1007S", "AXL1200S",
-                   "MAM1020F", "CSC1015F", "PHY1012F", "EEE1006F", "MEC1003F", "CurrentMarks"]
+                   "MAM1020F", "CSC1015F", "PHY1012F", "EEE1006F", "MEC1003F",
+                   "CurrentMarks"]
 
         for course in courses:
             for F in (StartPage, eval(course)):
@@ -345,9 +339,9 @@ class MAM1021S(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'mam1021s')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -375,6 +369,7 @@ class MAM1021S(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'mam1021s', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -403,17 +398,18 @@ class CSC1016S(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'csc1016s')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
         for i in range(2, self.num_of_rows):
             assessmentName = self.csc1016s_list[i - 2][0]
 
-            Label(self, text=assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, column=0, sticky=W, padx=20)
-                #.grid(row=i if i <= 13 else i - 12, column=0 if i <= 13 else 2, sticky=W, padx=20)
+            Label(self, text=assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, column=0, sticky=W,
+                                                                                      padx=20)
+            # .grid(row=i if i <= 13 else i - 12, column=0 if i <= 13 else 2, sticky=W, padx=20)
 
             entryText = StringVar()
             assessmentEntry = Entry(self, textvariable=entryText, justify='right')
@@ -434,6 +430,7 @@ class CSC1016S(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'csc1016s', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -450,34 +447,39 @@ class PHY1013S(Frame):
         button.grid(row=0, column=0)
 
         titleLabel = Label(self, text="PHY1013S Mark Calculator", font=('', 15))
-        titleLabel.grid(row=0, column=1, pady=20)
+        titleLabel.grid(row=0, column=1, columnspan=1 if height >= 1080 else 3, pady=20)
 
         self.add_grid()
 
         saveButton = Button(self, text="Save Marks", command=lambda: self.get_inputs())
-        saveButton.grid(row=self.num_of_rows + 1, column=0, columnspan=2, pady=30)
+        saveButton.grid(row=self.num_of_rows + 1, column=0, columnspan=2 if height >= 1080 else 4, pady=30)
 
         results_section = Label(self, text='Results:', font=('', 18))
-        results_section.grid(row=self.num_of_rows + 2, column=0, columnspan=2, pady=(30, 15))
+        results_section.grid(row=self.num_of_rows + 2, column=0, columnspan=2 if height >= 1080 else 4, pady=(30, 15))
 
         # Results Label
         have, lost = calculate_marks(results, 'phy1013s')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2 if height >= 1080 else 4, pady=(0, 30))
 
     def add_grid(self):
         # Rows
         for i in range(2, self.num_of_rows):
             assessmentName = self.phy1013s_list[i - 2][0]
 
-            Label(self, text=assessmentName[9:].replace('_', '').upper() + ':' if 'wps' in assessmentName else
-            assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, sticky=W, padx=20)
+            assessmentLabel = Label(self, text=assessmentName[9:].replace('_', '').upper() + ':' if 'wps' in assessmentName else assessmentName[9:].replace('_', ' ').title() + ':')
 
             entryText = StringVar()
             assessmentEntry = Entry(self, textvariable=entryText, justify='right')
             entryText.set('' if 'TBA' in self.phy1013s_list[i - 2][1] else self.phy1013s_list[i - 2][1][5:])
-            assessmentEntry.grid(row=i, column=1, padx=(0, 20))
+
+            if height < 1080 and i > 12:
+                assessmentLabel.grid(row=i - 11, column=2, sticky=W, padx=20)
+                assessmentEntry.grid(row=i - 11, column=3, padx=(0, 20))
+            else:
+                assessmentLabel.grid(row=i, sticky=W, padx=20)
+                assessmentEntry.grid(row=i, column=1, padx=(0, 20))
 
     def get_inputs(self):
         assessmentName = iter([item[0] for item in self.phy1013s_list])
@@ -493,9 +495,10 @@ class PHY1013S(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'phy1013s', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2 if height - 200 >= 1080 else 4, pady=(0, 30))
 
 
 class EEE1007S(Frame):
@@ -521,9 +524,9 @@ class EEE1007S(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'eee1007s')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -552,6 +555,7 @@ class EEE1007S(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'eee1007s', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -580,9 +584,9 @@ class AXL1200S(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'axl1200s')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -610,6 +614,7 @@ class AXL1200S(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'axl1200s', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -638,9 +643,9 @@ class MAM1020F(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'mam1020f')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -668,6 +673,7 @@ class MAM1020F(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'mam1020f', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -696,9 +702,9 @@ class CSC1015F(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'csc1015f')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -726,6 +732,7 @@ class CSC1015F(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'csc1015f', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -742,36 +749,43 @@ class PHY1012F(Frame):
         button.grid(row=0, column=0)
 
         titleLabel = Label(self, text="PHY1012F Mark Calculator", font=('', 15))
-        titleLabel.grid(row=0, column=1, pady=20)
+        titleLabel.grid(row=0, column=1, columnspan=1 if height >= 1080 else 3, pady=20)
 
         self.add_grid()
 
         saveButton = Button(self, text="Save Marks", command=lambda: self.get_inputs())
-        saveButton.grid(row=self.num_of_rows + 1, column=0, columnspan=2, pady=30)
+        saveButton.grid(row=self.num_of_rows + 1, column=0, columnspan=2 if height >= 1080 else 4, pady=30)
 
         results_section = Label(self, text='Results:', font=('', 18))
-        results_section.grid(row=self.num_of_rows + 2, column=0, columnspan=2, pady=(30, 15))
+        results_section.grid(row=self.num_of_rows + 2, column=0, columnspan=2 if height >= 1080 else 4, pady=(30, 15))
 
         # Results Label
         have, lost = calculate_marks(results, 'phy1012f')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2 if height >= 1080 else 4, pady=(0, 30))
 
     def add_grid(self):
         # Rows
         for i in range(2, self.num_of_rows):
             assessmentName = self.phy1012f_list[i - 2][0]
 
-            Label(self,
-                  text=assessmentName[9:].replace('wps', 'WPS').replace('uct_lab_', 'UCT Lab ').replace('_', '') + ':'
-                  if any(substring in assessmentName for substring in ['wps', 'uct']) else
-                  assessmentName[9:].replace('_', ' ').title() + ':').grid(row=i, sticky=W, padx=20)
+            assessmentLabel = Label(self, text=assessmentName[9:].replace('wps', 'WPS').replace('uct_lab_', 'UCT Lab ')
+                                    .replace('_', '') + ':'
+            if any(substring in assessmentName for substring in ['wps', 'uct']) else assessmentName[9:]
+                                    .replace('_', ' ').title() + ':')
 
             entryText = StringVar()
             assessmentEntry = Entry(self, textvariable=entryText, justify='right')
             entryText.set('' if 'TBA' in self.phy1012f_list[i - 2][1] else self.phy1012f_list[i - 2][1][5:])
             assessmentEntry.grid(row=i, column=1, padx=(0, 20))
+
+            if height < 1080 and i > 13:
+                assessmentLabel.grid(row=i - 12, column=2, sticky=W, padx=20)
+                assessmentEntry.grid(row=i - 12, column=3, padx=(0, 20))
+            else:
+                assessmentLabel.grid(row=i, sticky=W, padx=20)
+                assessmentEntry.grid(row=i, column=1, padx=(0, 20))
 
     def get_inputs(self):
         assessmentName = iter([item[0] for item in self.phy1012f_list])
@@ -787,9 +801,10 @@ class PHY1012F(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'phy1012f', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2 if height >= 1080 else 4, pady=(0, 30))
 
 
 class EEE1006F(Frame):
@@ -815,9 +830,9 @@ class EEE1006F(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'eee1006f')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -845,6 +860,7 @@ class EEE1006F(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'eee1006f', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -873,9 +889,9 @@ class MEC1003F(Frame):
 
         # Results Label
         have, lost = calculate_marks(results, 'mec1003f')
-        current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
+        self.previous_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
-        current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
+        self.previous_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
 
     def add_grid(self):
         # Rows
@@ -904,6 +920,7 @@ class MEC1003F(Frame):
 
         # Updated results label
         have, lost = calculate_marks(results, 'mec1003f', True)
+        self.previous_marks.destroy()
         current_marks = Label(self, text=f'You currently have: {have}%\nYou have lost: {lost}%\n'
                                          f'Remaining marks: {round(100 - lost - have, 3)}%', font=('', 15))
         current_marks.grid(row=self.num_of_rows + 3, column=0, columnspan=2, pady=(0, 30))
@@ -953,6 +970,7 @@ if __name__ == '__main__':
                 app.destroy()
                 write_results(results)
 
+
         app.protocol("WM_DELETE_WINDOW", on_closing)
         app.mainloop()
 
@@ -961,7 +979,6 @@ if __name__ == '__main__':
                                          'You must run the make_results_file.py '
                                          'program first before running this program.\n'
                                          'OR\nRename results_example.txt to results.txt.')
-
 
 """
 Here's a cat :P

@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
-## [v1.06] - Minor Update - 2020-11-09
+## [v1.07] - Minor Update - 2020-11-16
 
-Here I write upgrading notes for Engineering Results. I attempt to make this as straightforward as possible.
+### Added
+- GUI window sizing support for screen with resolutions below 1080p
+
+### Changed
+- README.md needed some grammar adjustments
+
+### Fixed
+- Results labels now overwrite old ones instead of being plastered on top of the old label
+
+## [v1.06] - Minor Update - 2020-11-09
 
 ### Added
 - Quiz 10 for MAM1021S
@@ -18,8 +27,6 @@ Here I write upgrading notes for Engineering Results. I attempt to make this as 
 - Quiz 10 for MAM1021S was missing from results.txt
  
 ## [v1.05] - Minor Update - 2020-11-04
-
-Here I write upgrading notes for Engineering Results. I attempt to make this as straightforward as possible.
 
 ### Added
 - Changelog
