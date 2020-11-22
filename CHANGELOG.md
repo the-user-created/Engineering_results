@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## [v1.08] - Minor Update - 2020-11-22
+
+### Added
+- Nothing
+
+### Changed
+- Adjusted the MAM1021S formula to use average of top 8 quizzes
+
+### Fixed
+- Nothing 
+
 ## [v1.07] - Minor Update - 2020-11-16
 
 ### Added

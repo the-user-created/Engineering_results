@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v1.07
+# v1.08
 
 from os.path import exists
 from tkinter import *
@@ -121,6 +121,30 @@ def calculate_marks(results, course, user_run=False):
         lost = 30 * first_test_lost + 10 * class_tests_lost + \
                10 * (wps_lost / 14) + 15 * (labs_lost / 4) + 15 * lab_test_lost
 
+    elif course == 'mam1021s':
+        quizzes = {}
+        for k, v in results.items():
+            if v != '' and course in k:
+                if 'quiz' in k:
+                    quizzes.update({k: v})
+
+                elif 'test_' in k:
+                    have += eval(v) * 20
+                    lost += (1 - eval(v)) * 20
+
+        quizzes = {k: v for k, v in sorted(quizzes.items(), key=lambda item: eval(item[1]), reverse=True)}
+
+        j = 0
+        for i in quizzes.values():
+            if j < 8:
+                quizzes_have += eval(i)
+                quizzes_lost += 1 - eval(i)
+                j += 1
+            else:
+                break
+        have += (quizzes_have * 15) / 8
+        lost += (quizzes_lost * 15) / 8
+
     else:
         for k, v in results.items():
             if v != '' and course in k:
@@ -133,9 +157,6 @@ def calculate_marks(results, course, user_run=False):
                 elif 'theory' in k:
                     theory_have += eval(v)
                     theory_lost += 1 - eval(v)
-                elif 'test_' in k and course == 'mam1021s':
-                    have += eval(v) * 20
-                    lost += (1 - eval(v)) * 20
                 elif 'test_' in k:
                     class_tests_have += eval(v)
                     class_tests_lost += 1 - eval(v)
@@ -178,10 +199,6 @@ def calculate_marks(results, course, user_run=False):
             practical_average_lost = 0.9 * (assignment_lost / 6) + 0.1 * (quizzes_lost / 7)
             have += practical_average_have * 36 + 24 * (practical_have / 2) + 40 * (theory_have / 3)
             lost += practical_average_lost * 36 + 24 * (practical_lost / 2) + 40 * (theory_lost / 3)
-
-        elif course == 'mam1021s':
-            have += (quizzes_have * 15) / 10
-            lost += (quizzes_lost * 15) / 10
 
         elif course == 'phy1013s':
             wps_have = 10 * (wps_have / 12)
