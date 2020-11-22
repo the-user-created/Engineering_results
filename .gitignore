@@ -205,7 +205,7 @@ results.txt
 results_copy.txt
 results_legacy_copy.txt
 Legacy_Versions/
-Java_Application_Beta/
+Java_Application_Beta
 
 # Mac Files
 .DS_Store
