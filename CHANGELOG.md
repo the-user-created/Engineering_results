@@ -3,7 +3,18 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
- 
+
+## [v1.09] - Minor Update - 2020-11-23
+
+### Added
+- Nothing
+
+### Changed
+- Nothing
+
+### Fixed
+- Added the final test for MAM1021S back into the formula 
+
 ## [v1.08] - Minor Update - 2020-11-22
 
 ### Added

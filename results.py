@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v1.08
+# v1.09
 
 from os.path import exists
 from tkinter import *
@@ -127,10 +127,12 @@ def calculate_marks(results, course, user_run=False):
             if v != '' and course in k:
                 if 'quiz' in k:
                     quizzes.update({k: v})
-
                 elif 'test_' in k:
                     have += eval(v) * 20
                     lost += (1 - eval(v)) * 20
+                elif 'final' in k:
+                    have += eval(v) * 25
+                    lost += (1 - eval(v)) * 25
 
         quizzes = {k: v for k, v in sorted(quizzes.items(), key=lambda item: eval(item[1]), reverse=True)}
 
@@ -142,6 +144,7 @@ def calculate_marks(results, course, user_run=False):
                 j += 1
             else:
                 break
+
         have += (quizzes_have * 15) / 8
         lost += (quizzes_lost * 15) / 8
 
@@ -160,9 +163,6 @@ def calculate_marks(results, course, user_run=False):
                 elif 'test_' in k:
                     class_tests_have += eval(v)
                     class_tests_lost += 1 - eval(v)
-                elif 'final' in k:
-                    have += eval(v) * 25
-                    lost += (1 - eval(v)) * 25
                 elif 'assignment' in k:
                     assignment_have += eval(v)
                     assignment_lost += 1 - eval(v)
