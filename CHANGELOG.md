@@ -1,8 +1,24 @@
-# Change Log
+# Changelog
 All notable changes to this project will be documented in this file.
  
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [v2.00a] - Major Update - 2021-03-08
+
+### Added
+- Course view template for easy addition of courses
+- 2nd year courses w/o formulas (awaiting Notes to Students)
+
+### Changed
+- Using JSON for storing marks
+- Made the mark calculation function cleaner
+- Re-coded all the first year course classes to use the course view template
+- StartPage now lists each year of the degree which has either been or is being completed
+- Adjusted the README to reflect the updated version
+
+### Fixed
+- Many minor bugs
 
 ## [v1.09] - Minor Update - 2020-11-23
 

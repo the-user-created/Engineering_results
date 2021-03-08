@@ -1,0 +1,218 @@
+{
+    "meta": {
+        "last_updated": "2021-03-08",
+        "version": "2.00a"
+    },
+    "grade_point_averages": {
+        "first_year": 0,
+        "second_year": 0,
+        "third_year": 0,
+        "fourth_year": 0,
+        "degree_gpa": 0
+    },
+    "first_year": {
+        "mam1020f": {
+            "have": 0,
+            "lost": 0,
+            "class_test_1": "",
+            "online_test_1": "",
+            "online_test_2": "",
+            "online_test_3": "",
+            "online_test_4": "",
+            "final_test": ""
+        },
+        "phy1012f": {
+            "have": 0,
+            "lost": 0,
+            "wps_1": "",
+            "wps_2": "",
+            "wps_3": "",
+            "wps_4": "",
+            "wps_5": "",
+            "wps_8": "",
+            "wps_9": "",
+            "wps_10": "",
+            "wps_11": "",
+            "wps_12": "",
+            "wps_13": "",
+            "wps_14": "",
+            "wps_15": "",
+            "wps_16": "",
+            "test_1": "",
+            "test_2": "",
+            "test_3": "",
+            "test_4": "",
+            "uct_lab_1": "",
+            "uct_lab_2": "",
+            "online_lab_1": "",
+            "online_lab_2": "",
+            "online_lab_test": ""
+        },
+        "eee1006f": {
+            "have": 0,
+            "lost": 0,
+            "class_test_1": "",
+            "class_test_2": "",
+            "final_assignment": ""
+        },
+        "csc1015f": {
+            "have": 0,
+            "lost": 0,
+            "assignment_1": "",
+            "assignment_2": "",
+            "assignment_3": "",
+            "assignment_4": "",
+            "assignment_5": "",
+            "assignment_6": "",
+            "assignment_7": "",
+            "practical_test_1": "",
+            "practical_test_2": "",
+            "theory_test_1": "",
+            "theory_test_2": "",
+            "theory_test_3": "",
+            "quiz_1": "",
+            "quiz_2": "",
+            "quiz_3": "",
+            "quiz_4": "",
+            "quiz_5": "",
+            "quiz_6": "",
+            "quiz_7": ""
+        },
+        "mec1003f": {
+            "have": 0,
+            "lost": 0,
+            "schematic": "",
+            "pcb": "",
+            "gerber": "",
+            "application": ""
+        },
+        "mam1021s": {
+            "have": 0,
+            "lost": 0,
+            "quiz_1": "",
+            "quiz_2": "",
+            "quiz_3": "",
+            "quiz_4": "",
+            "quiz_5": "",
+            "quiz_6": "",
+            "quiz_7": "",
+            "quiz_8": "",
+            "quiz_9": "",
+            "quiz_10": "",
+            "test_1": "",
+            "test_2": "",
+            "test_3": "",
+            "final_test": ""
+        },
+        "phy1013s": {
+            "have": 0,
+            "lost": 0,
+            "wps_1": "",
+            "wps_2": "",
+            "wps_3": "",
+            "wps_4": "",
+            "wps_5": "",
+            "wps_6": "",
+            "wps_7": "",
+            "wps_8": "",
+            "wps_9": "",
+            "wps_10": "",
+            "wps_11": "",
+            "wps_12": "",
+            "lab_1": "",
+            "lab_2": "",
+            "lab_3": "",
+            "lab_4": "",
+            "lab_test": "",
+            "test_1": "",
+            "test_2": "",
+            "test_3": "",
+            "test_4": ""
+        },
+        "csc1016s": {
+            "have": 0,
+            "lost": 0,
+            "quiz_1": "",
+            "quiz_2": "",
+            "quiz_3": "",
+            "quiz_4": "",
+            "quiz_5": "",
+            "quiz_6": "",
+            "quiz_7": "",
+            "practical_test_1": "",
+            "practical_test_2": "",
+            "theory_test_1": "",
+            "theory_test_2": "",
+            "theory_test_3": "",
+            "assignment_1": "",
+            "assignment_2": "",
+            "assignment_3": "",
+            "assignment_4": "",
+            "assignment_5": "",
+            "assignment_6": ""
+        },
+        "eee1007s": {
+            "have": 0,
+            "lost": 0,
+            "test_1": "",
+            "test_2": "",
+            "assignment": ""
+        },
+        "axl1200s": {
+            "have": 0,
+            "lost": 0,
+            "reflection_piece_1": "",
+            "reflection_piece_2": "",
+            "reflection_piece_3": "",
+            "reflection_piece_4": "",
+            "reflection_piece_5": "",
+            "reflection_piece_6": "",
+            "reflection_piece_7": "",
+            "research_project": ""
+        }
+    },
+    "second_year": {
+        "eee2045f": {
+            "have": 0,
+            "lost": 0
+        },
+        "eee2046f": {
+            "have": 0,
+            "lost": 0
+        },
+        "eee2048f": {
+            "have": 0,
+            "lost": 0
+        },
+        "mam2083f": {
+            "have": 0,
+            "lost": 0
+        },
+        "mec1009f": {
+            "have": 0,
+            "lost": 0
+        },
+        "con2026s": {
+            "have": 0,
+            "lost": 0
+        },
+        "eee2044s": {
+            "have": 0,
+            "lost": 0
+        },
+        "eee2047s": {
+            "have": 0,
+            "lost": 0
+        },
+        "mam2084s": {
+            "have": 0,
+            "lost": 0
+        },
+        "phy2010s": {
+            "have": 0,
+            "lost": 0
+        }
+    },
+    "third_year": {},
+    "fourth_year": {}
+}

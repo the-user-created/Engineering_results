@@ -201,11 +201,9 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Private project files
+results.json
 results.txt
-results_copy.txt
-results_legacy_copy.txt
-Legacy_Versions/
-Java_Application_Beta/
+Private/
 
 # Mac Files
 .DS_Store
