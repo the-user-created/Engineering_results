@@ -258,6 +258,34 @@ def calculate_marks(course, course_marks):
                 have += eval(v) * 10
                 lost += (1 - eval(v)) * 10
 
+    elif course == "mam2083f":
+        quizzes_have, quizzes_lost, tests_have, tests_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "quiz" in k:
+                quizzes_have += eval(v)
+                quizzes_lost += 1 - eval(v)
+            elif "test" in k:
+                tests_have += eval(v)
+                tests_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        class_record_have = (2 * tests_have + quizzes_have / 13) / 5
+        class_record_lost = (2 * tests_lost + quizzes_lost / 13) / 5
+        have_1 = (3 * exam_have + 2 * class_record_have) / 5
+        have_2 = (4 * exam_have + class_record_have) / 5
+        if have_1 >= have_2:
+            have = 100 * have_1
+            lost = 100 * (3 * exam_lost + 2 * class_record_lost) / 5
+        else:
+            have = 100 * have_2
+            lost = 100 * (4 * exam_lost + class_record_lost) / 5
+
     return round(have, 3), round(lost, 3)
 
 
@@ -772,13 +800,13 @@ class MAM2083F(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "mam2083f"
+        code = "mam2083f"
         year = 2
 
         self.add_header(view_controller, name="MAM2083F")
@@ -788,7 +816,7 @@ class MAM2083F(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class MEC1009F(CourseTemplate):
@@ -981,6 +1009,16 @@ def start_up():
     with open("results.json", "r+") as json_file:
         json_data = json.load(json_file)
         data.update(json_data)
+        if data["meta"]["version"] != "2.00b":
+            # TODO - Prevent removal of inputs if a new version comes out
+
+            mam2083f = {}
+            for i in range(1, 14):
+                mam2083f.update({f"quiz_{i}": ""})
+
+            mam2083f.update({"test_1": "", "test_2": "", "exam": ""})
+            data["second_year"]["mam2083f"].update(mam2083f)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.00b"})
 
         app = Main()
 

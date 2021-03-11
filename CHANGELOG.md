@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.00b] - Minor Update - 2021-03-11
+
+### Added
+- Formula for MAM2083F
+- 13 MAM2083F quizzes, 2 class tests, and 1 exam
+
+### Changed
+- Json now automatically updates itself with new assignments for courses 
+
+### Fixed
+- Nothing
+
 ## [v2.00a] - Major Update - 2021-03-08
 
 ### Added
