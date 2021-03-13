@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.00c] - Minor Update - 2021-03-13
+
+### Added
+- Formula for EEE2048F
+- 4 EEE2048F practical tasks, application task, academic writing task, MCQ, 
+  report, capstone proposal, and capstone report addition JSON file
+
+### Changed
+- Nothing
+
+### Fixed
+- Nothing
+
 ## [v2.00b] - Minor Update - 2021-03-11
 
 ### Added
@@ -11,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - 13 MAM2083F quizzes, 2 class tests, and 1 exam
 
 ### Changed
-- Json now automatically updates itself with new assignments for courses 
+- JSON now automatically updates itself with new assignments for courses 
 
 ### Fixed
 - Nothing

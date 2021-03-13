@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.00a
+# v2.00c
 
 from datetime import date
 import json
@@ -286,6 +286,42 @@ def calculate_marks(course, course_marks):
             have = 100 * have_2
             lost = 100 * (4 * exam_lost + class_record_lost) / 5
 
+    elif course == "eee2048f":
+        practical_have, practical_lost, app_have, app_lost, academic_have, academic_lost, mcq_have, mcq_lost, \
+            report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
+            capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "capstone_report" in k:
+                capstone_report_have += eval(v)
+                capstone_report_lost += 1 - eval(v)
+            elif "capstone" in k:
+                capstone_proposal_have += eval(v)
+                capstone_proposal_lost += 1 - eval(v)
+            elif "practical" in k:
+                practical_have += eval(v)
+                practical_lost += 1 - eval(v)
+            elif "application" in k:
+                app_have += eval(v)
+                app_lost += 1 - eval(v)
+            elif "academic" in k:
+                academic_have += eval(v)
+                academic_lost += 1 - eval(v)
+            elif "multiple" in k:
+                mcq_have += eval(v)
+                mcq_lost += 1 - eval(v)
+            elif "report" in k:
+                report_have += eval(v)
+                report_lost += 1 - eval(v)
+
+        have = 0.25 * (25 * practical_have + 100 * app_have + 30 * academic_have + 20 * mcq_have + 30 * report_have) + \
+            0.25 * (10 * capstone_proposal_have + 110 * capstone_report_have)
+        lost = 0.25 * (25 * practical_lost + 100 * app_lost + 30 * academic_lost + 20 * mcq_lost + 30 * report_lost) + \
+            0.25 * (10 * capstone_proposal_lost + 110 * capstone_report_lost)
+
     return round(have, 3), round(lost, 3)
 
 
@@ -425,6 +461,8 @@ class SecondYear(Frame):
 
 
 class CourseTemplate(Frame):
+    # TODO - Add red highlight when an input appears to be incorrect (e.g. 120/100 or 120%)
+
     def add_header(self, view_controller, name):
         """
         Unvarying for MAM1021S, CSC1016S, EEE1007S, AXL1200S, MAM1020F, CSC1015F, EEE1006F, MEC1003F
@@ -777,13 +815,13 @@ class EEE2048F(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "eee2048f"
+        code = "eee2048f"
         year = 2
 
         self.add_header(view_controller, name="EEE2048F")
@@ -793,7 +831,7 @@ class EEE2048F(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class MAM2083F(CourseTemplate):
@@ -1009,9 +1047,7 @@ def start_up():
     with open("results.json", "r+") as json_file:
         json_data = json.load(json_file)
         data.update(json_data)
-        if data["meta"]["version"] != "2.00b":
-            # TODO - Prevent removal of inputs if a new version comes out
-
+        if data["meta"]["version"] == "2.00a":
             mam2083f = {}
             for i in range(1, 14):
                 mam2083f.update({f"quiz_{i}": ""})
@@ -1019,6 +1055,16 @@ def start_up():
             mam2083f.update({"test_1": "", "test_2": "", "exam": ""})
             data["second_year"]["mam2083f"].update(mam2083f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00b"})
+
+        if data["meta"]["version"] == "2.00b":
+            eee2048f = {}
+            for i in range(1, 5):
+                eee2048f.update({f"practical_task_{i}": ""})
+
+            eee2048f.update({"application_task": "", "academic_writing_task": "", "referencing_multiple_choice": "",
+                             "report_critique": "", "capstone_proposal": "", "capstone_report": ""})
+            data["second_year"]["eee2048f"].update(eee2048f)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.00c"})
 
         app = Main()
 
