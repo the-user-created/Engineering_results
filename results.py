@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.00c
+# v2.00
 
 from datetime import date
 import json
@@ -28,6 +28,7 @@ courses_by_year = {"first_year": ["mam1020f", "phy1012f", "eee1006f", "csc1015f"
 def calculate_marks(course, course_marks):
     have, lost = 0, 0
 
+    # First Year, first semester
     if course == "mam1020f":
         # Case 1:
         test_count, final_test_have, final_test_lost, test_have, test_lost, class_tests_have, class_tests_lost = 0, 0, 0, 0, 0, 0, 0
@@ -55,37 +56,30 @@ def calculate_marks(course, course_marks):
         have = 25 * class_tests_have + 15 * test_have + 30 * final_test_have
         lost = 25 * class_tests_lost + 15 * test_lost + 30 * final_test_lost
 
-    elif course == "mam1021s":
-        quizzes_have = 0
-        quizzes_lost = 0
-        quizzes = {}
+    elif course == "csc1015f":
+        quizzes_have, quizzes_lost, practical_have, practical_lost, theory_have, theory_lost, assignment_have, assignment_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
         for (k, v) in course_marks:
             if v == "":
                 continue
 
-            if v != "":
-                if "quiz" in k:
-                    quizzes.update({k: v})
-                elif "final" in k:
-                    have += eval(v) * 25
-                    lost += (1 - eval(v)) * 25
-                elif "test" in k:
-                    have += eval(v) * 20
-                    lost += (1 - eval(v)) * 20
+            if "quiz" in k:
+                quizzes_have += eval(v)
+                quizzes_lost += 1 - eval(v)
+            elif "practical_test" in k:
+                practical_have += eval(v)
+                practical_lost += 1 - eval(v)
+            elif "theory" in k:
+                theory_have += eval(v)
+                theory_lost += 1 - eval(v)
+            elif "assignment" in k:
+                assignment_have += eval(v)
+                assignment_lost += 1 - eval(v)
 
-        quizzes = {k: v for k, v in sorted(quizzes.items(), key=lambda item: eval(item[1]), reverse=True)}
-
-        j = 0
-        for i in quizzes.values():
-            if j < 8:
-                quizzes_have += eval(i)
-                quizzes_lost += 1 - eval(i)
-                j += 1
-            else:
-                continue
-
-        have += (quizzes_have * 15) / 8
-        lost += (quizzes_lost * 15) / 8
+        practical_avg_have = 0.6 * (0.1 * (quizzes_have / 7) + 0.9 * (assignment_have / 7)) + 0.4 * (practical_have / 2)
+        practical_avg_lost = 0.6 * (0.1 * (quizzes_lost / 7) + 0.9 * (assignment_lost / 7)) + 0.4 * (practical_lost / 2)
+        have = 100 * (0.625 * practical_avg_have + 0.375 * (theory_have / 3))
+        lost = 100 * (0.625 * practical_avg_lost + 0.375 * (theory_lost / 3))
 
     elif course == "eee1006f":
         for (k, v) in course_marks:
@@ -126,6 +120,27 @@ def calculate_marks(course, course_marks):
         have = 30 * first_test_have + 10 * class_tests_have + 10 * (wps_have / 14) + 15 * (labs_have / 4) + 15 * lab_test_have
         lost = 30 * first_test_lost + 10 * class_tests_lost + 10 * (wps_lost / 14) + 15 * (labs_lost / 4) + 15 * lab_test_lost
 
+    elif course == "mec1003f":
+        # TODO - Confirm that this formula is correct
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "application" in k:
+                have += eval(v) * 55
+                lost += (1 - eval(v)) * 55
+            elif "gerber" in k:
+                have += eval(v) * 20
+                lost += (1 - eval(v)) * 20
+            elif "pcb" in k:
+                have += eval(v) * 15
+                lost += (1 - eval(v)) * 15
+            elif "schematic" in k:
+                have += eval(v) * 10
+                lost += (1 - eval(v)) * 10
+
+    # First Year, second semester
     elif course == "csc1016s":
         # TODO - Using correct formula as shown in the Notes to Students... however incorrect output
 
@@ -152,6 +167,38 @@ def calculate_marks(course, course_marks):
         practical_average_lost = 0.9 * (assignment_lost / 6) + 0.1 * (quizzes_lost / 7)
         have = 36 * practical_average_have + 24 * (practical_test_have / 2) + 40 * (theory_have / 3)
         lost = 36 * practical_average_lost + 24 * (practical_test_lost / 2) + 40 * (theory_lost / 3)
+
+    elif course == "mam1021s":
+        quizzes_have = 0
+        quizzes_lost = 0
+        quizzes = {}
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if v != "":
+                if "quiz" in k:
+                    quizzes.update({k: v})
+                elif "final" in k:
+                    have += eval(v) * 25
+                    lost += (1 - eval(v)) * 25
+                elif "test" in k:
+                    have += eval(v) * 20
+                    lost += (1 - eval(v)) * 20
+
+        quizzes = {k: v for k, v in sorted(quizzes.items(), key=lambda item: eval(item[1]), reverse=True)}
+
+        j = 0
+        for i in quizzes.values():
+            if j < 8:
+                quizzes_have += eval(i)
+                quizzes_lost += 1 - eval(i)
+                j += 1
+            else:
+                continue
+
+        have += (quizzes_have * 15) / 8
+        lost += (quizzes_lost * 15) / 8
 
     elif course == "phy1013s":
         class_tests_have, class_tests_lost, wps_have, wps_lost, lab_test_have, lab_test_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0
@@ -213,78 +260,55 @@ def calculate_marks(course, course_marks):
         have += 70 * (reflection_have / 7) + 30 * research_have
         lost += 70 * (reflection_lost / 7) + 30 * research_lost
 
-    elif course == "csc1015f":
-        quizzes_have, quizzes_lost, practical_have, practical_lost, theory_have, theory_lost, assignment_have, assignment_lost = 0, 0, 0, 0, 0, 0, 0, 0
+    # Second Year, first semester
+    elif course == "eee2045f":
+        class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, tut_test_have, tut_test_lost, \
+            tut_have, tut_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
                 continue
 
-            if "quiz" in k:
-                quizzes_have += eval(v)
-                quizzes_lost += 1 - eval(v)
-            elif "practical_test" in k:
-                practical_have += eval(v)
-                practical_lost += 1 - eval(v)
-            elif "theory" in k:
-                theory_have += eval(v)
-                theory_lost += 1 - eval(v)
-            elif "assignment" in k:
-                assignment_have += eval(v)
-                assignment_lost += 1 - eval(v)
-
-        practical_avg_have = 0.6 * (0.1 * (quizzes_have / 7) + 0.9 * (assignment_have / 7)) + 0.4 * (practical_have / 2)
-        practical_avg_lost = 0.6 * (0.1 * (quizzes_lost / 7) + 0.9 * (assignment_lost / 7)) + 0.4 * (practical_lost / 2)
-        have = 100 * (0.625 * practical_avg_have + 0.375 * (theory_have / 3))
-        lost = 100 * (0.625 * practical_avg_lost + 0.375 * (theory_lost / 3))
-
-    elif course == "mec1003f":
-        # TODO - Confirm that this formula is correct
-
-        for (k, v) in course_marks:
-            if v == "":
-                continue
-
-            if "application" in k:
-                have += eval(v) * 55
-                lost += (1 - eval(v)) * 55
-            elif "gerber" in k:
-                have += eval(v) * 20
-                lost += (1 - eval(v)) * 20
-            elif "pcb" in k:
-                have += eval(v) * 15
-                lost += (1 - eval(v)) * 15
-            elif "schematic" in k:
-                have += eval(v) * 10
-                lost += (1 - eval(v)) * 10
-
-    elif course == "mam2083f":
-        quizzes_have, quizzes_lost, tests_have, tests_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
-
-        for (k, v) in course_marks:
-            if v == "":
-                continue
-
-            if "quiz" in k:
-                quizzes_have += eval(v)
-                quizzes_lost += 1 - eval(v)
-            elif "test" in k:
-                tests_have += eval(v)
-                tests_lost += 1 - eval(v)
+            if "tutorial_test_" in k:
+                tut_test_have += eval(v)
+                tut_test_lost += 1 - eval(v)
+            elif "class_test_" in k:
+                class_tests_have += eval(v)
+                class_tests_lost += 1 - eval(v)
+            elif "tutorial" in k:
+                tut_have += eval(v)
+                tut_lost += 1 - eval(v)
+            elif "lab" in k:
+                lab_have += eval(v)
+                lab_lost += 1 - eval(v)
             elif "exam" in k:
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        class_record_have = (2 * tests_have + quizzes_have / 13) / 5
-        class_record_lost = (2 * tests_lost + quizzes_lost / 13) / 5
-        have_1 = (3 * exam_have + 2 * class_record_have) / 5
-        have_2 = (4 * exam_have + class_record_have) / 5
-        if have_1 >= have_2:
-            have = 100 * have_1
-            lost = 100 * (3 * exam_lost + 2 * class_record_lost) / 5
-        else:
-            have = 100 * have_2
-            lost = 100 * (4 * exam_lost + class_record_lost) / 5
+        #have = 60 * exam_have + 10 * class_tests_have + 2.5 * lab_have + 1.25 * tut_test_have + 10 * (tut_have / 11)
+        #lost = 60 * exam_lost + 10 * class_tests_lost + 2.5 * lab_lost + 1.25 * tut_test_lost + 10 * (tut_lost / 11)
+        have = 0
+        lost = 0
+
+    elif course == "eee2046f":
+        class_tests_have, class_tests_lost, exam_have, exam_lost, practical_have, practical_lost = 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "practical" in k:
+                practical_have += eval(v)
+                practical_lost += 1 - eval(v)
+            elif "test" in k:
+                class_tests_have += eval(v)
+                class_tests_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 60 * exam_have + 12.5 * class_tests_have + 3.75 * practical_have
+        lost = 60 * exam_lost + 12.5 * class_tests_lost + 3.75 * practical_lost
 
     elif course == "eee2048f":
         practical_have, practical_lost, app_have, app_lost, academic_have, academic_lost, mcq_have, mcq_lost, \
@@ -321,6 +345,54 @@ def calculate_marks(course, course_marks):
             0.25 * (10 * capstone_proposal_have + 110 * capstone_report_have)
         lost = 0.25 * (25 * practical_lost + 100 * app_lost + 30 * academic_lost + 20 * mcq_lost + 30 * report_lost) + \
             0.25 * (10 * capstone_proposal_lost + 110 * capstone_report_lost)
+
+    elif course == "mam2083f":
+        quizzes_have, quizzes_lost, tests_have, tests_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "quiz" in k:
+                quizzes_have += eval(v)
+                quizzes_lost += 1 - eval(v)
+            elif "test" in k:
+                tests_have += eval(v)
+                tests_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        class_record_have = (2 * tests_have + quizzes_have / 13) / 5
+        class_record_lost = (2 * tests_lost + quizzes_lost / 13) / 5
+        have_1 = (3 * exam_have + 2 * class_record_have) / 5
+        have_2 = (4 * exam_have + class_record_have) / 5
+        if have_1 >= have_2:
+            have = 100 * have_1
+            lost = 100 * (3 * exam_lost + 2 * class_record_lost) / 5
+        else:
+            have = 100 * have_2
+            lost = 100 * (4 * exam_lost + class_record_lost) / 5
+
+    elif course == "mec1009f":
+        class_tests_have, class_tests_lost, exam_have, exam_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "tutorial" in k:
+                tut_test_have += eval(v)
+                tut_test_lost += 1 - eval(v)
+            elif "test" in k:
+                class_tests_have += eval(v)
+                class_tests_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 60 * exam_have + 10 * class_tests_have + 10 * (tut_test_have / 7)
+        lost = 60 * exam_lost + 10 * class_tests_lost + 10 * (tut_test_lost / 7)
 
     return round(have, 3), round(lost, 3)
 
@@ -473,7 +545,8 @@ class CourseTemplate(Frame):
         :return: None
         """
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(FirstYear if name[3:4] == "1" else SecondYear))
+        button = Button(self, text="<<< Back", command=lambda: view_controller
+                        .show_frame(FirstYear if name.lower() in courses_by_year["first_year"] else SecondYear))
         button.grid(row=0, column=0)
 
         titleLabel = Label(self, text=f"{name} Marks", font=("", 15))
@@ -769,36 +842,40 @@ class EEE2045F(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "eee2045f"
+        code = "eee2045f"
         year = 2
 
         self.add_header(view_controller, name="EEE2045F")
+
+        # TODO - Add assignments
+        titleLabel = Label(self, text="Assignments TBA", font=("", 15))
+        titleLabel.grid(row=1, column=1, columnspan=1, pady=20, padx=10)
 
         marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class EEE2046F(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "eee2046f"
+        code = "eee2046f"
         year = 2
 
         self.add_header(view_controller, name="EEE2046F")
@@ -808,7 +885,7 @@ class EEE2046F(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class EEE2048F(CourseTemplate):
@@ -861,13 +938,13 @@ class MEC1009F(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "mec1009f"
+        code = "mec1009f"
         year = 2
 
         self.add_header(view_controller, name="MEC1009F")
@@ -877,7 +954,7 @@ class MEC1009F(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 # }
 
 
@@ -1047,7 +1124,11 @@ def start_up():
     with open("results.json", "r+") as json_file:
         json_data = json.load(json_file)
         data.update(json_data)
+
+        # Updating for MAM2083F
         if data["meta"]["version"] == "2.00a":
+            # TODO - Determine correct number of quizzes
+
             mam2083f = {}
             for i in range(1, 14):
                 mam2083f.update({f"quiz_{i}": ""})
@@ -1056,6 +1137,7 @@ def start_up():
             data["second_year"]["mam2083f"].update(mam2083f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00b"})
 
+        # Updating for EEE2048F
         if data["meta"]["version"] == "2.00b":
             eee2048f = {}
             for i in range(1, 5):
@@ -1065,6 +1147,42 @@ def start_up():
                              "report_critique": "", "capstone_proposal": "", "capstone_report": ""})
             data["second_year"]["eee2048f"].update(eee2048f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00c"})
+
+        # Updating for EEE2045F
+        if data["meta"]["version"] == "2.00c":
+            # TODO - Determine Assignments
+
+            eee2045f = {}
+            for i in range(1, 5):
+                eee2045f.update({f"tutorial_test_{i}": ""})
+
+            eee2045f.update({"laboratory_1": "", "laboratory_2": "", "class_test_1": "", "class_test_2": "", "exam": ""})
+            data["second_year"]["eee2045f"].update(eee2045f)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.00d"})
+
+        # Updating for EEE2046F
+        if data["meta"]["version"] == "2.00d":
+            eee2046f = {}
+            for i in range(1, 5):
+                eee2046f.update({f"practical_{i}": ""})
+
+            eee2046f.update({"class_test_1": "", "class_test_2": "", "exam": ""})
+            data["second_year"]["eee2046f"].update(eee2046f)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.00e"})
+
+        # Updating for MEC1009F
+        if data["meta"]["version"] == "2.00e":
+            mec1009f = {}
+            for i in range(1, 8):
+                mec1009f.update({f"tutorial_test_{i}": ""})
+
+            for i in range(1, 4):
+                mec1009f.update({f"class_test_{i}": ""})
+
+            mec1009f.update({"exam": ""})
+
+            data["second_year"]["mec1009f"].update(mec1009f)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.00"})
 
         app = Main()
 

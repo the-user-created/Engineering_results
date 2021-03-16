@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.00] - Minor Update - 2021-03-16
+
+### Added
+- Formula for EEE2045F, EEE2046F, and MEC1009F
+- All known assessments to their respective courses*
+
+### Changed
+- Nothing
+
+### Fixed
+- Nothing
+
+*How the practical percentage of the course mark for EEE2045F is calculated is unclear - TBD
+
 ## [v2.00c] - Minor Update - 2021-03-13
 
 ### Added
