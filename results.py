@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.00
+# v2.01
 
 from datetime import date
 import json
@@ -608,23 +608,24 @@ class CourseTemplate(Frame):
         """
 
         if "phy" in code:
-            column_span = 2 if height >= 1080 else 4
+            self.column_span = 2 if height >= 1080 else 4
         else:
-            column_span = 2
+            self.column_span = 2
 
         saveButton = Button(self, text="Save Marks", command=lambda: self.get_inputs(marks=marks, rows=rows, year=year, code=code))
-        saveButton.grid(row=rows + 1, column=0, columnspan=column_span, pady=30)
+        saveButton.grid(row=rows + 1, column=0, columnspan=self.column_span, pady=30)
 
         results_section = Label(self, text="Results:", font=("", 18))
-        results_section.grid(row=rows + 2, column=0, columnspan=column_span, pady=(30, 15))
+        results_section.grid(row=rows + 2, column=0, columnspan=self.column_span, pady=(30, 15))
 
         # Results Label
         year = years[year]
         have = float(data[year][code]["have"])
         lost = float(data[year][code]["lost"])
         self.previous_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
-                                               f"Remaining marks: {round(100 - lost - have, 3)}%", font=("", 15))
-        self.previous_marks.grid(row=rows + 3, column=0, columnspan=column_span, pady=(0, 30))
+                                               f"Remaining marks: {round(100 - lost - have, 3)}%\n"
+                                               f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
+        self.previous_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
 
     def get_inputs(self, marks, rows, year, code):
         """
@@ -655,12 +656,13 @@ class CourseTemplate(Frame):
         data[year][code].update({"have": str(have), "lost": str(lost)})
         self.previous_marks.destroy()
         current_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
-                                         f"Remaining marks: {round(100 - lost - have, 3)}%", font=("", 15))
+                                         f"Remaining marks: {round(100 - lost - have, 3)}%\n"
+                                         f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
 
-        if "phy" in code:
-            current_marks.grid(row=rows + 3, column=0, columnspan=2 if height >= 1080 else 4, pady=(0, 30))
-        else:
-            current_marks.grid(row=rows + 3, column=0, columnspan=2, pady=(0, 30))
+        #if "phy" in code:
+        current_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
+        #else:
+           #current_marks.grid(row=rows + 3, column=0, columnspan=2, pady=(0, 30))
 
 
 # First Semester, First Year {

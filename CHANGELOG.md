@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.01] - Minor Update - 2021-05-17
+
+### Added
+- Maximum marks possible has been added to each course
+
+### Changed
+- Nothing
+
+### Fixed
+- Nothing
+
 ## [v2.00] - Minor Update - 2021-03-16
 
 ### Added
