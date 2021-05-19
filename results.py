@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.01
+# v2.02
 
 from datetime import date
 import json
@@ -262,22 +262,22 @@ def calculate_marks(course, course_marks):
 
     # Second Year, first semester
     elif course == "eee2045f":
-        class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, tut_test_have, tut_test_lost, \
-            tut_have, tut_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, \
+            assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
                 continue
 
-            if "tutorial_test_" in k:
+            if "tutorial" in k:
                 tut_test_have += eval(v)
                 tut_test_lost += 1 - eval(v)
-            elif "class_test_" in k:
+            elif "class" in k:
                 class_tests_have += eval(v)
                 class_tests_lost += 1 - eval(v)
-            elif "tutorial" in k:
-                tut_have += eval(v)
-                tut_lost += 1 - eval(v)
+            elif "pre" in k:
+                assignment_have += eval(v)
+                assignment_lost += 1 - eval(v)
             elif "lab" in k:
                 lab_have += eval(v)
                 lab_lost += 1 - eval(v)
@@ -285,10 +285,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        #have = 60 * exam_have + 10 * class_tests_have + 2.5 * lab_have + 1.25 * tut_test_have + 10 * (tut_have / 11)
-        #lost = 60 * exam_lost + 10 * class_tests_lost + 2.5 * lab_lost + 1.25 * tut_test_lost + 10 * (tut_lost / 11)
-        have = 0
-        lost = 0
+        have = 60 * exam_have + 10 * class_tests_have + 5 * assignment_have + 2.5 * lab_have + 1.25 * tut_test_have
+        lost = 60 * exam_lost + 10 * class_tests_lost + 5 * assignment_lost + 2.5 * lab_lost + 1.25 * tut_test_lost
 
     elif course == "eee2046f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, practical_have, practical_lost = 0, 0, 0, 0, 0, 0
@@ -855,10 +853,6 @@ class EEE2045F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2045F")
 
-        # TODO - Add assignments
-        titleLabel = Label(self, text="Assignments TBA", font=("", 15))
-        titleLabel.grid(row=1, column=1, columnspan=1, pady=20, padx=10)
-
         marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
         rows = len(marks) + 2
 
@@ -1152,8 +1146,6 @@ def start_up():
 
         # Updating for EEE2045F
         if data["meta"]["version"] == "2.00c":
-            # TODO - Determine Assignments
-
             eee2045f = {}
             for i in range(1, 5):
                 eee2045f.update({f"tutorial_test_{i}": ""})
@@ -1185,6 +1177,17 @@ def start_up():
 
             data["second_year"]["mec1009f"].update(mec1009f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00"})
+
+        if data["meta"]["version"] == "2.00":
+            eee2045f = {}
+            eee2045f.update({k: v for k, v in data["second_year"]["eee2045f"].items()
+                             if list(data["second_year"]["eee2045f"].keys()).index(k) <= 5})
+            eee2045f.update({"pre-practical_1": "", "pre-practical_2": ""})
+            eee2045f.update({k: v for k, v in data["second_year"]["eee2045f"].items()
+                             if list(data["second_year"]["eee2045f"].keys()).index(k) > 5})
+
+            data["second_year"]["eee2045f"] = eee2045f
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.02"})
 
         app = Main()
 

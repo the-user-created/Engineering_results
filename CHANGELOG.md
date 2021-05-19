@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.02] - Minor Update - 2021-05-19
+
+### Added
+- Correct formula for EEE2045F
+
+### Changed
+- Nothing
+
+### Fixed
+- EEE2045F was not being marked
+
 ## [v2.01] - Minor Update - 2021-05-17
 
 ### Added
