@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.02
+# v2.03
 
 from datetime import date
 import json
@@ -361,8 +361,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        class_record_have = (2 * tests_have + quizzes_have / 13) / 5
-        class_record_lost = (2 * tests_lost + quizzes_lost / 13) / 5
+        class_record_have = (tests_have + quizzes_have / 13) / 4
+        class_record_lost = (tests_lost + quizzes_lost / 13) / 4
         have_1 = (3 * exam_have + 2 * class_record_have) / 5
         have_2 = (4 * exam_have + class_record_have) / 5
         if have_1 >= have_2:
