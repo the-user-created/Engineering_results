@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.03
+# v2.04
 
 from datetime import date
 import json
@@ -285,8 +285,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        have = 60 * exam_have + 10 * class_tests_have + 5 * assignment_have + 2.5 * lab_have + 1.25 * tut_test_have
-        lost = 60 * exam_lost + 10 * class_tests_lost + 5 * assignment_lost + 2.5 * lab_lost + 1.25 * tut_test_lost
+        have = 60 * exam_have + 10 * class_tests_have + (10/3) * assignment_have + (5/3) * lab_have + 1.25 * tut_test_have
+        lost = 60 * exam_lost + 10 * class_tests_lost + (10/3) * assignment_lost + (5/3) * lab_lost + 1.25 * tut_test_lost
 
     elif course == "eee2046f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, practical_have, practical_lost = 0, 0, 0, 0, 0, 0
@@ -361,8 +361,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        class_record_have = (tests_have + quizzes_have / 13) / 4
-        class_record_lost = (tests_lost + quizzes_lost / 13) / 4
+        class_record_have = (tests_have + quizzes_have / 10) / 4
+        class_record_lost = (tests_lost + quizzes_lost / 10) / 4
         have_1 = (3 * exam_have + 2 * class_record_have) / 5
         have_2 = (4 * exam_have + class_record_have) / 5
         if have_1 >= have_2:
@@ -1123,10 +1123,8 @@ def start_up():
 
         # Updating for MAM2083F
         if data["meta"]["version"] == "2.00a":
-            # TODO - Determine correct number of quizzes
-
             mam2083f = {}
-            for i in range(1, 14):
+            for i in range(1, 11):
                 mam2083f.update({f"quiz_{i}": ""})
 
             mam2083f.update({"test_1": "", "test_2": "", "exam": ""})
@@ -1178,6 +1176,7 @@ def start_up():
             data["second_year"]["mec1009f"].update(mec1009f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00"})
 
+        # Updating for EEE2045F
         if data["meta"]["version"] == "2.00":
             eee2045f = {}
             eee2045f.update({k: v for k, v in data["second_year"]["eee2045f"].items()
@@ -1188,6 +1187,31 @@ def start_up():
 
             data["second_year"]["eee2045f"] = eee2045f
             data["meta"].update({"last_updated": str(date.today()), "version": "2.02"})
+
+        # Updating for MAM2083F
+        if data["meta"]["version"] == "2.02":
+            mam2083f_temp = data["second_year"]["mam2083f"]
+            mam2083f = mam2083f_temp.copy()
+            for k, v in mam2083f_temp.items():
+                if "quiz" in k and (k[-2] != "_" and eval(k[-2:]) > 10):
+                    mam2083f.pop(k, None)
+
+            data["second_year"]["mam2083f"] = mam2083f
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.04a"})
+
+        # Updating for EEE2045F
+        if data["meta"]["version"] == "2.04a":
+            eee2045f = {}
+            for (k, v) in data["second_year"]["eee2045f"].items():
+                if k != "pre-practical_2" and k != "laboratory_2":
+                    eee2045f.update({k: v})
+                elif k == "pre-practical_2":
+                    eee2045f.update({k: v, "pre-practical_3": ""})
+                elif k == "laboratory_2":
+                    eee2045f.update({k: v, "laboratory_3": ""})
+
+            data["second_year"]["eee2045f"] = eee2045f
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.04"})
 
         app = Main()
 

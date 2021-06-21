@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.04] - Minor Update - 2021-06-21
+
+### Added
+- Practical and pre-practical 3 for EEE2045F
+
+### Changed
+- Removed Quiz 11 through 13 for MAM2083F
+
+### Fixed
+- MAM2083F Formula
+- EEE2045F Formula
+
 ## [v2.03] - Minor Update - 2021-05-31
 
 ### Added
