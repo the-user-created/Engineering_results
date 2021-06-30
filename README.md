@@ -1,6 +1,6 @@
 # Read this before getting the program for the first time (or when updating the program)
 
-Current version: v2.04
+Current version: v2.05
 
 Required Python version: v3.6+
 

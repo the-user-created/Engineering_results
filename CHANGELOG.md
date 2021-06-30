@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.05] - Minor Update - 2021-06-30
+
+### Added
+- Nothing
+
+### Changed
+- Removed Tutorial Test 7 for MEC1009F
+- Added Tutorial Total for MAM2083F 
+  (in case the user wants to use the mark calculated by the lecturer)
+- MAM2083F Formula
+- MEC1009F Formula
+
+### Fixed
+- Nothing
+
 ## [v2.04] - Minor Update - 2021-06-21
 
 ### Added
