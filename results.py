@@ -2,14 +2,16 @@
 #  All rights reserved
 #
 
-# v2.05
+# v2.06
 
 from datetime import date
 import json
 from tkinter import *
 from tkinter import messagebox
+
 try:
     import pyautogui
+
     width, height = pyautogui.size()
     error = None
 except ModuleNotFoundError as e:
@@ -95,7 +97,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "phy1012f":
         first_test_have, first_test_lost, lab_test_have, lab_test_lost, class_tests_have, class_tests_lost, \
-            wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -117,8 +119,10 @@ def calculate_marks(course, course_marks):
                 labs_have += eval(v)
                 labs_lost += 1 - eval(v)
 
-        have = 30 * first_test_have + 10 * class_tests_have + 10 * (wps_have / 14) + 15 * (labs_have / 4) + 15 * lab_test_have
-        lost = 30 * first_test_lost + 10 * class_tests_lost + 10 * (wps_lost / 14) + 15 * (labs_lost / 4) + 15 * lab_test_lost
+        have = 30 * first_test_have + 10 * class_tests_have + 10 * (wps_have / 14) + 15 * (
+                    labs_have / 4) + 15 * lab_test_have
+        lost = 30 * first_test_lost + 10 * class_tests_lost + 10 * (wps_lost / 14) + 15 * (
+                    labs_lost / 4) + 15 * lab_test_lost
 
     elif course == "mec1003f":
         # TODO - Confirm that this formula is correct
@@ -263,7 +267,7 @@ def calculate_marks(course, course_marks):
     # Second Year, first semester
     elif course == "eee2045f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, \
-            assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -285,8 +289,10 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        have = 60 * exam_have + 10 * class_tests_have + (10/3) * assignment_have + (5/3) * lab_have + 1.25 * tut_test_have
-        lost = 60 * exam_lost + 10 * class_tests_lost + (10/3) * assignment_lost + (5/3) * lab_lost + 1.25 * tut_test_lost
+        have = 60 * exam_have + 10 * class_tests_have + (10 / 3) * assignment_have + (
+                    5 / 3) * lab_have + 1.25 * tut_test_have
+        lost = 60 * exam_lost + 10 * class_tests_lost + (10 / 3) * assignment_lost + (
+                    5 / 3) * lab_lost + 1.25 * tut_test_lost
 
     elif course == "eee2046f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, practical_have, practical_lost = 0, 0, 0, 0, 0, 0
@@ -310,8 +316,8 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2048f":
         practical_have, practical_lost, app_have, app_lost, academic_have, academic_lost, mcq_have, mcq_lost, \
-            report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
-            capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
+        capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -340,13 +346,13 @@ def calculate_marks(course, course_marks):
                 report_lost += 1 - eval(v)
 
         have = 0.25 * (25 * practical_have + 100 * app_have + 30 * academic_have + 20 * mcq_have + 30 * report_have) + \
-            0.25 * (10 * capstone_proposal_have + 110 * capstone_report_have)
+               0.25 * (10 * capstone_proposal_have + 110 * capstone_report_have)
         lost = 0.25 * (25 * practical_lost + 100 * app_lost + 30 * academic_lost + 20 * mcq_lost + 30 * report_lost) + \
-            0.25 * (10 * capstone_proposal_lost + 110 * capstone_report_lost)
+               0.25 * (10 * capstone_proposal_lost + 110 * capstone_report_lost)
 
     elif course == "mam2083f":
         quizzes_have, quizzes_lost, tut_total_have, tut_total_lost, ct1_have, ct1_lost, ct2_have, ct2_lost, \
-            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         using_tut_total = False
 
@@ -647,7 +653,8 @@ class CourseTemplate(Frame):
         else:
             self.column_span = 2
 
-        saveButton = Button(self, text="Save Marks", command=lambda: self.get_inputs(marks=marks, rows=rows, year=year, code=code))
+        saveButton = Button(self, text="Save Marks",
+                            command=lambda: self.get_inputs(marks=marks, rows=rows, year=year, code=code))
         saveButton.grid(row=rows + 1, column=0, columnspan=self.column_span, pady=30)
 
         results_section = Label(self, text="Results:", font=("", 18))
@@ -694,10 +701,10 @@ class CourseTemplate(Frame):
                                          f"Remaining marks: {round(100 - lost - have, 3)}%\n"
                                          f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
 
-        #if "phy" in code:
+        # if "phy" in code:
         current_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
-        #else:
-           #current_marks.grid(row=rows + 3, column=0, columnspan=2, pady=(0, 30))
+        # else:
+        # current_marks.grid(row=rows + 3, column=0, columnspan=2, pady=(0, 30))
 
 
 # First Semester, First Year {
@@ -784,6 +791,8 @@ class MEC1003F(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -871,6 +880,8 @@ class AXL1200S(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -958,6 +969,8 @@ class MEC1009F(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -1075,6 +1088,8 @@ class PHY2010S(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
 # }
 
 
@@ -1107,14 +1122,11 @@ class CurrentMarks(Frame):
 
             Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
 
-            # marks = [(k, v) for k, v in data[years[1]][course].items()][2:]
-
-            # have, lost = calculate_marks(course, marks)
             have, lost = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"])
 
             course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
-                                            f"Remaining marks: {round(100 - lost - have, 3)}%",
-                                 font=("", 15), justify="left")
+                                            f"Remaining marks: {round(100 - lost - have, 3)}%\n"
+                                            f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
             course_marks.grid(row=i, column=1, padx=(0, 20), pady=(0, 20))
 
 
@@ -1155,7 +1167,8 @@ def start_up():
             for i in range(1, 5):
                 eee2045f.update({f"tutorial_test_{i}": ""})
 
-            eee2045f.update({"laboratory_1": "", "laboratory_2": "", "class_test_1": "", "class_test_2": "", "exam": ""})
+            eee2045f.update(
+                {"laboratory_1": "", "laboratory_2": "", "class_test_1": "", "class_test_2": "", "exam": ""})
             data["second_year"]["eee2045f"].update(eee2045f)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.00d"})
 

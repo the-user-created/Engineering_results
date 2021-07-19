@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.06] - Minor Update - 2021-07-19
+
+### Added
+- Nothing
+
+### Changed
+- Added "Maximum Marks" to the "Current Marks for Semester" page
+
+### Fixed
+- Nothing
+
 ## [v2.05] - Minor Update - 2021-06-30
 
 ### Added

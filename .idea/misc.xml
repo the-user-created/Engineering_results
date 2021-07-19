@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectPlainTextFileTypeManager">
     <file url="file://$PROJECT_DIR$/results.txt" />
-    <file url="file://$PROJECT_DIR$/results_copy.txt" />
-    <file url="file://$PROJECT_DIR$/results_example.txt" />
-    <file url="file://$PROJECT_DIR$/results_legacy_copy.txt" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (Engineering_results) (2)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Unknown virtualenv at ~/Desktop/UCT/Engineering_results/venv" project-jdk-type="Python SDK" />
 </project>
