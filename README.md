@@ -1,6 +1,6 @@
 # Read this before getting the program for the first time (or when updating the program)
 
-Current version: v2.06
+Current version: v2.07
 
 Required Python version: v3.6+
 
@@ -11,6 +11,11 @@ To get this program follow this:
 https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
 Or just click the green button called "Code" and download the project's zip.
+
+#### Please take note if you have used this before
+- Duplicate your results.txt file before using versions v2.xx to be sure that marks do not get corrupted.
+
+---
 
 #### If you are downloading this project for the first time follow the steps below:
 1. Rename results_example.json to results.json (or duplicate results_example.json and then rename)

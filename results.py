@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.06
+# v2.07
 
 from datetime import date
 import json
@@ -120,9 +120,9 @@ def calculate_marks(course, course_marks):
                 labs_lost += 1 - eval(v)
 
         have = 30 * first_test_have + 10 * class_tests_have + 10 * (wps_have / 14) + 15 * (
-                    labs_have / 4) + 15 * lab_test_have
+                labs_have / 4) + 15 * lab_test_have
         lost = 30 * first_test_lost + 10 * class_tests_lost + 10 * (wps_lost / 14) + 15 * (
-                    labs_lost / 4) + 15 * lab_test_lost
+                labs_lost / 4) + 15 * lab_test_lost
 
     elif course == "mec1003f":
         # TODO - Confirm that this formula is correct
@@ -290,9 +290,9 @@ def calculate_marks(course, course_marks):
                 exam_lost += 1 - eval(v)
 
         have = 60 * exam_have + 10 * class_tests_have + (10 / 3) * assignment_have + (
-                    5 / 3) * lab_have + 1.25 * tut_test_have
+                5 / 3) * lab_have + 1.25 * tut_test_have
         lost = 60 * exam_lost + 10 * class_tests_lost + (10 / 3) * assignment_lost + (
-                    5 / 3) * lab_lost + 1.25 * tut_test_lost
+                5 / 3) * lab_lost + 1.25 * tut_test_lost
 
     elif course == "eee2046f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, practical_have, practical_lost = 0, 0, 0, 0, 0, 0
@@ -435,6 +435,112 @@ def calculate_marks(course, course_marks):
         have = 60 * exam_have + 40 * (0.25 * (tut_test_have / 3) + 0.75 * (class_tests_have / 2))
         lost = 60 * exam_lost + 40 * (0.25 * (tut_test_lost / 3) + 0.75 * (class_tests_lost / 2))
 
+    # Second Year, first semester
+    elif course == "con2026s":
+        None
+
+    elif course == "eee2044s":
+        lab_have, lab_lost, project_have, project_lost, class_tests_have, class_tests_lost, \
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "lab" in k:
+                lab_have += eval(v)
+                lab_lost += 1 - eval(v)
+            elif "project" in k:
+                project_have += eval(v)
+                project_lost += 1 - eval(v)
+            elif "test" in k:
+                class_tests_have += eval(v)
+                class_tests_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 60 * exam_have + 15 * class_tests_have + 4 * project_have + lab_have
+        lost = 60 * exam_lost + 15 * class_tests_lost + 4 * project_lost + lab_lost
+
+    elif course == "eee2047s":
+        ps_have, ps_lost, lab_have, lab_lost, class_test_have, class_test_lost, \
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "problem" in k:
+                ps_have += eval(v)
+                ps_lost += 1 - eval(v)
+            elif "lab" in k:
+                lab_have += eval(v)
+                lab_lost += 1 - eval(v)
+            elif "test" in k:
+                class_test_have += eval(v)
+                class_test_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 60 * exam_have + 20 * class_test_have + 10 * (lab_have / 3) + 10 * (ps_have / 3)
+        lost = 60 * exam_lost + 20 * class_test_lost + 10 * (lab_lost / 3) + 10 * (ps_lost / 3)
+
+    elif course == "mam2084s":
+        webwork_have, webwork_lost, class_test_have, class_test_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "webwork" in k:
+                webwork_have += eval(v)
+                webwork_lost += 1 - eval(v)
+            elif "test" in k:
+                class_test_have += eval(v)
+                class_test_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        class_record_have = 20 * (webwork_have / 6) + 40 * class_test_have
+        class_record_lost = 20 * (webwork_lost / 6) + 40 * class_test_lost
+
+        have_1 = 0.20 * class_record_have + 80 * exam_have
+        have_2 = 0.40 * class_record_have + 60 * exam_have
+
+        if have_1 >= have_2:
+            have = have_1
+            lost = 0.20 * class_record_lost + 80 * exam_lost
+        else:
+            have = have_2
+            lost = 0.40 * class_record_lost + 60 * exam_lost
+
+    elif course == "phy2010s":
+        wps_have, wps_lost, labs_have, labs_lost, tests_have, tests_lost, \
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "test" in k:
+                tests_have += eval(v)
+                tests_lost += 1 - eval(v)
+            elif "wps" in k:
+                wps_have += eval(v)
+                wps_lost += 1 - eval(v)
+            elif "lab" in k:
+                labs_have += eval(v)
+                labs_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 20 * (tests_have / 3) + 10 * (wps_have / 12) + 20 * (labs_have / 3) + 50 * exam_have
+        lost = 20 * (tests_lost / 3) + 10 * (wps_lost / 12) + 20 * (labs_lost / 3) + 50 * exam_lost
+
     return round(have, 3), round(lost, 3)
 
 
@@ -557,14 +663,14 @@ class SecondYear(Frame):
         button = Button(self, text="MEC1009F\t\t\t>>>", command=lambda: view_controller.show_frame(MEC1009F))
         button.grid(row=5, column=1, pady=(2, 15), padx=(0, 50))
 
+        button = Button(self, text=f"CON2026S\t\t\t>>>", command=lambda: view_controller.show_frame(CON2026S))
+        button.grid(row=6, column=1, pady=2, padx=(0, 50))
+
         button = Button(self, text="EEE2044S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE2044S))
         button.grid(row=7, column=1, pady=2, padx=(0, 50))
 
         button = Button(self, text="EEE2047S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE2047S))
         button.grid(row=8, column=1, pady=2, padx=(0, 50))
-
-        button = Button(self, text=f"CON2026S\t\t\t>>>", command=lambda: view_controller.show_frame(CON2026S))
-        button.grid(row=6, column=1, pady=2, padx=(0, 50))
 
         button = Button(self, text="MAM2084S\t\t>>>", command=lambda: view_controller.show_frame(MAM2084S))
         button.grid(row=9, column=1, pady=2, padx=(0, 50))
@@ -579,7 +685,7 @@ class CourseTemplate(Frame):
     def add_header(self, view_controller, name):
         """
         Unvarying for MAM1021S, CSC1016S, EEE1007S, AXL1200S, MAM1020F, CSC1015F, EEE1006F, MEC1003F
-        Varying for PHY1013S, PHY1012F
+        Varying for PHY1013S, PHY1012F, PHY2010S
 
         :param view_controller: class which is controlling the template
         :param name: course name (capitalized)
@@ -596,7 +702,7 @@ class CourseTemplate(Frame):
     def add_grid(self, marks, rows, code):
         """
         Unvarying for MAM1021S, CSC1016S, EEE1007S, AXL1200S, MAM1020F, CSC1015F, EEE1006F
-        Varying for PHY1013S, PHY1012F, MEC1003F
+        Varying for PHY1013S, PHY1012F, MEC1003F, PHY2010S
 
         :param marks: marks gathered from JSON document
         :param rows: number of rows required for the input of course results
@@ -611,12 +717,21 @@ class CourseTemplate(Frame):
                 labelText = assessmentName.replace('_', ' ').upper() + ':' if 'pcb' in assessmentName else \
                     assessmentName.replace('_', ' ').title() + ':'
             elif code == "phy1012f":
-                labelText = assessmentName.replace('wps', 'WPS').replace('uct_lab_', 'UCT Lab ').replace('_', '') + ':' \
+                labelText = assessmentName.replace('wps', 'WPS').replace('uct_lab_', 'UCT Lab ').replace('_', ' ') + ':' \
                     if any(substring in assessmentName for substring in ['wps', 'uct']) \
                     else assessmentName.replace('_', ' ').title() + ':'
             elif code == "phy1013s":
-                labelText = assessmentName.replace('_', '').upper() + ':' \
+                labelText = assessmentName.replace('_', ' ').upper() + ':' \
                     if 'wps' in assessmentName else assessmentName.replace('_', ' ').title() + ':'
+            elif code == "phy2010s":
+                labelText = assessmentName.replace('_', ' ').upper() + ':' \
+                    if 'wps' in assessmentName else assessmentName.replace('_', ' ').title() + ':'
+            elif code == "eee2044s":
+                labelText = assessmentName.replace('_', ' ').title().replace("Dc", "DC") + ':' \
+                    if 'dc' in assessmentName else assessmentName.replace('_', ' ').title() + ':'
+            elif code == "mam2084s":
+                labelText = assessmentName.replace('_', ' ').title().replace("Webwork", "WebWork") + ':' \
+                    if 'webwork' in assessmentName else assessmentName.replace('_', ' ').title() + ':'
             else:
                 labelText = assessmentName.replace("_", " ").title() + ":"
 
@@ -626,7 +741,7 @@ class CourseTemplate(Frame):
             assessmentEntry = Entry(self, textvariable=entryText, justify="right")
             entryText.set(marks[i - 2][1])
 
-            if code == "phy1012f" and (height < 1080 and i > 13):
+            if code in ["phy1012f", "phy2010s"] and (height < 1080 and i > 13):
                 assessmentLabel.grid(row=i - 12, column=2, sticky=W, padx=20)
                 assessmentEntry.grid(row=i - 12, column=3, padx=(0, 20))
             elif code == "phy1013s" and (height < 1080 and i > 12):
@@ -639,7 +754,7 @@ class CourseTemplate(Frame):
     def add_footer(self, rows, marks, year, code):
         """
         Unvarying for MAM1021S, CSC1016S, EEE1007S, AXL1200S, MAM1020F, CSC1015F, EEE1006F, MEC1003F
-        Varying for PHY1013S, PHY1012F
+        Varying for PHY1013S, PHY1012F, PHY2010S
 
         :param marks: marks gathered from JSON document
         :param rows: number of rows required for the input of course results
@@ -672,7 +787,7 @@ class CourseTemplate(Frame):
     def get_inputs(self, marks, rows, year, code):
         """
         Unvarying for MAM1021S, CSC1016S, EEE1007S, AXL1200S, MAM1020F, CSC1015F, EEE1006F, MEC1003F
-        Varying for PHY1013S, PHY1012F
+        *Varying for PHY1013S, PHY1012F, PHY2010S (*technically not, but whatever)
 
         :param marks: marks gathered from JSON document
         :param rows: number of rows required for the input of course results
@@ -791,8 +906,6 @@ class MEC1003F(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
-
-
 # }
 
 
@@ -880,8 +993,6 @@ class AXL1200S(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
-
-
 # }
 
 
@@ -969,81 +1080,10 @@ class MEC1009F(CourseTemplate):
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
-
-
 # }
 
 
 # Second Semester, Second Year {
-class EEE2044S(CourseTemplate):
-    def __init__(self, parent, view_controller):
-        Frame.__init__(self, parent)
-
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
-
-        """code = "eee2044s"
-        year = 2
-
-        self.add_header(view_controller, name="EEE2044S")
-
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
-        rows = len(marks) + 2
-
-        self.add_grid(marks=marks, rows=rows, code=code)
-
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
-
-
-class EEE2047S(CourseTemplate):
-    def __init__(self, parent, view_controller):
-        Frame.__init__(self, parent)
-
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
-
-        """code = "eee2047s"
-        year = 2
-
-        self.add_header(view_controller, name="EEE2047S")
-
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
-        rows = len(marks) + 2
-
-        self.add_grid(marks=marks, rows=rows, code=code)
-
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
-
-
-class MAM2084S(CourseTemplate):
-    def __init__(self, parent, view_controller):
-        Frame.__init__(self, parent)
-
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
-
-        """code = "mam2084s"
-        year = 2
-
-        self.add_header(view_controller, name="MAM2084S")
-
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
-        rows = len(marks) + 2
-
-        self.add_grid(marks=marks, rows=rows, code=code)
-
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
-
-
 class CON2026S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
@@ -1051,7 +1091,7 @@ class CON2026S(CourseTemplate):
         button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel = Label(self, text="Awaiting Convenor", font=("", 15))
         titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
 
         """code = "con2026s"
@@ -1067,17 +1107,86 @@ class CON2026S(CourseTemplate):
         self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
 
 
+class EEE2044S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
+
+        code = "eee2044s"
+        year = 2
+
+        self.add_header(view_controller, name="EEE2044S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+class EEE2047S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
+
+        code = "eee2047s"
+        year = 2
+
+        self.add_header(view_controller, name="EEE2047S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+class MAM2084S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
+
+        code = "mam2084s"
+        year = 2
+
+        self.add_header(view_controller, name="MAM2084S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 class PHY2010S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "phy2010s"
+        code = "phy2010s"
         year = 2
 
         self.add_header(view_controller, name="PHY2010S")
@@ -1087,9 +1196,7 @@ class PHY2010S(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
-
-
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 # }
 
 
@@ -1101,8 +1208,6 @@ class CurrentMarks(Frame):
             self.courses = ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"]
         elif 8 <= date.today().month <= 12:
             self.courses = ["con2026s", "eee2044s", "eee2047s", "mam2084s", "phy2010s"]
-
-        # self.courses = ["mam1020f", "phy1012f", "csc1015f", "eee1006f", "mec1003f"]
 
         self.num_of_rows = len(self.courses) + 1
 
@@ -1247,6 +1352,49 @@ def start_up():
 
             data["second_year"]["mam2083f"] = mam2083f
             data["meta"].update({"last_updated": str(date.today()), "version": "2.05"})
+
+        # Adding 2nd Semester course assessments (excl. CON2026S)
+        if data["meta"]["version"] == "2.05":
+            # EEE2044S
+            eee2044s = data["second_year"]["eee2044s"]
+
+            eee2044s.update({"transformer_lab": "", "dc_machines_lab": "", "project_task_1": "",
+                             "project_task_2": "", "class_test_1": "", "class_test_2": "", "exam": ""})
+
+            data["second_year"]["eee2044s"].update(eee2044s)
+
+            # EEE2047S
+            eee2047s = data["second_year"]["eee2047s"]
+
+            eee2047s.update({"problem_set_1": "", "problem_set_2": "", "problem_set_3": "",
+                             "lab_1": "", "lab_2": "", "lab_3": "", "class_test": "", "exam": ""})
+
+            data["second_year"]["eee2047s"].update(eee2047s)
+
+            # MAM2084S
+            mam2084s = data["second_year"]["mam2084s"]
+
+            for i in range(1, 7):
+                mam2084s.update({f"webwork_test_{i}": ""})
+
+            mam2084s.update({"class_test_1": "", "class_test_2": "", "exam": ""})
+
+            data["second_year"]["mam2084s"].update(mam2084s)
+
+            # PHY2010S
+            phy2010s = data["second_year"]["phy2010s"]
+
+            for i in range(1, 13):
+                phy2010s.update({f"wps_{i}": ""})
+
+            for i in range(1, 4):
+                phy2010s.update({f"lab_{i}": ""})
+
+            phy2010s.update({"class_test_1": "", "class_test_2": "", "class_test_3": "", "exam": ""})
+
+            data["second_year"]["phy2010s"].update(phy2010s)
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.06"})
 
         app = Main()
 

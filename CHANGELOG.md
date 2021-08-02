@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.07] - Minor Update - 2021-08-02
+
+### Added
+- Mark forms for 2nd year 2nd semester courses
+- Formulas for EEE2044S, EEE2047S, MAM2084S, and PHY2010S
+
+### Changed
+- Adjusted course layout alphabetically
+- Added a space between WPS and the week number in PHY courses
+
+### Fixed
+- Nothing
+
 ## [v2.06] - Minor Update - 2021-07-19
 
 ### Added
