@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.07
+# v2.08
 
 from datetime import date
 import json
@@ -544,6 +544,31 @@ def calculate_marks(course, course_marks):
     return round(have, 3), round(lost, 3)
 
 
+def calculate_gpa():
+    total_units = 0
+    total_GP = [0, 0, 0]  # [have, lost, maximum]
+    units_by_year = {1: 0, 2: 0}
+    GP_by_year = {1: [0, 0, 0], 2: [0, 0, 0]}  # {year: [have, lost, maximum]}
+    units_remaining = 0
+
+    for year in range(1, 3):
+        for j in range(0, len(courses_by_year[years[year]])):
+            course = courses_by_year[years[year]][j]
+            have, lost, units = float(data[years[year]][course]["have"]), float(data[years[year]][course]["lost"]), float(data[years[year]][course]["units"])
+
+            total_units += units  # units for each course
+            total_GP[0] += units * have  # grade-points have for each course
+            total_GP[1] += units * lost  # grade-points lost for each course
+            total_GP[2] += units * 100  # maximum grade-points for each course
+
+            units_by_year[year] += units  # units for each course by year
+            GP_by_year[year][0] += units * have  # grade-points awarded for each course by year
+            GP_by_year[year][1] += units * lost  # grade-points lost for each course by year
+            GP_by_year[year][2] += units * 100  # maximum grade-points for each course by year
+
+    return total_GP, total_units, units_remaining, units_by_year, GP_by_year
+
+
 class Main(Tk):
     def __init__(self):
         super().__init__()
@@ -591,6 +616,28 @@ class StartPage(Frame):
         button = Button(self, text="Current Marks for semester\t>>>",
                         command=lambda: (view_controller.show_frame(CurrentMarks)))
         button.pack(pady=10, padx=50)
+
+        GPALabel = Label(self, text="Grade-Point Averages", font=("", 20))
+        GPALabel.pack(pady=(30, 2), padx=10)
+
+        total_GP, total_units, units_remaining, units_by_year, GP_by_year = calculate_gpa()
+
+        term_gpa_have = GP_by_year[2][0] / units_by_year[2]
+        term_gpa_lost = GP_by_year[2][1] / units_by_year[2]
+
+        degree_gpa_have = total_GP[0] / total_units
+        degree_gpa_lost = total_GP[1] / total_units
+
+        TermGPALabel = Label(self, text=f"Term GPA have: {round(term_gpa_have, 3)}\n"
+                                        f"Term GPA lost: {round(term_gpa_lost, 3)}\n"
+                                        f"Term GPA remaining: {round(100 - term_gpa_have - term_gpa_lost, 3)}\n"
+                                        f"Term GPA max: {round(100 - term_gpa_lost, 3)}", font=("", 14))
+        TermGPALabel.pack(pady=(3, 2), padx=50)
+
+        CumulativeGPALabel = Label(self, text=f"Degree GPA have: {round(degree_gpa_have, 3)}\n"
+                                              f"Degree GPA lost: {round(degree_gpa_lost, 3)}\n"
+                                              f"Degree GPA max: {round(100 - degree_gpa_lost, 3)}", font=("", 14))
+        CumulativeGPALabel.pack(pady=(3, 2), padx=50)
 
         # Adds a small buffer between the bottom of the homepage and the lowest button
         bottomBufferLabel = Label(self, text="")
@@ -677,6 +724,47 @@ class SecondYear(Frame):
 
         button = Button(self, text="PHY2010S\t\t\t>>>", command=lambda: view_controller.show_frame(PHY2010S))
         button.grid(row=10, column=1, pady=(2, 30), padx=(0, 50))
+
+
+class CurrentMarks(Frame):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        if 1 <= date.today().month < 8:
+            self.courses = ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"]
+        elif 8 <= date.today().month <= 12:
+            self.courses = ["con2026s", "eee2044s", "eee2047s", "mam2084s", "phy2010s"]
+
+        self.num_of_rows = len(self.courses) + 1
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(StartPage))
+        button.grid(row=0, column=0)
+
+        titleLabel = Label(self, text="Current marks for the semester:", font=("", 15, "bold"))
+        titleLabel.grid(row=0, column=1, pady=20, padx=(0, 20))
+
+        self.add_grid()
+
+    def add_grid(self):
+        # TODO - Update label when the marks for a course change
+
+        for i in range(1, self.num_of_rows):
+            course = self.courses[i - 1]
+
+            Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
+
+            have, lost, units = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"]), float(data[years[2]][course]["units"])
+
+            course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
+                                            f"Remaining marks: {round(100 - lost - have, 3)}%\n"
+                                            f"Maximum marks: {round(100 - lost, 3)}%\n"
+                                            f"Grade Points: {round(have * units, 3)}", font=("", 15))
+            course_marks.grid(row=i, column=1, padx=(0, 20), pady=(0, 20))
+
+
+class EmptyView(Frame):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
 
 
 class CourseTemplate(Frame):
@@ -809,7 +897,7 @@ class CourseTemplate(Frame):
                     pass
 
         # Updated results label
-        have, lost = calculate_marks(code, marks)
+        have, lost = calculate_marks(code, marks[:-1])
         data[year][code].update({"have": str(have), "lost": str(lost)})
         self.previous_marks.destroy()
         current_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
@@ -832,7 +920,7 @@ class MAM1020F(CourseTemplate):
 
         self.add_header(view_controller, name="MAM1020F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -849,7 +937,7 @@ class PHY1012F(CourseTemplate):
 
         self.add_header(view_controller, name="PHY1012F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -866,7 +954,7 @@ class EEE1006F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE1006F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -883,7 +971,7 @@ class CSC1015F(CourseTemplate):
 
         self.add_header(view_controller, name="CSC1015F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -900,12 +988,14 @@ class MEC1003F(CourseTemplate):
 
         self.add_header(view_controller, name="MEC1003F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -919,7 +1009,7 @@ class MAM1021S(CourseTemplate):
 
         self.add_header(view_controller, name="MAM1021S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -936,7 +1026,7 @@ class PHY1013S(CourseTemplate):
 
         self.add_header(view_controller, name="PHY1013S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -953,7 +1043,7 @@ class EEE1007S(CourseTemplate):
 
         self.add_header(view_controller, name="EEE1007S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -970,7 +1060,7 @@ class CSC1016S(CourseTemplate):
 
         self.add_header(view_controller, name="CSC1016S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -987,12 +1077,14 @@ class AXL1200S(CourseTemplate):
 
         self.add_header(view_controller, name="AXL1200S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -1006,7 +1098,7 @@ class EEE2045F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2045F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1023,7 +1115,7 @@ class EEE2046F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2046F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1040,7 +1132,7 @@ class EEE2048F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2048F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1057,7 +1149,7 @@ class MAM2083F(CourseTemplate):
 
         self.add_header(view_controller, name="MAM2083F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1074,12 +1166,14 @@ class MEC1009F(CourseTemplate):
 
         self.add_header(view_controller, name="MEC1009F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
 
 
@@ -1099,7 +1193,7 @@ class CON2026S(CourseTemplate):
 
         self.add_header(view_controller, name="CON2026S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1111,18 +1205,12 @@ class EEE2044S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
-
         code = "eee2044s"
         year = 2
 
         self.add_header(view_controller, name="EEE2044S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1134,18 +1222,12 @@ class EEE2047S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
-
         code = "eee2047s"
         year = 2
 
         self.add_header(view_controller, name="EEE2047S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1157,18 +1239,12 @@ class MAM2084S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
-
         code = "mam2084s"
         year = 2
 
         self.add_header(view_controller, name="MAM2084S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1180,64 +1256,20 @@ class PHY2010S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
-
         code = "phy2010s"
         year = 2
 
         self.add_header(view_controller, name="PHY2010S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
         self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
 # }
-
-
-class CurrentMarks(Frame):
-    def __init__(self, parent, view_controller):
-        Frame.__init__(self, parent)
-
-        if 1 <= date.today().month < 8:
-            self.courses = ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"]
-        elif 8 <= date.today().month <= 12:
-            self.courses = ["con2026s", "eee2044s", "eee2047s", "mam2084s", "phy2010s"]
-
-        self.num_of_rows = len(self.courses) + 1
-
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(StartPage))
-        button.grid(row=0, column=0)
-
-        titleLabel = Label(self, text="Current marks for the semester:", font=("", 15, "bold"))
-        titleLabel.grid(row=0, column=1, pady=20, padx=(0, 20))
-
-        self.add_grid()
-
-    def add_grid(self):
-        # TODO - Update label when the marks for a course change
-
-        for i in range(1, self.num_of_rows):
-            course = self.courses[i - 1]
-
-            Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
-
-            have, lost = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"])
-
-            course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
-                                            f"Remaining marks: {round(100 - lost - have, 3)}%\n"
-                                            f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
-            course_marks.grid(row=i, column=1, padx=(0, 20), pady=(0, 20))
-
-
-class EmptyView(Frame):
-    def __init__(self, parent, view_controller):
-        Frame.__init__(self, parent)
 
 
 def start_up():
@@ -1396,10 +1428,40 @@ def start_up():
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.06"})
 
+        # Adding GPA field
+        if data["meta"]["version"] == "2.06":
+            # First Year
+            data["first_year"]["mam1020f"].update({"units": "18"})
+            data["first_year"]["phy1012f"].update({"units": "18"})
+            data["first_year"]["eee1006f"].update({"units": "12"})
+            data["first_year"]["csc1015f"].update({"units": "18"})
+            data["first_year"]["mec1003f"].update({"units": "8"})
+
+            data["first_year"]["mam1021s"].update({"units": "18"})
+            data["first_year"]["phy1013s"].update({"units": "18"})
+            data["first_year"]["eee1007s"].update({"units": "12"})
+            data["first_year"]["csc1016s"].update({"units": "18"})
+            data["first_year"]["axl1200s"].update({"units": "8"})
+
+            # Second Year
+            data["second_year"]["eee2045f"].update({"units": "16"})
+            data["second_year"]["eee2046f"].update({"units": "16"})
+            data["second_year"]["eee2048f"].update({"units": "8"})
+            data["second_year"]["mam2083f"].update({"units": "16"})
+            data["second_year"]["mec1009f"].update({"units": "16"})
+
+            data["second_year"]["con2026s"].update({"units": "16"})
+            data["second_year"]["eee2044s"].update({"units": "16"})
+            data["second_year"]["eee2047s"].update({"units": "16"})
+            data["second_year"]["mam2084s"].update({"units": "8"})
+            data["second_year"]["phy2010s"].update({"units": "16"})
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.08"})
+
         app = Main()
 
         if error is not None:
-            messagebox.showwarning(title=None, message="If your screen's pixel height is less than 1080, "
+            messagebox.showwarning(title=None, message="If your screens resolution is less than 1080p, "
                                                        "please install pyautogui with \"pip3 install pyautogui\"")
 
         def on_closing():
