@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.09] - Minor Update - 2021-09-19
+
+### Added
+- CON2026S course mark calculation and assessments
+
+### Changed
+- Nothing
+
+### Fixed
+- Nothing
+
 ## [v2.08] - Minor Update - 2021-08-15
 
 ### Added

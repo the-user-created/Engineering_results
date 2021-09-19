@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.08
+# v2.09
 
 from datetime import date
 import json
@@ -15,7 +15,7 @@ try:
     width, height = pyautogui.size()
     error = None
 except ModuleNotFoundError as e:
-    error = e
+    error = ModuleNotFoundError
     height = 1080
     pass
 
@@ -97,7 +97,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "phy1012f":
         first_test_have, first_test_lost, lab_test_have, lab_test_lost, class_tests_have, class_tests_lost, \
-        wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -267,7 +267,7 @@ def calculate_marks(course, course_marks):
     # Second Year, first semester
     elif course == "eee2045f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, \
-        assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -316,8 +316,8 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2048f":
         practical_have, practical_lost, app_have, app_lost, academic_have, academic_lost, mcq_have, mcq_lost, \
-        report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
-        capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
+            capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -352,7 +352,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "mam2083f":
         quizzes_have, quizzes_lost, tut_total_have, tut_total_lost, ct1_have, ct1_lost, ct2_have, ct2_lost, \
-        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         using_tut_total = False
 
@@ -437,11 +437,35 @@ def calculate_marks(course, course_marks):
 
     # Second Year, first semester
     elif course == "con2026s":
-        None
+        # TODO: Unsure whether this is correct??? - Are the x.Ay assignments contributing to the group
+        #  assignment 30%, to the class participation 20%, or to both?
+        main_assign_have, main_assign_lost, weekly_assign_have, \
+            weekly_assign_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if ".A" in k:
+                weekly_assign_have += eval(v)
+                weekly_assign_lost += 1 - eval(v)
+            elif "main" in k:
+                main_assign_have += eval(v)
+                main_assign_lost += 1 - eval(v)
+            elif "test" in k:
+                ct_have += eval(v)
+                ct_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        num_of_weekly_assignments = len([k for k, v in course_marks if ".A" in k])
+        have = 30 * exam_have + 30 * main_assign_have + 20 * ct_have + 20 * (weekly_assign_have / num_of_weekly_assignments)
+        lost = 30 * exam_lost + 30 * main_assign_lost + 20 * ct_lost + 20 * (weekly_assign_lost / num_of_weekly_assignments)
 
     elif course == "eee2044s":
         lab_have, lab_lost, project_have, project_lost, class_tests_have, class_tests_lost, \
-        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -465,7 +489,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2047s":
         ps_have, ps_lost, lab_have, lab_lost, class_test_have, class_test_lost, \
-        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -519,7 +543,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "phy2010s":
         wps_have, wps_lost, labs_have, labs_lost, tests_have, tests_lost, \
-        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -554,7 +578,8 @@ def calculate_gpa():
     for year in range(1, 3):
         for j in range(0, len(courses_by_year[years[year]])):
             course = courses_by_year[years[year]][j]
-            have, lost, units = float(data[years[year]][course]["have"]), float(data[years[year]][course]["lost"]), float(data[years[year]][course]["units"])
+            have, lost, units = float(data[years[year]][course]["have"]), float(
+                data[years[year]][course]["lost"]), float(data[years[year]][course]["units"])
 
             total_units += units  # units for each course
             total_GP[0] += units * have  # grade-points have for each course
@@ -753,7 +778,8 @@ class CurrentMarks(Frame):
 
             Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
 
-            have, lost, units = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"]), float(data[years[2]][course]["units"])
+            have, lost, units = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"]), float(
+                data[years[2]][course]["units"])
 
             course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
                                             f"Remaining marks: {round(100 - lost - have, 3)}%\n"
@@ -1182,13 +1208,13 @@ class CON2026S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(SecondYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Awaiting Convenor", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "con2026s"
+        code = "con2026s"
         year = 2
 
         self.add_header(view_controller, name="CON2026S")
@@ -1198,7 +1224,7 @@ class CON2026S(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class EEE2044S(CourseTemplate):
@@ -1458,9 +1484,24 @@ def start_up():
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.08"})
 
+        if data["meta"]["version"] == "2.08":
+            con2026s = data["second_year"]["con2026s"]
+
+            con2026s.pop("units")
+
+            for module in range(1, 11):
+                con2026s.update(
+                    {f"assignment_{module}.A1": "", f"assignment_{module}.A2": ""} if module not in [2, 5] else {
+                        f"assignment_{module}.A1": ""})
+
+            con2026s.update({"main_assignment": "", "class_test": "", "final_exam": "", "units": "16"})
+
+            data["second_year"]["con2026s"].update(con2026s)
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.09"})
+
         app = Main()
 
-        if error is not None:
+        if error is ModuleNotFoundError:
             messagebox.showwarning(title=None, message="If your screens resolution is less than 1080p, "
                                                        "please install pyautogui with \"pip3 install pyautogui\"")
 
