@@ -2,21 +2,36 @@
 #  All rights reserved
 #
 
-# v2.09
+# v2.11
 
 from datetime import date
 import json
+import os
 from tkinter import *
 from tkinter import messagebox
 
+errors = []
+
 try:
     import pyautogui
-
     width, height = pyautogui.size()
-    error = None
-except ModuleNotFoundError as e:
-    error = ModuleNotFoundError
+except AttributeError or ModuleNotFoundError as e:
+    if e == ModuleNotFoundError:
+        errors.append("pyautogui")
+
     height = 1080
+    pass
+
+try:
+    import matplotlib.pyplot as plt
+except ModuleNotFoundError as e:
+    errors.append("matplotlib")
+    pass
+
+try:
+    import numpy as np
+except ModuleNotFoundError as e:
+    errors.append("numpy")
     pass
 
 data = {}
@@ -24,7 +39,17 @@ years = {1: "first_year", 2: "second_year", 3: "third_year", 4: "fourth_year"}
 courses_by_year = {"first_year": ["mam1020f", "phy1012f", "eee1006f", "csc1015f", "mec1003f",
                                   "mam1021s", "phy1013s", "csc1016s", "eee1007s", "axl1200s"],
                    "second_year": ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f",
-                                   "eee2044s", "eee2047s", "mam2084s", "con2026s", "phy2010s"]}
+                                   "eee2044s", "eee2047s", "mam2084s", "con2026s", "phy2010s"],
+                   "third_year": ["csc2001f", "eee3088f", "eee3089f", "eee3090f", "eee3092f",
+                                  "csc2002s", "eee3093s", "eee3096s", "eee3097s"]
+                   }
+courses_by_semester = {"y1s1": ["mam1020f", "phy1012f", "eee1006f", "csc1015f", "mec1003f"],
+                       "y1s2": ["mam1021s", "phy1013s", "csc1016s", "eee1007s", "axl1200s"],
+                       "y2s1": ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"],
+                       "y2s2": ["eee2044s", "eee2047s", "mam2084s", "con2026s", "phy2010s"],
+                       "y3s1": ["csc2001f", "eee3088f", "eee3089f", "eee3090f", "eee3092f"],
+                       "y3s2": ["csc2002s", "eee3093s", "eee3096s", "eee3097s"]
+                       }  # {"year-year_#-semester-semester_#": [course 1, course 2, ...]}
 
 
 def calculate_marks(course, course_marks):
@@ -437,19 +462,19 @@ def calculate_marks(course, course_marks):
 
     # Second Year, first semester
     elif course == "con2026s":
-        # TODO: Unsure whether this is correct??? - Are the x.Ay assignments contributing to the group
-        #  assignment 30%, to the class participation 20%, or to both?
-        main_assign_have, main_assign_lost, weekly_assign_have, \
-            weekly_assign_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+        main_assign_have, main_assign_lost, general_have, general_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
-        for (k, v) in course_marks:
+        general_assignments = ["1.A1", "1.A2", "3.A1", "4.A2", "5.A1", "6.A1"]
+        main_assignment = ["2.A1", "3.A2", "4.A1", "7.A1", "8.A1", "10.A1"]
+
+        for k, v in course_marks:
             if v == "":
                 continue
 
-            if ".A" in k:
-                weekly_assign_have += eval(v)
-                weekly_assign_lost += 1 - eval(v)
-            elif "main" in k:
+            if k[:k.find("_")] in general_assignments:
+                general_have += eval(v)
+                general_lost += 1 - eval(v)
+            elif k[:k.find("_")] in main_assignment or "main" in k:
                 main_assign_have += eval(v)
                 main_assign_lost += 1 - eval(v)
             elif "test" in k:
@@ -459,9 +484,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        num_of_weekly_assignments = len([k for k, v in course_marks if ".A" in k])
-        have = 30 * exam_have + 30 * main_assign_have + 20 * ct_have + 20 * (weekly_assign_have / num_of_weekly_assignments)
-        lost = 30 * exam_lost + 30 * main_assign_lost + 20 * ct_lost + 20 * (weekly_assign_lost / num_of_weekly_assignments)
+        have = 30 * exam_have + 20 * ct_have + 30 * main_assign_have / 7 + 20 * general_have / 6
+        lost = 30 * exam_lost + 20 * ct_lost + 30 * main_assign_lost / 7 + 20 * general_lost / 6
 
     elif course == "eee2044s":
         lab_have, lab_lost, project_have, project_lost, class_tests_have, class_tests_lost, \
@@ -528,8 +552,8 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        class_record_have = 20 * (webwork_have / 6) + 40 * class_test_have
-        class_record_lost = 20 * (webwork_lost / 6) + 40 * class_test_lost
+        class_record_have = 20 * (webwork_have / 5) + 40 * class_test_have
+        class_record_lost = 20 * (webwork_lost / 5) + 40 * class_test_lost
 
         have_1 = 0.20 * class_record_have + 80 * exam_have
         have_2 = 0.40 * class_record_have + 60 * exam_have
@@ -562,18 +586,118 @@ def calculate_marks(course, course_marks):
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
 
-        have = 20 * (tests_have / 3) + 10 * (wps_have / 12) + 20 * (labs_have / 3) + 50 * exam_have
-        lost = 20 * (tests_lost / 3) + 10 * (wps_lost / 12) + 20 * (labs_lost / 3) + 50 * exam_lost
+        have = 20 * (tests_have / 2) + 10 * (wps_have / 10) + 20 * (labs_have / 3) + 50 * exam_have
+        lost = 20 * (tests_lost / 2) + 10 * (wps_lost / 10) + 20 * (labs_lost / 3) + 50 * exam_lost
+
+    # Third Year, first semester
+    elif course == "csc2001f":
+        assignments_have, assignments_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
+
+        for k, v in course_marks:
+            if v == "":
+                continue
+
+            if "assignment" in k:
+                assignments_have += eval(v)
+                assignments_lost += 1 - eval(v)
+            elif "test" in k:
+                ct_have += eval(v)
+                ct_lost += 1 - eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+
+        have = 33.3 * assignments_have / 6 + 16.7 * ct_have / 2 + 50 * exam_have
+        lost = 33.3 * assignments_lost / 6 + 16.7 * ct_lost / 2 + 50 * exam_lost
+
+    elif course == "eee3088f":
+        design_review_have, design_review_lost = 0, 0
+
+        for k, v in course_marks:
+            if v == "":
+                continue
+
+            if "design_review" in k:
+                design_review_have += eval(v)
+                design_review_lost += 1 - eval(v)
+            elif "proposal" in k or "pcb" in k:
+                have += 4 * eval(v)
+                lost += 4 * (1 - eval(v))
+            elif "docs" in k:
+                have += 6.5 * eval(v)
+                lost += 6.5 * (1 - eval(v))
+            elif "initial" in k or k == "draft_report":
+                have += 6 * eval(v)
+                lost += 6 * (1 - eval(v))
+            elif k == "lab_demo":
+                have += 8.5 * eval(v)
+                lost += 8.5 * (1 - eval(v))
+            elif "test" in k:
+                have += 10 * eval(v)
+                lost += 10 * (1 - eval(v))
+            elif "exam" in k:
+                have += 50 * eval(v)
+                lost += 50 * (1 - eval(v))
+
+        have += design_review_have / 6
+        lost += design_review_lost / 6
+
+    elif course == "eee3089f":
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+        have = 0
+        lost = 0
+
+    elif course == "eee3090f":
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if k == "practical_test":
+                have += eval(v)
+                lost += 1 - eval(v)
+            elif "assignment" in k:
+                have += 2 * eval(v)
+                lost += 2 * (1 - eval(v))
+            elif "practical" in k:
+                have += eval(v)
+                lost += 1 - eval(v)
+            elif "test" in k:
+                have += 17 * eval(v)
+                lost += 17 * (1 - eval(v))
+            elif "exam" in k:
+                have += 50 * eval(v)
+                lost += 50 * (1 - eval(v))
+
+    elif course == "eee3092f":
+        for (k, v) in course_marks:
+            if v == "":
+                continue
+
+            if "test" in k:
+                have += 10 * eval(v)
+                lost += 10 * (1 - eval(v))
+            elif "julia" in k:
+                have += 2.5 * eval(v)
+                lost += 2.5 * (1 - eval(v))
+            elif "lab" in k:
+                have += 2.5 * eval(v)
+                lost += 2.5 * (1 - eval(v))
+            elif "exam" in k:
+                have += 65 * eval(v)
+                lost += 65 * (1 - eval(v))
 
     return round(have, 3), round(lost, 3)
 
 
 def calculate_gpa():
     total_units = 0
-    total_GP = [0, 0, 0]  # [have, lost, maximum]
-    units_by_year = {1: 0, 2: 0}
-    GP_by_year = {1: [0, 0, 0], 2: [0, 0, 0]}  # {year: [have, lost, maximum]}
-    units_remaining = 0
+    total_GP = [0, 0]  # [have, lost]
+    units_by_year = {1: 0, 2: 0}  # {year: units}
+    GP_by_year = {1: [0, 0], 2: [0, 0]}  # {year: [have, lost]}
+    GP_by_semester = {1: {1: [0, 0, 0], 2: [0, 0, 0]}, 2: {1: [0, 0, 0], 2: [0, 0, 0]}}  # {year: {semester: [have, lost, total_units]}}
 
     for year in range(1, 3):
         for j in range(0, len(courses_by_year[years[year]])):
@@ -584,14 +708,144 @@ def calculate_gpa():
             total_units += units  # units for each course
             total_GP[0] += units * have  # grade-points have for each course
             total_GP[1] += units * lost  # grade-points lost for each course
-            total_GP[2] += units * 100  # maximum grade-points for each course
 
             units_by_year[year] += units  # units for each course by year
             GP_by_year[year][0] += units * have  # grade-points awarded for each course by year
             GP_by_year[year][1] += units * lost  # grade-points lost for each course by year
-            GP_by_year[year][2] += units * 100  # maximum grade-points for each course by year
 
-    return total_GP, total_units, units_remaining, units_by_year, GP_by_year
+            # TODO: change this when courses no longer follow a [F]irst semester, [S]econd semester structure.
+            semester_num = 1 if course[-1] == "f" else 2
+            GP_by_semester[year][semester_num][0] += units * have
+            GP_by_semester[year][semester_num][1] += units * lost
+            GP_by_semester[year][semester_num][2] += units
+
+    return total_GP, total_units, units_by_year, GP_by_year, GP_by_semester
+
+
+# WORK IN PROGRESS
+def make_course_gp_graph():
+    num_of_colors = len(data[years[1]]) + len(data[years[2]])
+
+    cm = plt.get_cmap('gist_rainbow')
+    fig, ax = plt.subplots()
+    ax.set_prop_cycle(color=[cm(1. * i / num_of_colors) for i in range(num_of_colors)])
+
+    for ys, courses in courses_by_semester.items():
+        year = eval(ys[1])
+
+        for course in courses:
+            course_values = [(k, v) for k, v in data[years[year]][course].items()]
+
+            have = eval(course_values[0][1])
+            lost = eval(course_values[1][1])
+            units = eval(course_values[-1][1])
+
+            ax.scatter(have * units, lost * units, label=course.upper())
+
+    ax.legend(bbox_to_anchor=(1, 1.02), loc="upper left")
+    ax.grid(True)
+    ax.minorticks_on()
+    plt.xlabel("Course GP")
+    plt.ylabel("Course GP Lost")
+
+    plt.tight_layout()
+    # plt.savefig("Reports/course_gps.png")
+    plt.show()
+
+
+# WORK IN PROGRESS
+def make_report_graphs():
+    # TODO: Complete this
+
+    make_course_gp_graph()
+
+
+# WORK IN PROGRESS
+def make_reports():
+    total_GP, total_units, units_by_year, GP_by_year, GP_by_semester = calculate_gpa()
+
+    output = []
+
+    for ys, courses in courses_by_semester.items():
+        year = eval(ys[1])
+        semester = eval(ys[3])
+
+        for course in courses:
+            course_values = [(k, v) for k, v in data[years[year]][course].items()]
+
+            have = eval(course_values[0][1])
+            lost = eval(course_values[1][1])
+            units = eval(course_values[-1][1])
+
+            output.append({"Course": course.upper(), "Year": year, "Semester": semester, "Have": have, "Lost": lost,
+                           "Units": units, "Grade-Points": round(have * units, 3)})
+
+    with open(file=f"Reports/course_report_{date.today()}.csv", mode="w") as course_report:
+        course_report.write("Course,Year,Semester,Have,Lost,Units,Grade Points\n")
+
+        for course_data in output:
+            line = ""
+            for k, v in course_data.items():
+                line += (str(v) + ",") if list(course_data.keys()).index(k) != len(course_data.items()) - 1 else str(v)
+
+            course_report.write(line + "\n")
+
+    with open(file=f"Reports/GPA_report_{date.today()}.csv", mode="w") as gpa_report:
+
+        # SEMESTER GPAs
+        gpa_report.write("Year-Semester,Semester GPA,Semester GPA Lost,Semester GPA Remaining,Semester GPA Max\n")
+        for year in range(1, 3):
+            for semester in range(1, 3):
+                GP = GP_by_semester[year][semester]
+                units = GP[2]
+                gpa_have = GP[0] / units
+                gpa_lost = GP[1] / units
+                gpa_remaining = abs(100 - gpa_have - gpa_lost)
+                gpa_max = 100 - gpa_lost
+
+                gpa_report.write(f"{year}-{semester},{round(gpa_have, 3)},{round(gpa_lost, 3)},"
+                                 f"{round(gpa_remaining, 3)},{round(gpa_max, 3)}\n")
+
+        gpa_report.write(",\n")
+
+        # YEAR GPAs
+        gpa_report.write("Year,Year GPA,Year GPA Lost,Year GPA Remaining,Year GPA Max\n")
+        for year in range(1, 3):
+            gpa_have = GP_by_year[year][0] / units_by_year[year]
+            gpa_lost = GP_by_year[year][1] / units_by_year[year]
+            gpa_remaining = abs(100 - gpa_have - gpa_lost)
+            gpa_max = 100 - gpa_lost
+
+            gpa_report.write(f"{year},{round(gpa_have, 3)},{round(gpa_lost, 3)},"
+                             f"{round(gpa_remaining, 3)},{round(gpa_max, 3)}\n")
+
+        gpa_report.write(",\n")
+
+        # Degree GPA
+        gpa_report.write("Degree,Degree GPA,Degree GPA Lost,Degree GPA Remaining,Degree GPA Max\n")
+        gpa_have = total_GP[0] / total_units
+        gpa_lost = total_GP[1] / total_units
+        gpa_remaining = abs(100 - gpa_have - gpa_lost)
+        gpa_max = 100 - gpa_lost
+
+        gpa_report.write(f",{round(gpa_have, 3)},{round(gpa_lost, 3)},{round(gpa_remaining, 3)},{round(gpa_max, 3)}\n")
+
+    messagebox.showinfo(title=None, message="Created progress reports successfully!")
+
+
+# WORK IN PROGRESS
+def create_reports_directory():
+    try:
+        os.mkdir(os.path.dirname(os.path.abspath(__file__)) + "/Reports")
+        print("Created Reports Directory")
+        make_reports()
+        make_report_graphs()
+    except OSError as os_error:
+        if os_error.errno != 17:
+            print(os_error)
+        else:
+            make_reports()
+            make_report_graphs()
 
 
 class Main(Tk):
@@ -605,11 +859,12 @@ class Main(Tk):
 
         self.frames = {}
 
-        views = ["EmptyView", "CurrentMarks", "FirstYear", "SecondYear",
+        views = ["EmptyView", "CurrentMarks", "FirstYear", "SecondYear", "ThirdYear",
                  "MAM1020F", "CSC1015F", "PHY1012F", "EEE1006F", "MEC1003F",
                  "MAM1021S", "CSC1016S", "PHY1013S", "EEE1007S", "AXL1200S",
                  "EEE2045F", "EEE2046F", "EEE2048F", "MAM2083F", "MEC1009F",
-                 "EEE2044S", "EEE2047S", "MAM2084S", "CON2026S", "PHY2010S"]
+                 "EEE2044S", "EEE2047S", "MAM2084S", "CON2026S", "PHY2010S",
+                 "CSC2001F", "EEE3088F", "EEE3089F", "EEE3090F", "EEE3092F"]
 
         for view in views:
             for F in (StartPage, eval(view)):
@@ -619,10 +874,19 @@ class Main(Tk):
                 frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(StartPage)
+        self.menubar = Menu(self)
+        self.config(menu=self.menubar)
+        self.make_menu()
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+    def make_menu(self):
+        # Creates and adds the menu cascade for saving the current graph
+        file_menu = Menu(self.menubar, tearoff=0)
+        file_menu.add_command(label="Create progress reports", command=lambda: create_reports_directory())
+        self.menubar.add_cascade(label="File", menu=file_menu)
 
 
 class StartPage(Frame):
@@ -638,31 +902,46 @@ class StartPage(Frame):
         button = Button(self, text=f"Second Year\t\t>>>", command=lambda: view_controller.show_frame(SecondYear))
         button.pack(pady=3, padx=50)
 
+        button = Button(self, text=f"Third Year\t\t\t>>>", command=lambda: view_controller.show_frame(ThirdYear))
+        button.pack(pady=3, padx=50)
+
         button = Button(self, text="Current Marks for semester\t>>>",
                         command=lambda: (view_controller.show_frame(CurrentMarks)))
         button.pack(pady=10, padx=50)
 
-        GPALabel = Label(self, text="Grade-Point Averages", font=("", 20))
+        """GPALabel = Label(self, text="Grade-Point Averages", font=("", 20))
         GPALabel.pack(pady=(30, 2), padx=10)
 
-        total_GP, total_units, units_remaining, units_by_year, GP_by_year = calculate_gpa()
+        total_GP, total_units, units_by_year, GP_by_year, GP_by_semester = calculate_gpa()
 
-        term_gpa_have = GP_by_year[2][0] / units_by_year[2]
-        term_gpa_lost = GP_by_year[2][1] / units_by_year[2]
+        year = 3
+        semester = 1
+
+        semester_gpa_have = GP_by_semester[year][semester][0] / GP_by_semester[year][semester][2]
+        semester_gpa_lost = GP_by_semester[year][semester][1] / GP_by_semester[year][semester][2]
+
+        year_gpa_have = GP_by_year[year][0] / units_by_year[year]
+        year_gpa_lost = GP_by_year[year][1] / units_by_year[year]
 
         degree_gpa_have = total_GP[0] / total_units
         degree_gpa_lost = total_GP[1] / total_units
 
-        TermGPALabel = Label(self, text=f"Term GPA have: {round(term_gpa_have, 3)}\n"
-                                        f"Term GPA lost: {round(term_gpa_lost, 3)}\n"
-                                        f"Term GPA remaining: {round(100 - term_gpa_have - term_gpa_lost, 3)}\n"
-                                        f"Term GPA max: {round(100 - term_gpa_lost, 3)}", font=("", 14))
-        TermGPALabel.pack(pady=(3, 2), padx=50)
+        SemesterGPALabel = Label(self, text=f"Semester GPA have: {round(semester_gpa_have, 3)}\n"
+                                            f"Year GPA lost: {round(semester_gpa_lost, 3)}\n"
+                                            f"Semester GPA remaining: {round(100 - semester_gpa_have - semester_gpa_lost, 3)}\n"
+                                            f"Semester GPA max: {round(100 - semester_gpa_lost, 3)}")
+        SemesterGPALabel.pack(pady=(3, 2), padx=50)
+
+        YearGPALabel = Label(self, text=f"Year GPA have: {round(year_gpa_have, 3)}\n"
+                                        f"Year GPA lost: {round(year_gpa_lost, 3)}\n"
+                                        f"Year GPA remaining: {round(100 - year_gpa_have - year_gpa_lost, 3)}\n"
+                                        f"Year GPA max: {round(100 - year_gpa_lost, 3)}", font=("", 14))
+        YearGPALabel.pack(pady=(3, 2), padx=50)
 
         CumulativeGPALabel = Label(self, text=f"Degree GPA have: {round(degree_gpa_have, 3)}\n"
                                               f"Degree GPA lost: {round(degree_gpa_lost, 3)}\n"
                                               f"Degree GPA max: {round(100 - degree_gpa_lost, 3)}", font=("", 14))
-        CumulativeGPALabel.pack(pady=(3, 2), padx=50)
+        CumulativeGPALabel.pack(pady=(3, 2), padx=50)"""
 
         # Adds a small buffer between the bottom of the homepage and the lowest button
         bottomBufferLabel = Label(self, text="")
@@ -751,14 +1030,40 @@ class SecondYear(Frame):
         button.grid(row=10, column=1, pady=(2, 30), padx=(0, 50))
 
 
+class ThirdYear(Frame):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(StartPage))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Third Year", font=("", 20))
+        titleLabel.grid(row=0, column=1, pady=18)
+
+        button = Button(self, text="CSC2001F\t\t\t>>>", command=lambda: view_controller.show_frame(CSC2001F))
+        button.grid(row=1, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3088F\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3088F))
+        button.grid(row=2, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3089F\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3089F))
+        button.grid(row=3, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3090F\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3090F))
+        button.grid(row=4, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3092F\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3092F))
+        button.grid(row=5, column=1, pady=(2, 15), padx=(0, 50))
+
+
 class CurrentMarks(Frame):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        if 1 <= date.today().month < 8:
-            self.courses = ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"]
-        elif 8 <= date.today().month <= 12:
-            self.courses = ["con2026s", "eee2044s", "eee2047s", "mam2084s", "phy2010s"]
+        if 1 <= date.today().month < 7:
+            self.courses = ["csc2001f", "eee3088f", "eee3089f", "eee3090f", "eee3092f"]
+        elif 7 <= date.today().month <= 12:
+            self.courses = ["csc2002s", "eee3093s", "eee3096s", "eee3097s"]
 
         self.num_of_rows = len(self.courses) + 1
 
@@ -778,8 +1083,8 @@ class CurrentMarks(Frame):
 
             Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
 
-            have, lost, units = float(data[years[2]][course]["have"]), float(data[years[2]][course]["lost"]), float(
-                data[years[2]][course]["units"])
+            have, lost, units = float(data[years[3]][course]["have"]), float(data[years[3]][course]["lost"]), \
+                                float(data[years[3]][course]["units"])
 
             course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
                                             f"Remaining marks: {round(100 - lost - have, 3)}%\n"
@@ -807,7 +1112,9 @@ class CourseTemplate(Frame):
         """
 
         button = Button(self, text="<<< Back", command=lambda: view_controller
-                        .show_frame(FirstYear if name.lower() in courses_by_year["first_year"] else SecondYear))
+                        .show_frame(FirstYear if name.lower() in courses_by_year["first_year"]
+                                    else (SecondYear if name.lower() in courses_by_year["second_year"]
+                                    else ThirdYear)))
         button.grid(row=0, column=0)
 
         titleLabel = Label(self, text=f"{name} Marks", font=("", 15))
@@ -1298,6 +1605,101 @@ class PHY2010S(CourseTemplate):
 # }
 
 
+# First Semester, Third Year {
+class CSC2001F(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        code = "csc2001f"
+        year = 3
+
+        self.add_header(view_controller, name="CSC2001F")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+class EEE3088F(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        code = "eee3088f"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3088F")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+class EEE3089F(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "eee3089f"
+        year = 3
+
+        self.add_header(view_controller, name="EEE2089F")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+class EEE3090F(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        code = "eee3090f"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3090F")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+class EEE3092F(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        code = "eee3092f"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3092F")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
+
+
+# }
+
+
 def start_up():
     with open("results.json", "r+") as json_file:
         json_data = json.load(json_file)
@@ -1476,14 +1878,15 @@ def start_up():
             data["second_year"]["mam2083f"].update({"units": "16"})
             data["second_year"]["mec1009f"].update({"units": "16"})
 
-            data["second_year"]["con2026s"].update({"units": "16"})
+            data["second_year"]["con2026s"].update({"units": "16"})  # Incorrect
             data["second_year"]["eee2044s"].update({"units": "16"})
             data["second_year"]["eee2047s"].update({"units": "16"})
-            data["second_year"]["mam2084s"].update({"units": "8"})
+            data["second_year"]["mam2084s"].update({"units": "8"})  # Incorrect
             data["second_year"]["phy2010s"].update({"units": "16"})
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.08"})
 
+        # Useless code...
         if data["meta"]["version"] == "2.08":
             con2026s = data["second_year"]["con2026s"]
 
@@ -1499,11 +1902,110 @@ def start_up():
             data["second_year"]["con2026s"].update(con2026s)
             data["meta"].update({"last_updated": str(date.today()), "version": "2.09"})
 
+        # Fixing CON2026S and MAM2084S units
+        # Adding most of the CON2026S assignments
+        if data["meta"]["version"] == "2.09":
+            data["second_year"]["con2026s"].update({"units": "8"})
+            data["second_year"]["mam2084s"].update({"units": "16"})
+
+            con2026s = data["second_year"]["con2026s"]
+
+            last_4_keys = {"main_assignment": con2026s["main_assignment"], "class_test": con2026s["class_test"],
+                           "final_exam": con2026s["final_exam"], "units": "8"}
+
+            temp_con2026s = {"have": 0, "lost": 0, "1.A1_eskom_procurement": "", "1.A2_team_roles": "",
+                             "2.A1_scope_statement": "", "3.A1_design_thinking": "", "3.A2_project_planning": "",
+                             "4.A1_cost_estimate": "", "4.A2_tracking_costs": "", "5.A1_handing_over_projects": "",
+                             "6.A1_indirect_procurement": "", "7.A1_stakeholder_management": "",
+                             "8.A1_risk_identification": ""}
+
+            temp_con2026s.update(last_4_keys)
+
+            data["second_year"]["con2026s"] = temp_con2026s
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.10"})
+
+        # Removing CT3 from PHY2010S
+        if data["meta"]["version"] == "2.10":
+            phy2010s = data["second_year"]["phy2010s"]
+            phy2010s.pop("class_test_3")
+
+            data["second_year"]["phy2010s"] = phy2010s
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.11"})
+
+        if data["meta"]["version"] == "2.11":
+            con2026s = data["second_year"]["con2026s"]
+
+            last_4_keys = {"main_assignment": con2026s["main_assignment"], "class_test": con2026s["class_test"],
+                           "final_exam": con2026s["final_exam"], "units": "8"}
+
+            temp_con2026s = {k: con2026s[k] for k in [k for k in con2026s.keys() if k not in last_4_keys.keys()]}
+            temp_con2026s.update({"10.A1_communication_exercise": ""})
+            temp_con2026s.update(last_4_keys)
+
+            data["second_year"]["con2026s"] = temp_con2026s
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.12"})
+
+        if data["meta"]["version"] == "2.12":
+            mam2084s = data["second_year"]["mam2084s"]
+            mam2084s.pop("webwork_test_6")
+            data["second_year"]["mam2084s"] = mam2084s
+
+            phy2010s = data["second_year"]["phy2010s"]
+            phy2010s.pop("wps_11")
+            phy2010s.pop("wps_12")
+            data["second_year"]["phy2010s"] = phy2010s
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.13"})
+
+        # Updating for third year
+        if data["meta"]["version"] == "2.13":
+            data["third_year"].update({"csc2001f": {}, "eee3088f": {}, "eee3089f": {}, "eee3090f": {}, "eee3092f": {}})
+
+            csc2001f = {"have": "0", "lost": "0"}
+            for i in range(1, 7):
+                csc2001f.update({f"assignment_{i}": ""})
+
+            csc2001f.update({"test_1": "", "test_2": "", "exam": "", "units": "24"})
+            data["third_year"]["csc2001f"].update(csc2001f)
+
+            eee3088f = {"have": "0", "lost": "0", "design_review_wk3": "", "design_review_wk4": "", "design_review_wk5": "",
+                        "design_review_wk7": "", "design_review_wk8": "", "design_review_wk10": "",
+                        "concept_proposal": "", "design_proposal": "", "initial_design": "", "draft_pcb_design": "",
+                        "gerbers": "", "draft_report": "", "docs_&_software": "", "lab_demo": "",
+                        "test": "", "exam": "", "units": "8"}
+            data["third_year"]["eee3088f"].update(eee3088f)
+
+            eee3089f = {"have": "0", "lost": "0", "units": "16"}
+            data["third_year"]["eee3089f"].update(eee3089f)
+
+            eee3090f = {"have": "0", "lost": "0", "practical_assignment_1": "", "practical_assignment_2": "", "practical_assignment_3": "",
+                        "practical_assignment_4": "", "practical_assignment_5": "",
+                        "practical_1": "", "practical_2": "", "practical_3": "", "practical_4": "", "practical_5": "",
+                        "practical_test": "",  "test_1": "", "test_2": "", "exam": "", "units": "16"}
+            data["third_year"]["eee3090f"].update(eee3090f)
+
+            eee3092f = {"have": "0", "lost": "0", "julia_assignment_1": "", "julia_assignment_2": "", "julia_assignment_3": "",
+                        "julia_assignment_4": "", "lab_1": "", "lab_2": "", "test_1": "", "test_2": "", "exam": "", "units": "16"}
+            data["third_year"]["eee3092f"].update(eee3092f)
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.14"})
+
         app = Main()
 
-        if error is ModuleNotFoundError:
-            messagebox.showwarning(title=None, message="If your screens resolution is less than 1080p, "
-                                                       "please install pyautogui with \"pip3 install pyautogui\"")
+        if errors:
+            message = ""
+            if "pyautogui" in errors:
+                message += "If your screens resolution is less than 1080p, please install pyautogui with \"pip3 install pyautogui\""
+                errors.remove('pyautogui')
+
+            if ("matplotlib" in errors) or ("numpy" in errors):
+                num_of_errors = len(errors)
+                module_text = f"Please install {errors[0]}" + (f" and {errors[1]}" if num_of_errors == 2 else "")
+                message += ("\n\n" if message else "") + f"{module_text} with \"pip3 install <module name>\" in " \
+                                                         f"order for the generation of the mark reports to work " \
+                                                         f"to its full potential."
+
+            messagebox.showwarning(title=None, message=message)
 
         def on_closing():
             app.destroy()

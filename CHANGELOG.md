@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v2.10] - Minor Update - 2021-09-20
+
+### Added
+- Semester GPA calculation
+- Ability to generate a progress report listing GPA and marks for each course, as well as the overview of the degree so far
+
+### Changed
+- Nothing
+
+### Fixed
+- Nothing
+
 ## [v2.09] - Minor Update - 2021-09-19
 
 ### Added
