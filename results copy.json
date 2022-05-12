@@ -1,7 +1,7 @@
 {
     "meta": {
-        "last_updated": "2021-10-31",
-        "version": "2.12"
+        "last_updated": "2021-09-19",
+        "version": "2.09"
     },
     "grade_point_averages": {
         "first_year": 0,
@@ -14,170 +14,527 @@
         "mam1020f": {
             "have": "64.01",
             "lost": "35.99",
-            "class_test_1": "19/50",
-            "online_test_1": "34/44",
-            "online_test_2": "21/44",
-            "online_test_3": "29/44",
-            "online_test_4": "39/44",
-            "final_test": "50/76",
+            "class_test_1": {
+                "mark": "19/50",
+                "date": "12/03/2020"
+            },
+            "online_test_1": {
+                "mark": "34/44",
+                "date": "04/05/2020"
+            },
+            "online_test_2": {
+                "mark": "21/44",
+                "date": "18/05/2020"
+            },
+            "online_test_3": {
+                "mark": "29/44",
+                "date": "1/06/2020"
+            },
+            "online_test_4": {
+                "mark": "39/44",
+                "date": "15/06/2020"
+            },
+            "final_test": {
+                "mark": "50/76",
+                "date": "01/07/2020"
+            },
             "units": "18"
         },
         "phy1012f": {
             "have": "70.325",
             "lost": "29.675",
-            "wps_1": "1",
-            "wps_2": "1",
-            "wps_3": "1",
-            "wps_4": "1",
-            "wps_5": "1",
-            "wps_8": "10/11",
-            "wps_9": "8/10",
-            "wps_10": "7/8",
-            "wps_11": "5/9",
-            "wps_12": "2/7",
-            "wps_13": "8/8",
-            "wps_14": "7/7",
-            "wps_15": "9/9",
-            "wps_16": "3/6",
-            "test_1": "25/46",
-            "test_2": "13/25",
-            "test_3": "9/17",
-            "test_4": "11/17",
-            "uct_lab_1": "17/20",
-            "uct_lab_2": "5/5",
-            "online_lab_1": "23/25",
-            "online_lab_2": "25/25",
-            "online_lab_test": "24/25",
+            "wps_1": {
+                "mark": "1",
+                "date": "21/02/2020"
+            },
+            "wps_2": {
+                "mark": "1",
+                "date": "28/02/2020"
+            },
+            "wps_3": {
+                "mark": "1",
+                "date": "06/03/2020"
+            },
+            "wps_4": {
+                "mark": "1",
+                "date": "13/03/2020"
+            },
+            "wps_5": {
+                "mark": "1",
+                "date": "20/03/2020"
+            },
+            "wps_8": {
+                "mark": "10/11",
+                "date": "01/05/2020"
+            },
+            "wps_9": {
+                "mark": "8/10",
+                "date": "08/06/2020"
+            },
+            "wps_10": {
+                "mark": "7/8",
+                "date": "15/06/2020"
+            },
+            "wps_11": {
+                "mark": "5/9",
+                "date": "22/06/2020"
+            },
+            "wps_12": {
+                "mark": "2/7",
+                "date": "29/06/2020"
+            },
+            "wps_13": {
+                "mark": "8/8",
+                "date": "05/07/2020"
+            },
+            "wps_14": {
+                "mark": "7/7",
+                "date": "12/07/2020"
+            },
+            "wps_15": {
+                "mark": "9/9",
+                "date": "19/07/2020"
+            },
+            "wps_16": {
+                "mark": "3/6",
+                "date": "26/07/2020"
+            },
+            "test_1": {
+                "mark": "25/46",
+                "date": "10/03/2020"
+            },
+            "test_2": {
+                "mark": "13/25",
+                "date": "25/05/2020"
+            },
+            "test_3": {
+                "mark": "9/17",
+                "date": "15/06/2020"
+            },
+            "test_4": {
+                "mark": "11/17",
+                "date": "06/07/2020"
+            },
+            "uct_lab_1": {
+                "mark": "17/20",
+                "date": "16/03/2020"
+            },
+            "uct_lab_2": {
+                "mark": "5/5",
+                "date": "20/03/2020"
+            },
+            "online_lab_1": {
+                "mark": "23/25",
+                "date": "22/05/2020"
+            },
+            "online_lab_2": {
+                "mark": "25/25",
+                "date": "12/06/2020"
+            },
+            "online_lab_test": {
+                "mark": "24/25",
+                "date": "26/06/2020"
+            },
             "units": "18"
         },
         "eee1006f": {
             "have": "89.0",
             "lost": "11.0",
-            "class_test_1": "25/25",
-            "class_test_2": "25/25",
-            "final_assignment": "39/50",
+            "class_test_1": {
+                "mark": "25/25",
+                "date": "16/05/2020"
+            },
+            "class_test_2": {
+                "mark": "25/25",
+                "date": "22/06/2020"
+            },
+            "final_assignment": {
+                "mark": "39/50",
+                "date": "10/07/2020"
+            },
             "units": "12"
         },
         "csc1015f": {
             "have": "92.5",
             "lost": "7.5",
-            "assignment_1": "100/100",
-            "assignment_2": "100/100",
-            "assignment_3": "100/100",
-            "assignment_4": "100/100",
-            "assignment_5": "100/100",
-            "assignment_6": "100/100",
-            "assignment_7": "100/100",
-            "practical_test_1": "100/100",
-            "practical_test_2": "100/100",
-            "theory_test_1": "14/16",
-            "theory_test_2": "18/20",
-            "theory_test_3": "17/25",
-            "quiz_1": "4/6",
-            "quiz_2": "10/10",
-            "quiz_3": "8/10",
-            "quiz_4": "9/10",
-            "quiz_5": "8/10",
-            "quiz_6": "8.5/10",
-            "quiz_7": "7/10",
+            "assignment_1": {
+                "mark": "100/100",
+                "date": "16/02/2020"
+            },
+            "assignment_2": {
+                "mark": "100/100",
+                "date": "20/02/2020"
+            },
+            "assignment_3": {
+                "mark": "100/100",
+                "date": "04/03/2020"
+            },
+            "assignment_4": {
+                "mark": "100/100",
+                "date": "10/03/2020"
+            },
+            "assignment_5": {
+                "mark": "100/100",
+                "date": "08/05/2020"
+            },
+            "assignment_6": {
+                "mark": "100/100",
+                "date": "16/05/2020"
+            },
+            "assignment_7": {
+                "mark": "100/100",
+                "date": "09/06/2020"
+            },
+            "practical_test_1": {
+                "mark": "100/100",
+                "date": "25/02/2020"
+            },
+            "practical_test_2": {
+                "mark": "100/100",
+                "date": "18/05/2020"
+            },
+            "theory_test_1": {
+                "mark": "14/16",
+                "date": "09/03/2020"
+            },
+            "theory_test_2": {
+                "mark": "18/20",
+                "date": "03/06/2020"
+            },
+            "theory_test_3": {
+                "mark": "17/25",
+                "date": "25/06/2020"
+            },
+            "quiz_1": {
+                "mark": "4/6",
+                "date": "18/02/2020"
+            },
+            "quiz_2": {
+                "mark": "10/10",
+                "date": "03/03/2020"
+            },
+            "quiz_3": {
+                "mark": "8/10",
+                "date": "10/03/2020"
+            },
+            "quiz_4": {
+                "mark": "9/10",
+                "date": "08/05/2020"
+            },
+            "quiz_5": {
+                "mark": "8/10",
+                "date": "15/05/2020"
+            },
+            "quiz_6": {
+                "mark": "8.5/10",
+                "date": "29/05/2020"
+            },
+            "quiz_7": {
+                "mark": "7/10",
+                "date": "12/06/2020"
+            },
             "units": "18"
         },
         "mec1003f": {
             "have": "97.8",
             "lost": "2.2",
-            "schematic": "10/10",
-            "pcb": "5/5",
-            "gerber": "8/8",
-            "application": "24/25",
+            "schematic": {
+                "mark": "10/10",
+                "date": "07/05/2020"
+            },
+            "pcb": {
+                "mark": "5/5",
+                "date": "25/05/2020"
+            },
+            "gerber": {
+                "mark": "8/8",
+                "date": "10/06/2020"
+            },
+            "application": {
+                "mark": "24/25",
+                "date": "30/06/2020"
+            },
             "units": "8"
         },
         "mam1021s": {
             "have": "64.009",
             "lost": "35.991",
-            "quiz_1": "10/10",
-            "quiz_2": "10/10",
-            "quiz_3": "3.5/5",
-            "quiz_4": "4.68/8",
-            "quiz_5": "10/10",
-            "quiz_6": "8/10",
-            "quiz_7": "9/10",
-            "quiz_8": "3/20",
-            "quiz_9": "12/20",
-            "quiz_10": "13/17",
-            "test_1": "37/50",
-            "test_2": "47/50",
-            "test_3": "21.5/50",
-            "final_test": "36.5/100",
+            "quiz_1": {
+                "mark": "10/10",
+                "date": "12/08/2020"
+            },
+            "quiz_2": {
+                "mark": "10/10",
+                "date": "19/08/2020"
+            },
+            "quiz_3": {
+                "mark": "3.5/5",
+                "date": "26/08/2020"
+            },
+            "quiz_4": {
+                "mark": "4.68/8",
+                "date": "09/09/2020"
+            },
+            "quiz_5": {
+                "mark": "10/10",
+                "date": "16/09/2020"
+            },
+            "quiz_6": {
+                "mark": "8/10",
+                "date": "03/10/2020"
+            },
+            "quiz_7": {
+                "mark": "9/10",
+                "date": "14/10/2020"
+            },
+            "quiz_8": {
+                "mark": "3/20",
+                "date": "21/10/2020"
+            },
+            "quiz_9": {
+                "mark": "12/20",
+                "date": "28/10/2020"
+            },
+            "quiz_10": {
+                "mark": "13/17",
+                "date": "14/11/2020"
+            },
+            "test_1": {
+                "mark": "37/50",
+                "date": "02/09/2020"
+            },
+            "test_2": {
+                "mark": "47/50",
+                "date": "06/10/2020"
+            },
+            "test_3": {
+                "mark": "21.5/50",
+                "date": "04/11/2020"
+            },
+            "final_test": {
+                "mark": "36.5/100",
+                "date": "24/11/2020"
+            },
             "units": "18"
         },
         "phy1013s": {
             "have": "59.669",
             "lost": "40.331",
-            "wps_1": "8/10",
-            "wps_2": "7/11",
-            "wps_3": "11/11",
-            "wps_4": "14.17/17",
-            "wps_5": "9.67/11",
-            "wps_6": "9.5/12",
-            "wps_7": "5/7",
-            "wps_8": "8/8",
-            "wps_9": "5/5",
-            "wps_10": "8/9",
-            "wps_11": "10/12",
-            "wps_12": "6/8",
-            "lab_1": "22/25",
-            "lab_2": "25/25",
-            "lab_3": "20/20",
-            "lab_4": "23.5/25",
-            "lab_test": "26.5/30",
-            "test_1": "22/41",
-            "test_2": "24/42",
-            "test_3": "26/45",
-            "test_4": "14/45",
+            "wps_1": {
+                "mark": "8/10",
+                "date": "10/08/2020"
+            },
+            "wps_2": {
+                "mark": "7/11",
+                "date": "17/08/2020"
+            },
+            "wps_3": {
+                "mark": "11/11",
+                "date": "24/08/2020"
+            },
+            "wps_4": {
+                "mark": "14.17/17",
+                "date": "31/08/2020"
+            },
+            "wps_5": {
+                "mark": "9.67/11",
+                "date": "07/09/2020"
+            },
+            "wps_6": {
+                "mark": "9.5/12",
+                "date": "14/09/2020"
+            },
+            "wps_7": {
+                "mark": "5/7",
+                "date": "05/10/2020"
+            },
+            "wps_8": {
+                "mark": "8/8",
+                "date": "12/10/2020"
+            },
+            "wps_9": {
+                "mark": "5/5",
+                "date": "19/10/2020"
+            },
+            "wps_10": {
+                "mark": "8/9",
+                "date": "26/10/2020"
+            },
+            "wps_11": {
+                "mark": "10/12",
+                "date": "02/11/2020"
+            },
+            "wps_12": {
+                "mark": "6/8",
+                "date": "09/11/2020"
+            },
+            "lab_1": {
+                "mark": "22/25",
+                "date": "14/08/2020"
+            },
+            "lab_2": {
+                "mark": "25/25",
+                "date": "04/09/2020"
+            },
+            "lab_3": {
+                "mark": "20/20",
+                "date": "09/10/2020"
+            },
+            "lab_4": {
+                "mark": "23.5/25",
+                "date": "30/10/2020"
+            },
+            "lab_test": {
+                "mark": "26.5/30",
+                "date": "16/11/2020"
+            },
+            "test_1": {
+                "mark": "22/41",
+                "date": "27/08/2020"
+            },
+            "test_2": {
+                "mark": "24/42",
+                "date": "17/09/2020"
+            },
+            "test_3": {
+                "mark": "26/45",
+                "date": "22/10/2020"
+            },
+            "test_4": {
+                "mark": "14/45",
+                "date": "19/11/2020"
+            },
             "units": "18"
         },
         "csc1016s": {
             "have": "76.021",
             "lost": "23.979",
-            "quiz_1": "15/15",
-            "quiz_2": "8/10",
-            "quiz_3": "8/10",
-            "quiz_4": "6/10",
-            "quiz_5": "9/10",
-            "quiz_6": "6/10",
-            "quiz_7": "8/10",
-            "practical_test_1": "100/100",
-            "practical_test_2": "100/100",
-            "theory_test_1": "17/18",
-            "theory_test_2": "12.5/18",
-            "theory_test_3": "3.67/20",
-            "assignment_1": "100/100",
-            "assignment_2": "100/100",
-            "assignment_3": "95/100",
-            "assignment_4": "70/100",
-            "assignment_5": "96/100",
-            "assignment_6": "0/100",
+            "quiz_1": {
+                "mark": "15/15",
+                "date": "14/08/2020"
+            },
+            "quiz_2": {
+                "mark": "8/10",
+                "date": "21/08/2020"
+            },
+            "quiz_3": {
+                "mark": "8/10",
+                "date": "28/08/2020"
+            },
+            "quiz_4": {
+                "mark": "6/10",
+                "date": "04/09/2020"
+            },
+            "quiz_5": {
+                "mark": "9/10",
+                "date": "11/09/2020"
+            },
+            "quiz_6": {
+                "mark": "6/10",
+                "date": "17/10/2020"
+            },
+            "quiz_7": {
+                "mark": "8/10",
+                "date": "23/10/2020"
+            },
+            "practical_test_1": {
+                "mark": "100/100",
+                "date": "11/09/2020"
+            },
+            "practical_test_2": {
+                "mark": "100/100",
+                "date": "30/10/2020"
+            },
+            "theory_test_1": {
+                "mark": "17/18",
+                "date": "27/08/2020"
+            },
+            "theory_test_2": {
+                "mark": "12.5/18",
+                "date": "08/10/2020"
+            },
+            "theory_test_3": {
+                "mark": "3.67/20",
+                "date": "12/11/2020"
+            },
+            "assignment_1": {
+                "mark": "100/100",
+                "date": "12/08/2020"
+            },
+            "assignment_2": {
+                "mark": "100/100",
+                "date": "31/08/2020"
+            },
+            "assignment_3": {
+                "mark": "95/100",
+                "date": "10/09/2020"
+            },
+            "assignment_4": {
+                "mark": "70/100",
+                "date": "23/10/2020"
+            },
+            "assignment_5": {
+                "mark": "96/100",
+                "date": "25/10/2020"
+            },
+            "assignment_6": {
+                "mark": "0/100",
+                "date": "08/11/2020"
+            },
             "units": "18"
         },
         "eee1007s": {
             "have": "81.75",
             "lost": "18.25",
-            "test_1": "26/40",
-            "test_2": "50/50",
-            "assignment": "80/100",
+            "test_1": {
+                "mark": "26/40",
+                "date": "15/09/2020"
+            },
+            "test_2": {
+                "mark": "50/50",
+                "date": "28/10/2020"
+            },
+            "assignment": {
+                "mark": "80/100",
+                "date": "04/11/2020"
+            },
             "units": "12"
         },
         "axl1200s": {
             "have": "59.0",
             "lost": "41.0",
-            "reflection_piece_1": "6/10",
-            "reflection_piece_2": "8/10",
-            "reflection_piece_3": "6/10",
-            "reflection_piece_4": "4/10",
-            "reflection_piece_5": "6/10",
-            "reflection_piece_6": "5/10",
-            "reflection_piece_7": "5/10",
-            "research_project": "19/30",
+            "reflection_piece_1": {
+                "mark": "6/10",
+                "date": "31/08/2020"
+            },
+            "reflection_piece_2": {
+                "mark": "8/10",
+                "date": "31/08/2020"
+            },
+            "reflection_piece_3": {
+                "mark": "6/10",
+                "date": "07/09/2020"
+            },
+            "reflection_piece_4": {
+                "mark": "4/10",
+                "date": "14/09/2020"
+            },
+            "reflection_piece_5": {
+                "mark": "6/10",
+                "date": "05/10/2020"
+            },
+            "reflection_piece_6": {
+                "mark": "5/10",
+                "date": "11/10/2020"
+            },
+            "reflection_piece_7": {
+                "mark": "5/10",
+                "date": "19/10/2020"
+            },
+            "research_project": {
+                "mark": "19/30",
+                "date": "19/11/2020"
+            },
             "units": "8"
         }
     },
@@ -185,162 +542,495 @@
         "eee2045f": {
             "have": "52.049",
             "lost": "47.951",
-            "tutorial_test_1": "9/14",
-            "tutorial_test_2": "10/19",
-            "tutorial_test_3": "13/18",
-            "tutorial_test_4": "20.83/41",
-            "pre-practical_1": "33.5/39",
-            "pre-practical_2": "35/40",
-            "pre-practical_3": "58.5/64",
-            "laboratory_1": "1",
-            "laboratory_2": "1",
-            "laboratory_3": "1",
-            "class_test_1": "16.5/50",
-            "class_test_2": "29/70",
-            "exam": "46.3/100",
+            "tutorial_test_1": {
+                "mark": "9/14",
+                "date": "01/04/2021"
+            },
+            "tutorial_test_2": {
+                "mark": "10/19",
+                "date": "16/04/2021"
+            },
+            "tutorial_test_3": {
+                "mark": "13/18",
+                "date": "28/05/2021"
+            },
+            "tutorial_test_4": {
+                "mark": "20.83/41",
+                "date": "18/06/2021"
+            },
+            "pre-practical_1": {
+                "mark": "33.5/39",
+                "date": "07/04/2021"
+            },
+            "pre-practical_2": {
+                "mark": "35/40",
+                "date": "29/05/2021"
+            },
+            "pre-practical_3": {
+                "mark": "58.5/64",
+                "date": "13/06/2021"
+            },
+            "laboratory_1": {
+                "mark": "1",
+                "date": "08/04/2021"
+            },
+            "laboratory_2": {
+                "mark": "1",
+                "date": "02/06/2021"
+            },
+            "laboratory_3": {
+                "mark": "1",
+                "date": "18/06/2021"
+            },
+            "class_test_1": {
+                "mark": "16.5/50",
+                "date": "30/04/2021"
+            },
+            "class_test_2": {
+                "mark": "29/70",
+                "date": "11/06/2021"
+            },
+            "exam": {
+                "mark": "46.3/100",
+                "date": "05/08/2021"
+            },
             "units": "16"
         },
         "eee2046f": {
             "have": "73.001",
             "lost": "26.999",
-            "practical_1": "124.5/141",
-            "practical_2": "102/106",
-            "practical_3": "115.9/133",
-            "practical_4": "73.5/92",
-            "class_test_1": "42/45",
-            "class_test_2": "31/45",
-            "exam": "65.9/100",
+            "practical_1": {
+                "mark": "124.5/141",
+                "date": "31/05/2021"
+            },
+            "practical_2": {
+                "mark": "102/106",
+                "date": "31/05/2021"
+            },
+            "practical_3": {
+                "mark": "115.9/133",
+                "date": "18/06/2021"
+            },
+            "practical_4": {
+                "mark": "73.5/92",
+                "date": "20/06/2021"
+            },
+            "class_test_1": {
+                "mark": "42/45",
+                "date": "20/04/2021"
+            },
+            "class_test_2": {
+                "mark": "31/45",
+                "date": "08/06/2021"
+            },
+            "exam": {
+                "mark": "65.9/100",
+                "date": "02/08/2021"
+            },
             "units": "16"
         },
         "eee2048f": {
             "have": "73.0",
             "lost": "27.0",
-            "practical_task_1": "18/25",
-            "practical_task_2": "18/25",
-            "practical_task_3": "19/25",
-            "practical_task_4": "18/25",
-            "application_task": "63/100",
-            "academic_writing_task": "23/30",
-            "referencing_multiple_choice": "20/20",
-            "report_critique": "22/30",
-            "capstone_proposal": "9/10",
-            "capstone_report": "82/110",
+            "practical_task_1": {
+                "mark": "18/25",
+                "date": "26/03/2021"
+            },
+            "practical_task_2": {
+                "mark": "18/25",
+                "date": "09/04/2021"
+            },
+            "practical_task_3": {
+                "mark": "19/25",
+                "date": "16/04/2021"
+            },
+            "practical_task_4": {
+                "mark": "18/25",
+                "date": "01/05/2021"
+            },
+            "application_task": {
+                "mark": "63/100",
+                "date": "06/04/2021"
+            },
+            "academic_writing_task": {
+                "mark": "23/30",
+                "date": "28/05/2021"
+            },
+            "referencing_multiple_choice": {
+                "mark": "20/20",
+                "date": "02/06/2021"
+            },
+            "report_critique": {
+                "mark": "22/30",
+                "date": "14/05/2021"
+            },
+            "capstone_proposal": {
+                "mark": "9/10",
+                "date": "19/05/2021"
+            },
+            "capstone_report": {
+                "mark": "82/110",
+                "date": "18/06/2021"
+            },
             "units": "8"
         },
         "mam2083f": {
             "have": "49.289",
             "lost": "50.711",
-            "quiz_1": "0",
-            "quiz_2": "3/3",
-            "quiz_3": "7/11",
-            "quiz_4": "7/10",
-            "quiz_5": "8/12",
-            "quiz_6": "8/10",
-            "quiz_7": "11.5/12",
-            "quiz_8": "11/12",
-            "quiz_9": "8/12",
-            "quiz_10": "9/10",
-            "tutorial_total": "67.98/100",
-            "test_1": "121/124",
-            "test_2": "25/40",
-            "exam": "29/86",
+            "quiz_1": {
+                "mark": "0",
+                "date": "21/03/2021"
+            },
+            "quiz_2": {
+                "mark": "3/3",
+                "date": "28/03/2021"
+            },
+            "quiz_3": {
+                "mark": "7/11",
+                "date": "01/04/2021"
+            },
+            "quiz_4": {
+                "mark": "7/10",
+                "date": "06/04/2021"
+            },
+            "quiz_5": {
+                "mark": "8/12",
+                "date": "16/04/2021"
+            },
+            "quiz_6": {
+                "mark": "8/10",
+                "date": "24/04/2021"
+            },
+            "quiz_7": {
+                "mark": "11.5/12",
+                "date": "01/05/2021"
+            },
+            "quiz_8": {
+                "mark": "11/12",
+                "date": "10/05/2021"
+            },
+            "quiz_9": {
+                "mark": "8/12",
+                "date": "21/05/2021"
+            },
+            "quiz_10": {
+                "mark": "9/10",
+                "date": "28/05/2021"
+            },
+            "tutorial_total": {
+                "mark": "67.98/100",
+                "date": ""
+            },
+            "test_1": {
+                "mark": "121/124",
+                "date": "05/05/2021"
+            },
+            "test_2": {
+                "mark": "25/40",
+                "date": "09/06/2021"
+            },
+            "exam": {
+                "mark": "29/86",
+                "date": "25/06/2021"
+            },
             "units": "16"
         },
         "mec1009f": {
             "have": "62.0",
             "lost": "38.0",
-            "tutorial_test_1": "13/16",
-            "tutorial_test_2": "14/20",
-            "tutorial_test_3": "4/25",
-            "tutorial_test_4": "1/30",
-            "tutorial_test_5": "18/18",
-            "tutorial_test_6": "2/12",
-            "class_test_1": "10/33",
-            "class_test_2": "11/50",
-            "class_test_3": "49/49",
-            "exam": "51.5/100",
+            "tutorial_test_1": {
+                "mark": "13/16",
+                "date": "29/03/2021"
+            },
+            "tutorial_test_2": {
+                "mark": "14/20",
+                "date": "26/04/2021"
+            },
+            "tutorial_test_3": {
+                "mark": "4/25",
+                "date": "10/05/2021"
+            },
+            "tutorial_test_4": {
+                "mark": "1/30",
+                "date": "24/05/2021"
+            },
+            "tutorial_test_5": {
+                "mark": "18/18",
+                "date": "31/05/2021"
+            },
+            "tutorial_test_6": {
+                "mark": "2/12",
+                "date": "14/06/2021"
+            },
+            "class_test_1": {
+                "mark": "10/33",
+                "date": "12/04/2021"
+            },
+            "class_test_2": {
+                "mark": "11/50",
+                "date": "17/05/2021"
+            },
+            "class_test_3": {
+                "mark": "49/49",
+                "date": "07/06/2021"
+            },
+            "exam": {
+                "mark": "51.5/100",
+                "date": "07/08/2021"
+            },
             "units": "16"
         },
         "con2026s": {
-            "have": "43.511",
-            "lost": "17.917",
-            "1.A1_eskom_procurement": "6/10",
-            "1.A2_team_roles": "8/10",
-            "2.A1_scope_statement": "70/100",
-            "3.A1_design_thinking": "8/10",
-            "3.A2_project_planning": "60/100",
-            "4.A1_cost_estimate": "80/100",
-            "4.A2_tracking_costs": "8.5/10",
-            "5.A1_handing_over_projects": "8/10",
-            "6.A1_indirect_procurement": "7/10",
-            "7.A1_stakeholder_management": "83/100",
-            "8.A1_risk_identification": "78/100",
-            "10.A1_communication_exercise": "",
-            "main_assignment": "",
-            "class_test": "56/90",
-            "final_exam": "",
+            "have": "33.144",
+            "lost": "13.522",
+            "1.A1_eskom_procurement": {
+                "mark": "6/10",
+                "date": "16/08/2021"
+            },
+            "1.A2_team_roles": {
+                "mark": "8/10",
+                "date": "16/08/2021"
+            },
+            "2.A1_scope_statement": {
+                "mark": "70/100",
+                "date": "21/08/2021"
+            },
+            "3.A1_design_thinking": {
+                "mark": "8/10",
+                "date": "30/08/2021"
+            },
+            "3.A2_project_planning": {
+                "mark": "60/100",
+                "date": "06/09/2021"
+            },
+            "4.A1_cost_estimate": {
+                "mark": "80/100",
+                "date": "30/08/2021"
+            },
+            "4.A2_tracking_costs": {
+                "mark": "8.5/10",
+                "date": "30/08/2021"
+            },
+            "5.A1_handing_over_projects": {
+                "mark": "8/10",
+                "date": "12/09/2021"
+            },
+            "6.A1_indirect_procurement": {
+                "mark": "",
+                "date": "02/10/2021"
+            },
+            "7.A1_stakeholder_management": {
+                "mark": "78/100",
+                "date": "11/10/2021"
+            },
+            "8.A1_risk_identification": {
+                "mark": "78/100",
+                "date": "17/10/2021"
+            },
+            "10.A1_comm_identification": {
+                "mark": "",
+                "date": "01/11/2021"
+            },
+            "main_assignment": {
+                "mark": "",
+                "date": "01/11/2021"
+            },
+            "class_test": {
+                "mark": "56/90",
+                "date": "15/09/2021"
+            },
+            "final_exam": {
+                "mark": "",
+                "date": "05/11/2021"
+            },
             "units": "8"
         },
         "eee2044s": {
-            "have": "21.77",
-            "lost": "17.23",
-            "transformer_lab": "38/50",
-            "dc_machines_lab": "",
-            "project_task_1": "19.5/25",
-            "project_task_2": "33/50",
-            "class_test_1": "14.5/30",
-            "class_test_2": "16/30",
-            "exam": "",
+            "have": "7.25",
+            "lost": "7.75",
+            "transformer_lab": {
+                "mark": "38/50",
+                "date": "03/09/2021"
+            },
+            "dc_machines_lab": {
+                "mark": "",
+                "date": "29/10/2021"
+            },
+            "project_task_1": {
+                "mark": "19.5/25",
+                "date": "24/08/2021"
+            },
+            "project_task_2": {
+                "mark": "33/50",
+                "date": "17/09/2021"
+            },
+            "class_test_1": {
+                "mark": "14.5/30",
+                "date": "10/09/2021"
+            },
+            "class_test_2": {
+                "mark": "",
+                "date": "20/10/2021"
+            },
+            "exam": {
+                "mark": "",
+                "date": "04/11/2021"
+            },
             "units": "16"
         },
         "eee2047s": {
-            "have": "50.003",
-            "lost": "49.997",
-            "problem_set_1": "19/20",
-            "problem_set_2": "20/20",
-            "problem_set_3": "20/20",
-            "lab_1": "20/20",
-            "lab_2": "20/20",
-            "lab_3": "20/20",
-            "class_test": "6.5/20",
-            "exam": "0.3945",
+            "have": "9.833",
+            "lost": "0.167",
+            "problem_set_1": {
+                "mark": "19/20",
+                "date": "30/08/2021"
+            },
+            "problem_set_2": {
+                "mark": "20/20",
+                "date": "29/09/2021"
+            },
+            "problem_set_3": {
+                "mark": "",
+                "date": "16/10/2021"
+            },
+            "lab_1": {
+                "mark": "20/20",
+                "date": "24/08/2021"
+            },
+            "lab_2": {
+                "mark": "20/20",
+                "date": "16/09/2021"
+            },
+            "lab_3": {
+                "mark": "20/20",
+                "date": "16/10/2021"
+            },
+            "class_test": {
+                "mark": "6.5/20",
+                "date": "21/10/2021"
+            },
+            "exam": {
+                "mark": "",
+                "date": "12/11/2021"
+            },
             "units": "16"
         },
         "mam2084s": {
-            "have": "11.063",
+            "have": "8.397",
             "lost": "11.603",
-            "webwork_test_1": "5/6",
-            "webwork_test_2": "6/8",
-            "webwork_test_3": "7/7",
-            "webwork_test_4": "5/5",
-            "webwork_test_5": "5/5",
-            "webwork_test_6": "",
-            "class_test_1": "13/42",
-            "class_test_2": "",
-            "exam": "",
+            "webwork_test_1": {
+                "mark": "5/6",
+                "date": "14/08/2021"
+            },
+            "webwork_test_2": {
+                "mark": "6/8",
+                "date": "27/08/2021"
+            },
+            "webwork_test_3": {
+                "mark": "7/7",
+                "date": "17/09/2021"
+            },
+            "webwork_test_4": {
+                "mark": "5/5",
+                "date": "09/10/2021"
+            },
+            "webwork_test_5": {
+                "mark": "5/5",
+                "date": "23/10/2021"
+            },
+            "webwork_test_6": {
+                "mark": "",
+                "date": ""
+            },
+            "class_test_1": {
+                "mark": "13/42",
+                "date": "05/08/2021"
+            },
+            "class_test_2": {
+                "mark": "abs",
+                "date": "18/20/2021"
+            },
+            "exam": {
+                "mark": "",
+                "date": "10/11/2021"
+            },
             "units": "16"
         },
         "phy2010s": {
-            "have": "23.678",
-            "lost": "6.322",
-            "wps_1": "7/15",
-            "wps_2": "20.5/22",
-            "wps_3": "21/21",
-            "wps_4": "32/32",
-            "wps_5": "20/20",
-            "wps_6": "13/13",
-            "wps_7": "15/15",
-            "wps_8": "25/30",
-            "wps_9": "",
-            "wps_10": "",
-            "wps_11": "",
-            "wps_12": "",
-            "lab_1": "30/45",
-            "lab_2": "45.5/50",
-            "lab_3": "",
-            "class_test_1": "71.4/100",
-            "class_test_2": "",
-            "exam": "",
+            "have": "8.422",
+            "lost": "3.244",
+            "wps_1": {
+                "mark": "7/15",
+                "date": "13/08/2021"
+            },
+            "wps_2": {
+                "mark": "20.5/22",
+                "date": "21/08/2021"
+            },
+            "wps_3": {
+                "mark": "21/21",
+                "date": "27/08/2021"
+            },
+            "wps_4": {
+                "mark": "12/32",
+                "date": "30/08/2021"
+            },
+            "wps_5": {
+                "mark": "11/11",
+                "date": "10/09/2021"
+            },
+            "wps_6": {
+                "mark": "13/13",
+                "date": "21/09/2021"
+            },
+            "wps_7": {
+                "mark": "15/15",
+                "date": "28/09/2021"
+            },
+            "wps_8": {
+                "mark": "25/30",
+                "date": "12/10/2021"
+            },
+            "wps_9": {
+                "mark": "",
+                "date": "23/10/2021"
+            },
+            "wps_10": {
+                "mark": "",
+                "date": "30/10/2021"
+            },
+            "wps_11": {
+                "mark": "",
+                "date": ""
+            },
+            "wps_12": {
+                "mark": "",
+                "date": ""
+            },
+            "lab_1": {
+                "mark": "30/45",
+                "date": "05/09/2021"
+            },
+            "lab_2": {
+                "mark": "45.5/50",
+                "date": "01/10/2021"
+            },
+            "lab_3": {
+                "mark": "",
+                "date": "29/10/2021"
+            },
+            "class_test_1": {
+                "mark": "71.4/100",
+                "date": "02/08/2021"
+            },
+            "class_test_2": {
+                "mark": "",
+                "date": "28/10/2021"
+            },
+            "exam": {
+                "mark": "",
+                "date": "15/11/2021"
+            },
             "units": "16"
         }
     },

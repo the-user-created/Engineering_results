@@ -14,6 +14,7 @@ errors = []
 
 try:
     import pyautogui
+
     width, height = pyautogui.size()
 except AttributeError or ModuleNotFoundError as e:
     if e == ModuleNotFoundError:
@@ -53,10 +54,20 @@ courses_by_semester = {"y1s1": ["mam1020f", "phy1012f", "eee1006f", "csc1015f", 
 
 
 def calculate_marks(course, course_marks):
-    have, lost = 0, 0
+    course_grade_values = {}
+    have, lost, course_grade, weighting = 0, 0, 0, 0
+
+    # TODO: - FINISH ADDING THE COURSE GRADE CALCULATIONS TO THE COURSES
+    """
+    course_grade_values = {"": [0, 0, 0], "": [0, 0, 0], "": [0, 0, 0], "": [0, 0, 0]}
+    
+    course_grade_values[""][0] += 1
+    course_grade_values[""][1] += eval(v)
+    """
 
     # First Year, first semester
     if course == "mam1020f":
+        course_grade_values = {"class": [0, 0, 25], "final": [0, 0, 30], "test": [0, 0, 45]}
         # Case 1:
         test_count, final_test_have, final_test_lost, test_have, test_lost, class_tests_have, class_tests_lost = 0, 0, 0, 0, 0, 0, 0
         tests = []
@@ -68,9 +79,13 @@ def calculate_marks(course, course_marks):
             if "class" in k:
                 class_tests_have += eval(v)
                 class_tests_lost += 1 - eval(v)
+                course_grade_values["class"][0] += 1
+                course_grade_values["class"][1] += eval(v)
             elif "final" in k:
                 final_test_have += eval(v)
                 final_test_lost += 1 - eval(v)
+                course_grade_values["final"][0] += 1
+                course_grade_values["final"][1] += eval(v)
             elif "test" in k:
                 tests.append([k, v])
                 test_count += 1
@@ -79,6 +94,8 @@ def calculate_marks(course, course_marks):
                     for test in tests[:3]:
                         test_have += eval(test[1])
                         test_lost += 1 - eval(test[1])
+                        course_grade_values["test"][0] += 1
+                        course_grade_values["test"][1] += eval(test[1])
 
         have = 25 * class_tests_have + 15 * test_have + 30 * final_test_have
         lost = 25 * class_tests_lost + 15 * test_lost + 30 * final_test_lost
@@ -122,7 +139,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "phy1012f":
         first_test_have, first_test_lost, lab_test_have, lab_test_lost, class_tests_have, class_tests_lost, \
-            wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        wps_have, wps_lost, labs_have, labs_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -292,7 +309,7 @@ def calculate_marks(course, course_marks):
     # Second Year, first semester
     elif course == "eee2045f":
         class_tests_have, class_tests_lost, exam_have, exam_lost, lab_have, lab_lost, \
-            assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        assignment_have, assignment_lost, tut_test_have, tut_test_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -341,8 +358,8 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2048f":
         practical_have, practical_lost, app_have, app_lost, academic_have, academic_lost, mcq_have, mcq_lost, \
-            report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
-            capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        report_have, report_lost, capstone_proposal_have, capstone_proposal_lost, capstone_report_have, \
+        capstone_report_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -377,7 +394,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "mam2083f":
         quizzes_have, quizzes_lost, tut_total_have, tut_total_lost, ct1_have, ct1_lost, ct2_have, ct2_lost, \
-            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
         using_tut_total = False
 
@@ -460,7 +477,7 @@ def calculate_marks(course, course_marks):
         have = 60 * exam_have + 40 * (0.25 * (tut_test_have / 3) + 0.75 * (class_tests_have / 2))
         lost = 60 * exam_lost + 40 * (0.25 * (tut_test_lost / 3) + 0.75 * (class_tests_lost / 2))
 
-    # Second Year, first semester
+    # Second Year, second semester
     elif course == "con2026s":
         main_assign_have, main_assign_lost, general_have, general_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
@@ -489,7 +506,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2044s":
         lab_have, lab_lost, project_have, project_lost, class_tests_have, class_tests_lost, \
-            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -513,7 +530,7 @@ def calculate_marks(course, course_marks):
 
     elif course == "eee2047s":
         ps_have, ps_lost, lab_have, lab_lost, class_test_have, class_test_lost, \
-            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -566,8 +583,9 @@ def calculate_marks(course, course_marks):
             lost = 0.40 * class_record_lost + 60 * exam_lost
 
     elif course == "phy2010s":
+        course_grade_values = {"test": [0, 0, 20], "wps": [0, 0, 10], "lab": [0, 0, 20], "exam": [0, 0, 50]}
         wps_have, wps_lost, labs_have, labs_lost, tests_have, tests_lost, \
-            exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+        exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
 
         for (k, v) in course_marks:
             if v == "":
@@ -576,21 +594,30 @@ def calculate_marks(course, course_marks):
             if "test" in k:
                 tests_have += eval(v)
                 tests_lost += 1 - eval(v)
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
             elif "wps" in k:
                 wps_have += eval(v)
                 wps_lost += 1 - eval(v)
+                course_grade_values["wps"][0] += 1
+                course_grade_values["wps"][1] += eval(v)
             elif "lab" in k:
                 labs_have += eval(v)
                 labs_lost += 1 - eval(v)
+                course_grade_values["lab"][0] += 1
+                course_grade_values["lab"][1] += eval(v)
             elif "exam" in k:
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
 
         have = 20 * (tests_have / 2) + 10 * (wps_have / 10) + 20 * (labs_have / 3) + 50 * exam_have
         lost = 20 * (tests_lost / 2) + 10 * (wps_lost / 10) + 20 * (labs_lost / 3) + 50 * exam_lost
 
     # Third Year, first semester
     elif course == "csc2001f":
+        course_grade_values = {"assignment": [0, 0, 33.3], "test": [0, 0, 16.7], "exam": [0, 0, 50]}
         assignments_have, assignments_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
 
         for k, v in course_marks:
@@ -600,17 +627,26 @@ def calculate_marks(course, course_marks):
             if "assignment" in k:
                 assignments_have += eval(v)
                 assignments_lost += 1 - eval(v)
+                course_grade_values["assignment"][0] += 1
+                course_grade_values["assignment"][1] += eval(v)
             elif "test" in k:
                 ct_have += eval(v)
                 ct_lost += 1 - eval(v)
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
             elif "exam" in k:
                 exam_have += eval(v)
                 exam_lost += 1 - eval(v)
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
 
         have = 33.3 * assignments_have / 6 + 16.7 * ct_have / 2 + 50 * exam_have
         lost = 33.3 * assignments_lost / 6 + 16.7 * ct_lost / 2 + 50 * exam_lost
 
     elif course == "eee3088f":
+        course_grade_values = {"design_review": [0, 0, 1], "concept_proposal": [0, 0, 4], "design_proposal": [0, 0, 4],
+                               "pcb": [0, 0, 4], "docs": [0, 0, 6.5], "initial": [0, 0, 6], "draft_report": [0, 0, 6],
+                               "lab_demo": [0, 0, 8.5], "test": [0, 0, 10], "exam": [0, 0, 50]}
         design_review_have, design_review_lost = 0, 0
 
         for k, v in course_marks:
@@ -620,24 +656,53 @@ def calculate_marks(course, course_marks):
             if "design_review" in k:
                 design_review_have += eval(v)
                 design_review_lost += 1 - eval(v)
-            elif "proposal" in k or "pcb" in k:
+                course_grade_values["design_review"][0] += 1
+                course_grade_values["design_review"][1] += eval(v)
+            elif k == "concept_proposal":
                 have += 4 * eval(v)
                 lost += 4 * (1 - eval(v))
+                course_grade_values["concept_proposal"][0] += 1
+                course_grade_values["concept_proposal"][1] += eval(v)
+            elif k == "design_proposal":
+                have += 4 * eval(v)
+                lost += 4 * (1 - eval(v))
+                course_grade_values["design_proposal"][0] += 1
+                course_grade_values["design_proposal"][1] += eval(v)
+            elif "pcb" in k:
+                have += 4 * eval(v)
+                lost += 4 * (1 - eval(v))
+                course_grade_values["pcb"][0] += 1
+                course_grade_values["pcb"][1] += eval(v)
             elif "docs" in k:
                 have += 6.5 * eval(v)
                 lost += 6.5 * (1 - eval(v))
-            elif "initial" in k or k == "draft_report":
+                course_grade_values["docs"][0] += 1
+                course_grade_values["docs"][1] += eval(v)
+            elif "initial" in k:
                 have += 6 * eval(v)
                 lost += 6 * (1 - eval(v))
+                course_grade_values["initial"][0] += 1
+                course_grade_values["initial"][1] += eval(v)
+            elif k == "draft_report":
+                have += 6 * eval(v)
+                lost += 6 * (1 - eval(v))
+                course_grade_values["draft_report"][0] += 1
+                course_grade_values["draft_report"][1] += eval(v)
             elif k == "lab_demo":
                 have += 8.5 * eval(v)
                 lost += 8.5 * (1 - eval(v))
+                course_grade_values["lab_demo"][0] += 1
+                course_grade_values["lab_demo"][1] += eval(v)
             elif "test" in k:
                 have += 10 * eval(v)
                 lost += 10 * (1 - eval(v))
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
             elif "exam" in k:
                 have += 50 * eval(v)
                 lost += 50 * (1 - eval(v))
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
 
         have += design_review_have / 6
         lost += design_review_lost / 6
@@ -647,10 +712,10 @@ def calculate_marks(course, course_marks):
             if v == "":
                 continue
 
-        have = 0
-        lost = 0
-
     elif course == "eee3090f":
+        course_grade_values = {"practical_test": [0, 0, 1], "assignment": [0, 0, 10], "practical": [0, 0, 5],
+                               "test": [0, 0, 34], "exam": [0, 0, 50]}
+
         for (k, v) in course_marks:
             if v == "":
                 continue
@@ -658,20 +723,33 @@ def calculate_marks(course, course_marks):
             if k == "practical_test":
                 have += eval(v)
                 lost += 1 - eval(v)
+                course_grade_values["practical_test"][0] += 1
+                course_grade_values["practical_test"][1] += eval(v)
             elif "assignment" in k:
                 have += 2 * eval(v)
                 lost += 2 * (1 - eval(v))
+                course_grade_values["assignment"][0] += 1
+                course_grade_values["assignment"][1] += eval(v)
             elif "practical" in k:
                 have += eval(v)
                 lost += 1 - eval(v)
+                course_grade_values["practical"][0] += 1
+                course_grade_values["practical"][1] += eval(v)
             elif "test" in k:
                 have += 17 * eval(v)
                 lost += 17 * (1 - eval(v))
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
             elif "exam" in k:
                 have += 50 * eval(v)
                 lost += 50 * (1 - eval(v))
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
 
     elif course == "eee3092f":
+        course_grade_values = {"test": [0, 0, 20], "julia": [0, 0, 10], "lab": [0, 0, 5],
+                               "exam": [0, 0, 65]}
+
         for (k, v) in course_marks:
             if v == "":
                 continue
@@ -679,29 +757,45 @@ def calculate_marks(course, course_marks):
             if "test" in k:
                 have += 10 * eval(v)
                 lost += 10 * (1 - eval(v))
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
             elif "julia" in k:
-                have += 2.5 * eval(v)
-                lost += 2.5 * (1 - eval(v))
+                have += 10 / 3 * eval(v)
+                lost += 10 / 3 * (1 - eval(v))
+                course_grade_values["julia"][0] += 1
+                course_grade_values["julia"][1] += eval(v)
             elif "lab" in k:
-                have += 2.5 * eval(v)
-                lost += 2.5 * (1 - eval(v))
+                have += 5 * eval(v)
+                lost += 5 * (1 - eval(v))
+                course_grade_values["lab"][0] += 1
+                course_grade_values["lab"][1] += eval(v)
             elif "exam" in k:
                 have += 65 * eval(v)
                 lost += 65 * (1 - eval(v))
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
 
-    return round(have, 3), round(lost, 3)
+    for values in course_grade_values.values():
+        if values[0] != 0:
+            course_grade += (values[1] / values[0]) * values[2]
+            weighting += values[2]
+
+    return round(have, 3), round(lost, 3), round(100 * course_grade / weighting, 3)
 
 
 def calculate_gpa():
     total_units = 0
     total_GP = [0, 0]  # [have, lost]
-    units_by_year = {1: 0, 2: 0}  # {year: units}
-    GP_by_year = {1: [0, 0], 2: [0, 0]}  # {year: [have, lost]}
-    GP_by_semester = {1: {1: [0, 0, 0], 2: [0, 0, 0]}, 2: {1: [0, 0, 0], 2: [0, 0, 0]}}  # {year: {semester: [have, lost, total_units]}}
+    units_by_year = {1: 0, 2: 0, 3: 0}  # {year: units}
+    GP_by_year = {1: [0, 0], 2: [0, 0], 3: [0, 0]}  # {year: [have, lost]}
+    GP_by_semester = {1: {1: [0, 0, 0], 2: [0, 0, 0]}, 2: {1: [0, 0, 0], 2: [0, 0, 0]},
+                      3: {1: [0, 0, 0]}}  # {year: {semester: [have, lost, total_units]}}
 
-    for year in range(1, 3):
+    for year in range(1, 4):
         for j in range(0, len(courses_by_year[years[year]])):
             course = courses_by_year[years[year]][j]
+            if course in ["csc2002s", "eee3093s", "eee3096s", "eee3097s"]:
+                continue
             have, lost, units = float(data[years[year]][course]["have"]), float(
                 data[years[year]][course]["lost"]), float(data[years[year]][course]["units"])
 
@@ -724,13 +818,13 @@ def calculate_gpa():
 
 # WORK IN PROGRESS
 def make_course_gp_graph():
-    num_of_colors = len(data[years[1]]) + len(data[years[2]])
+    num_of_colors = len(data[years[1]]) + len(data[years[2]]) + len(data[years[3]])
 
     cm = plt.get_cmap('gist_rainbow')
     fig, ax = plt.subplots()
     ax.set_prop_cycle(color=[cm(1. * i / num_of_colors) for i in range(num_of_colors)])
 
-    for ys, courses in courses_by_semester.items():
+    for ys, courses in list(courses_by_semester.items())[:-1]:
         year = eval(ys[1])
 
         for course in courses:
@@ -749,13 +843,13 @@ def make_course_gp_graph():
     plt.ylabel("Course GP Lost")
 
     plt.tight_layout()
-    # plt.savefig("Reports/course_gps.png")
-    plt.show()
+    plt.savefig("Reports/course_gps.png")
+    # plt.show()
 
 
 # WORK IN PROGRESS
 def make_report_graphs():
-    # TODO: Complete this
+    # TODO: - Complete this
 
     make_course_gp_graph()
 
@@ -766,7 +860,7 @@ def make_reports():
 
     output = []
 
-    for ys, courses in courses_by_semester.items():
+    for ys, courses in list(courses_by_semester.items())[:-1]:
         year = eval(ys[1])
         semester = eval(ys[3])
 
@@ -794,8 +888,11 @@ def make_reports():
 
         # SEMESTER GPAs
         gpa_report.write("Year-Semester,Semester GPA,Semester GPA Lost,Semester GPA Remaining,Semester GPA Max\n")
-        for year in range(1, 3):
+        for year in range(1, 4):
             for semester in range(1, 3):
+                # TODO: - Make this cleaner (skipping 2nd semester 3rd year)
+                if semester == 2 and year == 3:
+                    continue
                 GP = GP_by_semester[year][semester]
                 units = GP[2]
                 gpa_have = GP[0] / units
@@ -830,11 +927,11 @@ def make_reports():
 
         gpa_report.write(f",{round(gpa_have, 3)},{round(gpa_lost, 3)},{round(gpa_remaining, 3)},{round(gpa_max, 3)}\n")
 
-    messagebox.showinfo(title=None, message="Created progress reports successfully!")
+    # messagebox.showinfo(title=None, message="Created progress reports successfully!")
 
 
 # WORK IN PROGRESS
-def create_reports_directory():
+def create_reports():
     try:
         os.mkdir(os.path.dirname(os.path.abspath(__file__)) + "/Reports")
         print("Created Reports Directory")
@@ -885,7 +982,7 @@ class Main(Tk):
     def make_menu(self):
         # Creates and adds the menu cascade for saving the current graph
         file_menu = Menu(self.menubar, tearoff=0)
-        file_menu.add_command(label="Create progress reports", command=lambda: create_reports_directory())
+        file_menu.add_command(label="Create progress reports", command=lambda: create_reports())
         self.menubar.add_cascade(label="File", menu=file_menu)
 
 
@@ -1083,13 +1180,18 @@ class CurrentMarks(Frame):
 
             Label(self, text=course.upper() + ":", font=("", 15, "bold")).grid(row=i, sticky=N, padx=20)
 
-            have, lost, units = float(data[years[3]][course]["have"]), float(data[years[3]][course]["lost"]), \
-                                float(data[years[3]][course]["units"])
+            have, lost, units, course_grade = float(data[years[3]][course]["have"]), \
+                                              float(data[years[3]][course]["lost"]), \
+                                              float(data[years[3]][course]["units"]), \
+                                              float(data[years[3]][course]["course_grade"])
 
             course_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
                                             f"Remaining marks: {round(100 - lost - have, 3)}%\n"
                                             f"Maximum marks: {round(100 - lost, 3)}%\n"
-                                            f"Grade Points: {round(have * units, 3)}", font=("", 15))
+                                            f"Have/Lost: {round(have / lost, 3) if lost != 0 else 'NULL'}\n"
+                                            f"Course Grade #1: {course_grade}%\n"
+                                            f"Course Grade #2: {round(100 * have / (have + lost), 3) if (have + lost) != 0 else 'NULL'}%",
+                                 font=("", 15))
             course_marks.grid(row=i, column=1, padx=(0, 20), pady=(0, 20))
 
 
@@ -1114,7 +1216,7 @@ class CourseTemplate(Frame):
         button = Button(self, text="<<< Back", command=lambda: view_controller
                         .show_frame(FirstYear if name.lower() in courses_by_year["first_year"]
                                     else (SecondYear if name.lower() in courses_by_year["second_year"]
-                                    else ThirdYear)))
+                                          else ThirdYear)))
         button.grid(row=0, column=0)
 
         titleLabel = Label(self, text=f"{name} Marks", font=("", 15))
@@ -1200,9 +1302,14 @@ class CourseTemplate(Frame):
         year = years[year]
         have = float(data[year][code]["have"])
         lost = float(data[year][code]["lost"])
+        course_grade = float(data[year][code]["course_grade"])
         self.previous_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
                                                f"Remaining marks: {round(100 - lost - have, 3)}%\n"
-                                               f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
+                                               f"Maximum marks: {round(100 - lost, 3)}%\n"
+                                               f"Have/Lost: {round(have / lost, 3) if lost != 0 else 'NULL'}\n"
+                                               f"Course Grade #1: {course_grade}%\n"
+                                               f"Course Grade #2: {round(100 * have / (have + lost), 3) if (have + lost) != 0 else 'NULL'}%",
+                                    font=("", 15))
         self.previous_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
 
     def get_inputs(self, marks, rows, year, code):
@@ -1230,12 +1337,15 @@ class CourseTemplate(Frame):
                     pass
 
         # Updated results label
-        have, lost = calculate_marks(code, marks[:-1])
-        data[year][code].update({"have": str(have), "lost": str(lost)})
+        have, lost, course_grade = calculate_marks(code, marks[:-1])
+        data[year][code].update({"have": str(have), "lost": str(lost), "course_grade": str(course_grade)})
         self.previous_marks.destroy()
         current_marks = Label(self, text=f"You currently have: {have}%\nYou have lost: {lost}%\n"
                                          f"Remaining marks: {round(100 - lost - have, 3)}%\n"
-                                         f"Maximum marks: {round(100 - lost, 3)}%", font=("", 15))
+                                         f"Maximum marks: {round(100 - lost, 3)}%\n"
+                                         f"Have/Lost: {round(have / lost, 3) if lost != 0 else 'NULL'}\n"
+                                         f"Course Grade #1: {course_grade}%\n"
+                                         f"Course Grade #2: {round(100 * have / (have + lost), 3)}%", font=("", 15))
 
         # if "phy" in code:
         current_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
@@ -1253,7 +1363,7 @@ class MAM1020F(CourseTemplate):
 
         self.add_header(view_controller, name="MAM1020F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1270,7 +1380,7 @@ class PHY1012F(CourseTemplate):
 
         self.add_header(view_controller, name="PHY1012F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1287,7 +1397,7 @@ class EEE1006F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE1006F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1304,7 +1414,7 @@ class CSC1015F(CourseTemplate):
 
         self.add_header(view_controller, name="CSC1015F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1321,7 +1431,7 @@ class MEC1003F(CourseTemplate):
 
         self.add_header(view_controller, name="MEC1003F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1342,7 +1452,7 @@ class MAM1021S(CourseTemplate):
 
         self.add_header(view_controller, name="MAM1021S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1359,7 +1469,7 @@ class PHY1013S(CourseTemplate):
 
         self.add_header(view_controller, name="PHY1013S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1376,7 +1486,7 @@ class EEE1007S(CourseTemplate):
 
         self.add_header(view_controller, name="EEE1007S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1393,7 +1503,7 @@ class CSC1016S(CourseTemplate):
 
         self.add_header(view_controller, name="CSC1016S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1410,7 +1520,7 @@ class AXL1200S(CourseTemplate):
 
         self.add_header(view_controller, name="AXL1200S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1431,7 +1541,7 @@ class EEE2045F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2045F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1448,7 +1558,7 @@ class EEE2046F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2046F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1465,7 +1575,7 @@ class EEE2048F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2048F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1482,7 +1592,7 @@ class MAM2083F(CourseTemplate):
 
         self.add_header(view_controller, name="MAM2083F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1499,7 +1609,7 @@ class MEC1009F(CourseTemplate):
 
         self.add_header(view_controller, name="MEC1009F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1526,7 +1636,7 @@ class CON2026S(CourseTemplate):
 
         self.add_header(view_controller, name="CON2026S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1543,7 +1653,7 @@ class EEE2044S(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2044S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1560,7 +1670,7 @@ class EEE2047S(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2047S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1577,7 +1687,7 @@ class MAM2084S(CourseTemplate):
 
         self.add_header(view_controller, name="MAM2084S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1594,7 +1704,7 @@ class PHY2010S(CourseTemplate):
 
         self.add_header(view_controller, name="PHY2010S")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1615,7 +1725,7 @@ class CSC2001F(CourseTemplate):
 
         self.add_header(view_controller, name="CSC2001F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1632,7 +1742,7 @@ class EEE3088F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE3088F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1655,7 +1765,7 @@ class EEE3089F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE2089F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1672,7 +1782,7 @@ class EEE3090F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE3090F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1689,7 +1799,7 @@ class EEE3092F(CourseTemplate):
 
         self.add_header(view_controller, name="EEE3092F")
 
-        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-1]
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
         rows = len(marks) + 2
 
         self.add_grid(marks=marks, rows=rows, code=code)
@@ -1968,7 +2078,8 @@ def start_up():
             csc2001f.update({"test_1": "", "test_2": "", "exam": "", "units": "24"})
             data["third_year"]["csc2001f"].update(csc2001f)
 
-            eee3088f = {"have": "0", "lost": "0", "design_review_wk3": "", "design_review_wk4": "", "design_review_wk5": "",
+            eee3088f = {"have": "0", "lost": "0", "design_review_wk3": "", "design_review_wk4": "",
+                        "design_review_wk5": "",
                         "design_review_wk7": "", "design_review_wk8": "", "design_review_wk10": "",
                         "concept_proposal": "", "design_proposal": "", "initial_design": "", "draft_pcb_design": "",
                         "gerbers": "", "draft_report": "", "docs_&_software": "", "lab_demo": "",
@@ -1978,17 +2089,74 @@ def start_up():
             eee3089f = {"have": "0", "lost": "0", "units": "16"}
             data["third_year"]["eee3089f"].update(eee3089f)
 
-            eee3090f = {"have": "0", "lost": "0", "practical_assignment_1": "", "practical_assignment_2": "", "practical_assignment_3": "",
+            eee3090f = {"have": "0", "lost": "0", "practical_assignment_1": "", "practical_assignment_2": "",
+                        "practical_assignment_3": "",
                         "practical_assignment_4": "", "practical_assignment_5": "",
                         "practical_1": "", "practical_2": "", "practical_3": "", "practical_4": "", "practical_5": "",
-                        "practical_test": "",  "test_1": "", "test_2": "", "exam": "", "units": "16"}
+                        "practical_test": "", "test_1": "", "test_2": "", "exam": "", "units": "16"}
             data["third_year"]["eee3090f"].update(eee3090f)
 
-            eee3092f = {"have": "0", "lost": "0", "julia_assignment_1": "", "julia_assignment_2": "", "julia_assignment_3": "",
-                        "julia_assignment_4": "", "lab_1": "", "lab_2": "", "test_1": "", "test_2": "", "exam": "", "units": "16"}
+            eee3092f = {"have": "0", "lost": "0", "julia_assignment_1": "", "julia_assignment_2": "",
+                        "julia_assignment_3": "",
+                        "julia_assignment_4": "", "lab_1": "", "lab_2": "", "test_1": "", "test_2": "", "exam": "",
+                        "units": "16"}
             data["third_year"]["eee3092f"].update(eee3092f)
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.14"})
+
+        # Updating for course grades
+        if data["meta"]["version"] == "2.14":
+            # First Year
+            data["first_year"]["mam1020f"].update({"course_grade": "0"})
+            data["first_year"]["phy1012f"].update({"course_grade": "0"})
+            data["first_year"]["eee1006f"].update({"course_grade": "0"})
+            data["first_year"]["csc1015f"].update({"course_grade": "0"})
+            data["first_year"]["mec1003f"].update({"course_grade": "0"})
+
+            data["first_year"]["mam1021s"].update({"course_grade": "0"})
+            data["first_year"]["phy1013s"].update({"course_grade": "0"})
+            data["first_year"]["eee1007s"].update({"course_grade": "0"})
+            data["first_year"]["csc1016s"].update({"course_grade": "0"})
+            data["first_year"]["axl1200s"].update({"course_grade": "0"})
+
+            # Second Year
+            data["second_year"]["eee2045f"].update({"course_grade": "0"})
+            data["second_year"]["eee2046f"].update({"course_grade": "0"})
+            data["second_year"]["eee2048f"].update({"course_grade": "0"})
+            data["second_year"]["mam2083f"].update({"course_grade": "0"})
+            data["second_year"]["mec1009f"].update({"course_grade": "0"})
+
+            data["second_year"]["con2026s"].update({"course_grade": "0"})
+            data["second_year"]["eee2044s"].update({"course_grade": "0"})
+            data["second_year"]["eee2047s"].update({"course_grade": "0"})
+            data["second_year"]["mam2084s"].update({"course_grade": "0"})
+            data["second_year"]["phy2010s"].update({"course_grade": "0"})
+
+            # Third Year
+            data["third_year"]["csc2001f"].update({"course_grade": "0"})
+            data["third_year"]["eee3088f"].update({"course_grade": "0"})
+            data["third_year"]["eee3089f"].update({"course_grade": "0"})
+            data["third_year"]["eee3090f"].update({"course_grade": "0"})
+            data["third_year"]["eee3092f"].update({"course_grade": "0"})
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.15"})
+
+        # Updating EEE3092F for simulation assignments and labs
+        if data["meta"]["version"] == "2.15":
+            eee3092f = data["third_year"]["eee3092f"]
+            eee3092f.pop("julia_assignment_4")
+            eee3092f.pop("lab_2")
+
+            data["third_year"]["eee3092f"] = eee3092f
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.16"})
+
+        # Updating EEE3088F for gerbers
+        if data["meta"]["version"] == "2.16":
+            eee3088f = data["third_year"]["eee3088f"]
+            eee3088f.pop("gerbers")
+
+            data["third_year"]["eee3088f"] = eee3088f
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.17"})
 
         app = Main()
 

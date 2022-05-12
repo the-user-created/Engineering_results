@@ -204,6 +204,10 @@ fabric.properties
 results.json
 results.txt
 Private/
+Reports/
+results_copy.json
+graph_testing.py
+new_json.json
 
 # Mac Files
 .DS_Store
