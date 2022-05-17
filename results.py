@@ -704,8 +704,8 @@ def calculate_marks(course, course_marks):
                 course_grade_values["exam"][0] += 1
                 course_grade_values["exam"][1] += eval(v)
 
-        have += design_review_have / 6
-        lost += design_review_lost / 6
+        have += design_review_have / 8
+        lost += design_review_lost / 8
 
     elif course == "eee3089f":
         for (k, v) in course_marks:
@@ -760,8 +760,8 @@ def calculate_marks(course, course_marks):
                 course_grade_values["test"][0] += 1
                 course_grade_values["test"][1] += eval(v)
             elif "julia" in k:
-                have += 10 / 3 * eval(v)
-                lost += 10 / 3 * (1 - eval(v))
+                have += 10 / 2 * eval(v)
+                lost += 10 / 2 * (1 - eval(v))
                 course_grade_values["julia"][0] += 1
                 course_grade_values["julia"][1] += eval(v)
             elif "lab" in k:
@@ -2157,6 +2157,23 @@ def start_up():
 
             data["third_year"]["eee3088f"] = eee3088f
             data["meta"].update({"last_updated": str(date.today()), "version": "2.17"})
+
+        # Updating for assignments not being done
+        if data["meta"]["version"] == "2.17":
+            eee3092f = data["third_year"]["eee3092f"]
+            eee3092f.pop("julia_assignment_3")
+            data["third_year"]["eee3092f"] = eee3092f
+
+            eee3088f = data["third_year"]["eee3088f"]
+            eee3088f_new = {}
+            for k, v in eee3088f.items():
+                if k != "design_review_wk10":
+                    eee3088f_new.update({k: v})
+                else:
+                    eee3088f_new.update({"design_review_wk10": "", "design_review_wk12": "", "design_review_wk13": ""})
+            data["third_year"]["eee3088f"] = eee3088f_new
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.18"})
 
         app = Main()
 

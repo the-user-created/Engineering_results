@@ -363,28 +363,28 @@
     },
     "third_year": {
         "csc2001f": {
-            "have": "22.177",
-            "lost": "8.373",
+            "have": "26.467",
+            "lost": "12.433",
             "assignment_1": "72/100",
             "assignment_2": "76/100",
             "assignment_3": "100/100",
-            "assignment_4": "100/100",
+            "assignment_4": "104/110",
             "assignment_5": "",
             "assignment_6": "",
             "test_1": "12/35",
-            "test_2": "",
+            "test_2": "16.5/30",
             "exam": "",
             "units": "24",
-            "course_grade": "69.393"
+            "course_grade": "71.945"
         },
         "eee3088f": {
-            "have": "14.522",
+            "have": "14.688",
             "lost": "4.145",
             "design_review_wk3": "9/9",
             "design_review_wk4": "9/9",
             "design_review_wk5": "9/9",
             "design_review_wk7": "9/9",
-            "design_review_wk8": "",
+            "design_review_wk8": "9/9",
             "design_review_wk10": "",
             "concept_proposal": "16/24",
             "design_proposal": "58/100",
@@ -405,10 +405,10 @@
             "course_grade": "0"
         },
         "eee3090f": {
-            "have": "16.6",
-            "lost": "7.4",
+            "have": "18.933",
+            "lost": "8.067",
             "practical_assignment_1": "31.5/38",
-            "practical_assignment_2": "",
+            "practical_assignment_2": "20/30",
             "practical_assignment_3": "",
             "practical_assignment_4": "",
             "practical_assignment_5": "",
@@ -416,13 +416,13 @@
             "practical_2": "3/3",
             "practical_3": "8/10",
             "practical_4": "2/2",
-            "practical_5": "",
+            "practical_5": "3/3",
             "practical_test": "1/2",
             "test_1": "19/30",
             "test_2": "",
             "exam": "",
             "units": "16",
-            "course_grade": "69.833"
+            "course_grade": "68.373"
         },
         "eee3092f": {
             "have": "7.363",
