@@ -760,8 +760,8 @@ def calculate_marks(course, course_marks):
                 course_grade_values["test"][0] += 1
                 course_grade_values["test"][1] += eval(v)
             elif "julia" in k:
-                have += 10 / 2 * eval(v)
-                lost += 10 / 2 * (1 - eval(v))
+                have += 10 / 3 * eval(v)
+                lost += 10 / 3 * (1 - eval(v))
                 course_grade_values["julia"][0] += 1
                 course_grade_values["julia"][1] += eval(v)
             elif "lab" in k:
@@ -2174,6 +2174,19 @@ def start_up():
             data["third_year"]["eee3088f"] = eee3088f_new
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.18"})
+
+        # Re-adding EEE3092F assignment 3
+        if data["meta"]["version"] == "2.18":
+            eee3092f = data["third_year"]["eee3092f"]
+            eee3092f_new = {}
+            for k, v in eee3092f.items():
+                if k == "julia_assignment_2":
+                    eee3092f_new.update({k: v, "julia_assignment_3": ""})
+                else:
+                    eee3092f_new.update({k: v})
+
+            data["third_year"]["eee3092f"] = eee3092f_new
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.19"})
 
         app = Main()
 
