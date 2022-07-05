@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.11
+# v2.20
 
 from datetime import date
 import json
@@ -42,14 +42,14 @@ courses_by_year = {"first_year": ["mam1020f", "phy1012f", "eee1006f", "csc1015f"
                    "second_year": ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f",
                                    "eee2044s", "eee2047s", "mam2084s", "con2026s", "phy2010s"],
                    "third_year": ["csc2001f", "eee3088f", "eee3089f", "eee3090f", "eee3092f",
-                                  "csc2002s", "eee3093s", "eee3096s", "eee3097s"]
+                                  "csc2002s", "eee3093s", "eee3094s", "eee3096s", "eee3097s"]
                    }
 courses_by_semester = {"y1s1": ["mam1020f", "phy1012f", "eee1006f", "csc1015f", "mec1003f"],
                        "y1s2": ["mam1021s", "phy1013s", "csc1016s", "eee1007s", "axl1200s"],
                        "y2s1": ["eee2045f", "eee2046f", "eee2048f", "mam2083f", "mec1009f"],
                        "y2s2": ["eee2044s", "eee2047s", "mam2084s", "con2026s", "phy2010s"],
                        "y3s1": ["csc2001f", "eee3088f", "eee3089f", "eee3090f", "eee3092f"],
-                       "y3s2": ["csc2002s", "eee3093s", "eee3096s", "eee3097s"]
+                       "y3s2": ["csc2002s", "eee3093s", "eee3094s", "eee3096s", "eee3097s"]
                        }  # {"year-year_#-semester-semester_#": [course 1, course 2, ...]}
 
 
@@ -961,7 +961,8 @@ class Main(Tk):
                  "MAM1021S", "CSC1016S", "PHY1013S", "EEE1007S", "AXL1200S",
                  "EEE2045F", "EEE2046F", "EEE2048F", "MAM2083F", "MEC1009F",
                  "EEE2044S", "EEE2047S", "MAM2084S", "CON2026S", "PHY2010S",
-                 "CSC2001F", "EEE3088F", "EEE3089F", "EEE3090F", "EEE3092F"]
+                 "CSC2001F", "EEE3088F", "EEE3089F", "EEE3090F", "EEE3092F",
+                 "CSC2002S", "EEE3093S", "EEE3094S", "EEE3096S", "EEE3097S"]
 
         for view in views:
             for F in (StartPage, eval(view)):
@@ -1151,6 +1152,21 @@ class ThirdYear(Frame):
 
         button = Button(self, text="EEE3092F\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3092F))
         button.grid(row=5, column=1, pady=(2, 15), padx=(0, 50))
+
+        button = Button(self, text="CSC2002S\t\t\t>>>", command=lambda: view_controller.show_frame(CSC2002S))
+        button.grid(row=6, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3093S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3093S))
+        button.grid(row=7, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3094S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3094S))
+        button.grid(row=8, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3096S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3096S))
+        button.grid(row=9, column=1, pady=2, padx=(0, 50))
+
+        button = Button(self, text="EEE3097S\t\t\t>>>", command=lambda: view_controller.show_frame(EEE3097S))
+        button.grid(row=10, column=1, pady=(2, 30), padx=(0, 50))
 
 
 class CurrentMarks(Frame):
@@ -1810,6 +1826,125 @@ class EEE3092F(CourseTemplate):
 # }
 
 
+# Second Semester, Third Year {
+class CSC2002S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "csc2002s"
+        year = 3
+
+        self.add_header(view_controller, name="CSC2002S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+class EEE3093S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "eee3093s"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3093S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+class EEE3094S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "eee3094s"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3094S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+class EEE3096S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "eee3096s"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3096S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+class EEE3097S(CourseTemplate):
+    def __init__(self, parent, view_controller):
+        Frame.__init__(self, parent)
+
+        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        button.grid(row=0, column=0, padx=(34, 0))
+
+        titleLabel = Label(self, text="Coming Soon", font=("", 15))
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+
+        """code = "eee3097s"
+        year = 3
+
+        self.add_header(view_controller, name="EEE3097S")
+
+        marks = [(k, v) for k, v in data[years[year]][code].items()][2:-2]
+        rows = len(marks) + 2
+
+        self.add_grid(marks=marks, rows=rows, code=code)
+
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+
+
+# }
+
+
 def start_up():
     with open("results.json", "r+") as json_file:
         json_data = json.load(json_file)
@@ -2187,6 +2322,27 @@ def start_up():
 
             data["third_year"]["eee3092f"] = eee3092f_new
             data["meta"].update({"last_updated": str(date.today()), "version": "2.19"})
+
+        # Adding 3rd year 2nd semester courses
+        if data["meta"]["version"] == "2.19":
+            data["third_year"].update({"csc2002s": {}, "eee3093s": {}, "eee3094s": {}, "eee3096s": {}, "eee3097s": {}})
+
+            csc2002s = {"have": "0", "lost": "0", "units": "24", "course_grade": "0"}
+            data["third_year"]["csc2002s"].update(csc2002s)
+
+            eee3093s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
+            data["third_year"]["eee3093s"].update(eee3093s)
+
+            eee3094s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
+            data["third_year"]["eee3094s"].update(eee3094s)
+
+            eee3096s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
+            data["third_year"]["eee3096s"].update(eee3096s)
+
+            eee3097s = {"have": "0", "lost": "0", "units": "8", "course_grade": "0"}
+            data["third_year"]["eee3097s"].update(eee3097s)
+
+            data["meta"].update({"last_updated": str(date.today()), "version": "2.20"})
 
         app = Main()
 
