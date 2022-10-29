@@ -1,7 +1,7 @@
 {
     "meta": {
-        "last_updated": "2022-04-29",
-        "version": "2.17"
+        "last_updated": "2022-05-17",
+        "version": "2.18"
     },
     "grade_point_averages": {
         "first_year": 0,
@@ -378,14 +378,16 @@
             "course_grade": "71.945"
         },
         "eee3088f": {
-            "have": "14.688",
-            "lost": "4.145",
+            "have": "21.369",
+            "lost": "7.381",
             "design_review_wk3": "9/9",
             "design_review_wk4": "9/9",
             "design_review_wk5": "9/9",
             "design_review_wk7": "9/9",
             "design_review_wk8": "9/9",
             "design_review_wk10": "",
+            "design_review_wk12": "0",
+            "design_review_wk13": "",
             "concept_proposal": "16/24",
             "design_proposal": "58/100",
             "initial_design": "52.5/56",
@@ -393,10 +395,10 @@
             "draft_report": "",
             "docs_&_software": "",
             "lab_demo": "",
-            "test": "",
+            "test": "62/90",
             "exam": "",
             "units": "8",
-            "course_grade": "78.184"
+            "course_grade": "74.404"
         },
         "eee3089f": {
             "have": "0",
@@ -425,11 +427,10 @@
             "course_grade": "68.373"
         },
         "eee3092f": {
-            "have": "7.363",
-            "lost": "5.97",
+            "have": "8.966",
+            "lost": "6.034",
             "julia_assignment_1": "25/26",
             "julia_assignment_2": "",
-            "julia_assignment_3": "",
             "lab_1": "",
             "test_1": "39.5/95",
             "test_2": "",

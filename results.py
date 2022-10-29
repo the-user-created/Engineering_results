@@ -2,7 +2,7 @@
 #  All rights reserved
 #
 
-# v2.20
+# v2.21
 
 from datetime import date
 import json
@@ -775,12 +775,99 @@ def calculate_marks(course, course_marks):
                 course_grade_values["exam"][0] += 1
                 course_grade_values["exam"][1] += eval(v)
 
+    # Third Year, Second Semester
+    elif course == "csc2002s":
+        course_grade_values = {"assignment": [0, 0, 33.3], "test": [0, 0, 16.7], "exam": [0, 0, 50]}
+        assignments_have, assignments_lost, ct_have, ct_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0
+
+        for k, v in course_marks:
+            if v == "":
+                continue
+
+            if any(substring in k for substring in ["pcp", "mdd", "arch"]):
+                assignments_have += eval(v) if "mdd" not in k else (eval(v) * 0.8 if k == "mdd_1" else eval(v) * 1.2)
+                assignments_lost += (1 - eval(v)) if "mdd" not in k else (round((0.8 - eval(v) * 0.8), 3) if k == "mdd_1" else round((1.2 - eval(v) * 1.2), 3))
+                course_grade_values["assignment"][0] += 1
+                course_grade_values["assignment"][1] += eval(v) if "mdd" not in k else (eval(v) * 0.8 if k == "mdd_1" else eval(v) * 1.2)
+            elif "test" in k:
+                ct_have += eval(v)
+                ct_lost += 1 - eval(v)
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
+
+        have = 33.3 * assignments_have / 5 + 16.7 * ct_have / 2 + 50 * exam_have
+        lost = 33.3 * assignments_lost / 5 + 16.7 * ct_lost / 2 + 50 * exam_lost
+
+    elif course == "eee3093s":
+        course_grade_values = {"tutorial": [0, 0, 10], "lab": [0, 0, 10], "test": [0, 0, 20], "exam": [0, 0, 60]}
+        tutorial_have, tutorial_lost, lab_have, lab_lost, test_have, test_lost, exam_have, exam_lost = 0, 0, 0, 0, 0, 0, 0, 0
+
+        for k, v in course_marks:
+            if v == "":
+                continue
+
+            if "tutorial" in k:
+                tutorial_have += eval(v)
+                tutorial_lost += 1 - eval(v)
+                course_grade_values["tutorial"][0] += 1
+                course_grade_values["tutorial"][1] += eval(v)
+            elif "lab" in k:
+                lab_have += eval(v)
+                lab_lost += 1 - eval(v)
+                course_grade_values["lab"][0] += 1
+                course_grade_values["lab"][1] += eval(v)
+            elif "test" in k:
+                test_have += eval(v)
+                test_lost += 1 - eval(v)
+                course_grade_values["test"][0] += 1
+                course_grade_values["test"][1] += eval(v)
+            elif "exam" in k:
+                exam_have += eval(v)
+                exam_lost += 1 - eval(v)
+                course_grade_values["exam"][0] += 1
+                course_grade_values["exam"][1] += eval(v)
+
+        have = 10 * tutorial_have / 8 + 10 * lab_have / 5 + 10 * test_have + 60 * exam_have
+        lost = 10 * tutorial_lost / 8 + 10 * lab_lost / 5 + 10 * test_lost + 60 * exam_lost
+
+    elif course == "eee3097s":
+        course_grade_values = {"assignment": [0, 0, 45], "report": [0, 0, 55]}
+        assignments_have, assignments_lost, report_have, report_lost = 0, 0, 0, 0
+
+        for k, v in course_marks:
+            if v == "":
+                continue
+
+            if any(substring in k for substring in ["design", "progress"]):
+                assignments_have += eval(v)
+                assignments_lost += 1 - eval(v)
+                course_grade_values["assignment"][0] += 1
+                course_grade_values["assignment"][1] += eval(v)
+            elif "final" in k:
+                report_have += eval(v)
+                report_lost += 1 - eval(v)
+                course_grade_values["report"][0] += 1
+                course_grade_values["report"][1] += eval(v)
+
+        have = 15 * assignments_have + 55 * report_have
+        lost = 15 * assignments_lost + 55 * report_lost
+
     for values in course_grade_values.values():
         if values[0] != 0:
             course_grade += (values[1] / values[0]) * values[2]
             weighting += values[2]
 
-    return round(have, 3), round(lost, 3), round(100 * course_grade / weighting, 3)
+    try:
+        course_grade_calc = 100 * course_grade / weighting
+    except ZeroDivisionError:
+        course_grade_calc = 0
+
+    return round(have, 3), round(lost, 3), round(course_grade_calc, 3)
 
 
 def calculate_gpa():
@@ -1271,6 +1358,9 @@ class CourseTemplate(Frame):
             elif code == "mam2084s":
                 labelText = assessmentName.replace('_', ' ').title().replace("Webwork", "WebWork") + ':' \
                     if 'webwork' in assessmentName else assessmentName.replace('_', ' ').title() + ':'
+            elif code == "csc2002s":
+                labelText = assessmentName.replace('_', ' ').upper() + ':' \
+                    if any(substring in assessmentName for substring in ["mdd", "pcp"]) else assessmentName.replace('_', ' ').title() + ':'
             else:
                 labelText = assessmentName.replace("_", " ").title() + ":"
 
@@ -1361,7 +1451,7 @@ class CourseTemplate(Frame):
                                          f"Maximum marks: {round(100 - lost, 3)}%\n"
                                          f"Have/Lost: {round(have / lost, 3) if lost != 0 else 'NULL'}\n"
                                          f"Course Grade #1: {course_grade}%\n"
-                                         f"Course Grade #2: {round(100 * have / (have + lost), 3)}%", font=("", 15))
+                                         f"Course Grade #2: {round(100 * have / (have + lost), 3) if lost != 0 else 'NULL'}%", font=("", 15))
 
         # if "phy" in code:
         current_marks.grid(row=rows + 3, column=0, columnspan=self.column_span, pady=(0, 30))
@@ -1831,13 +1921,7 @@ class CSC2002S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
-
-        """code = "csc2002s"
+        code = "csc2002s"
         year = 3
 
         self.add_header(view_controller, name="CSC2002S")
@@ -1847,20 +1931,20 @@ class CSC2002S(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class EEE3093S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
+        """button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
         button.grid(row=0, column=0, padx=(34, 0))
 
         titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
+        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)"""
 
-        """code = "eee3093s"
+        code = "eee3093s"
         year = 3
 
         self.add_header(view_controller, name="EEE3093S")
@@ -1870,7 +1954,7 @@ class EEE3093S(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 class EEE3094S(CourseTemplate):
@@ -1923,13 +2007,7 @@ class EEE3097S(CourseTemplate):
     def __init__(self, parent, view_controller):
         Frame.__init__(self, parent)
 
-        button = Button(self, text="<<< Back", command=lambda: view_controller.show_frame(ThirdYear))
-        button.grid(row=0, column=0, padx=(34, 0))
-
-        titleLabel = Label(self, text="Coming Soon", font=("", 15))
-        titleLabel.grid(row=0, column=1, columnspan=1, pady=20, padx=10)
-
-        """code = "eee3097s"
+        code = "eee3097s"
         year = 3
 
         self.add_header(view_controller, name="EEE3097S")
@@ -1939,7 +2017,7 @@ class EEE3097S(CourseTemplate):
 
         self.add_grid(marks=marks, rows=rows, code=code)
 
-        self.add_footer(rows=rows, marks=marks, year=year, code=code)"""
+        self.add_footer(rows=rows, marks=marks, year=year, code=code)
 
 
 # }
@@ -2327,10 +2405,14 @@ def start_up():
         if data["meta"]["version"] == "2.19":
             data["third_year"].update({"csc2002s": {}, "eee3093s": {}, "eee3094s": {}, "eee3096s": {}, "eee3097s": {}})
 
-            csc2002s = {"have": "0", "lost": "0", "units": "24", "course_grade": "0"}
+            csc2002s = {"have": "0", "lost": "0", "pcp_1": "", "pcp_2": "", "mdd_1": "", "mdd_2": "", "arch_1": "",
+                        "class_test_1": "", "class_test_2": "", "exam": "", "units": "24", "course_grade": "0"}
             data["third_year"]["csc2002s"].update(csc2002s)
 
-            eee3093s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
+            eee3093s = {"have": "0", "lost": "0", "tutorial_1": "", "tutorial_2": "", "tutorial_3": "",
+                        "tutorial_4": "", "tutorial_5": "", "tutorial_6": "", "tutorial_7": "", "tutorial_8": "",
+                        "lab_1": "", "lab_2": "", "lab_3": "", "lab_4": "", "lab_5": "", "test_1": "", "test_2": "",
+                        "exam": "", "units": "16", "course_grade": "0"}
             data["third_year"]["eee3093s"].update(eee3093s)
 
             eee3094s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
@@ -2339,7 +2421,8 @@ def start_up():
             eee3096s = {"have": "0", "lost": "0", "units": "16", "course_grade": "0"}
             data["third_year"]["eee3096s"].update(eee3096s)
 
-            eee3097s = {"have": "0", "lost": "0", "units": "8", "course_grade": "0"}
+            eee3097s = {"have": "0", "lost": "0", "paper_design": "", "progress_report_1": "", "progress_report_2": "",
+                        "final_report": "", "units": "8", "course_grade": "0"}
             data["third_year"]["eee3097s"].update(eee3097s)
 
             data["meta"].update({"last_updated": str(date.today()), "version": "2.20"})
